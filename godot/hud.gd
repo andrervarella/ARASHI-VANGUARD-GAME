@@ -13,6 +13,7 @@ var attack_pressed := false
 var _fingers := {}   # index -> nome do botão
 var BTN := {}        # recalculado a cada quadro conforme o tamanho da tela
 const MARGIN := 18.0
+const MARGIN_R := 104.0   # folga à direita: o botão de sair da tela cheia do navegador fica ali
 
 func _layout() -> void:
 	var vs := get_viewport_rect().size   # tamanho real da tela (não depende do tamanho do Control)
@@ -24,8 +25,8 @@ func _layout() -> void:
 	BTN = {
 		"left":   {"pos": Vector2(MARGIN + rs, h - MARGIN - rs), "r": rs},
 		"right":  {"pos": Vector2(MARGIN + rs * 3.0 + 12.0, h - MARGIN - rs), "r": rs},
-		"attack": {"pos": Vector2(w - MARGIN - rj * 2.0 - 12.0 - ra, h - MARGIN - ra), "r": ra},
-		"jump":   {"pos": Vector2(w - MARGIN - rj, h - MARGIN - rj - 10.0), "r": rj},
+		"attack": {"pos": Vector2(w - MARGIN_R - rj * 2.0 - 12.0 - ra, h - MARGIN - ra), "r": ra},
+		"jump":   {"pos": Vector2(w - MARGIN_R - rj, h - MARGIN - rj - 10.0), "r": rj},
 	}
 
 func _ready() -> void:
