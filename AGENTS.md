@@ -37,3 +37,16 @@ Para cada personagem manter \`character_id\`, referência canônica, altura em p
 
 ## Antes de cada entrega
 Fornecer o que mudou, quais referências foram usadas, capturas de gameplay e testes realizados, arquivos criados/alterados, itens ainda provisórios e riscos de inconsistência. Preserve o trabalho aprovado, evite renomeações arbitrárias e não declare pronto aquilo que é apenas estudo.
+
+## Método de criação (adicionado em 15/11/2026)
+Seguir o **Prompt Mestre Universal V4.3**: https://github.com/andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES (PROMPT_MESTRE.md e modulos/). Resumo que vale mesmo sem acesso ao repositório central:
+1. **Ao chegar:** liste branches e PRs abertos; leia `docs/ESTADO_ATUAL.md` (obrigatório), depois `docs/DECISOES.md`, `docs/TAREFAS.md` e `docs/HANDOFF.md` se a tarefa tocar neles. Branch de trabalho: `dev`; `main` só recebe merge nos portões, com o "ok" do dono. Vale o Git, não as anotações.
+2. **Tarefas:** sem tarefa aberta em `docs/TAREFAS.md`, não edite o jogo. FAZER -> REVISAR (outro agente) -> TESTAR (roda de verdade) -> FECHADA. Um commit por tarefa, começando pelo ID.
+3. **Evidência:** rótulos EXECUTADO / EXECUTADO (EMULADO) / SÓ LIDO / NÃO VERIFICADO. Nunca declare pronto sem verificar arquivo ou tela.
+4. **Sprites:** proibido desenhar personagem ou cenário por código, inclusive como placeholder (desvio atual declarado em DEC-010). Placeholder = imagem aprovada ou lote-piloto aprovado.
+5. **Embalagem:** menu, introdução com a história, cutscenes curtas, telas de vitória/derrota e final, com gancho nos 10 s.
+6. **Portões:** V (visual e história), 1 (core loop), 2 (vertical slice), 3 (concluído). Produção completa só depois de V e 1.
+7. **Controles de toque e convenções de gênero:** `docs/CONTROLES_E_CONVENCOES.md` (aprovado). Siga o padrão dos jogos de plataforma/ação; fugir dele exige aviso prévio.
+8. **Link jogável de teste:** https://arashi-vanguard-prototipo.vercel.app; publicação e ferramentas em `tools/README.md`.
+9. **Divisão:** conceito/especificação no Fable, execução no Sonnet, sprites no Codex/PixelLab, cutscenes/música no Fenaky. Gastos sempre com estimativa e autorização do dono. Ao parar: commit, push e handoff.
+

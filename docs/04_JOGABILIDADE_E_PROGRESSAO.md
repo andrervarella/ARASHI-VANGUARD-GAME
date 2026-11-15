@@ -39,3 +39,7 @@ Salvar progresso das fases, poderes automáticos, cicatrizes, escolhas únicas p
 
 ## Primeiro protótipo
 Um pequeno trecho do distrito/forja, movimentação, Luke simples, dois tipos de inimigo, mini-chefe, habilidade/power-up, tela de 3 recompensas com persistência e 1 sala secreta que exija técnica. Só depois ampliar.
+
+## Atualização 15/11/2026 — controles de toque aprovados
+O jogo é jogado no celular (paisagem). Controles de toque **aprovados** e a mecânica de **agachar/andar agachado** estão em `docs/CONTROLES_E_CONVENCOES.md`. Pedidos do dono ainda a especificar: **botão de magia/poder** (ligado à Ruptura e às habilidades de chefes) e **combos** do Ren (T-008 em `docs/TAREFAS.md`).
+
