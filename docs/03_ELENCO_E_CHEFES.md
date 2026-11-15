@@ -43,3 +43,6 @@ Paleta própria, leitura de silhueta, acessórios próprios, comportamento e mov
 
 ## Hierarquia dos arquivos (quando disponíveis)
 \`assets/referencias-aprovadas/chefes/Kairen.png\`, \`Xui.png\`, \`Wu.png\`, \`Baku.png\` devem receber as artes individuais preferidas preservadas integralmente. Anexar novas poses em diretório separado, sem sobrescrever essas referências.
+
+## Padrão de ataque e balanceamento (adicionado em 15/11/2026)
+Cada chefe tem ciclo de ataque fixo e identidade mecânica própria, e os itens escolhidos mudam a facilidade de cada luta sem existir combinação melhor. Regras e rascunhos em `docs/10_CHEFES_E_BALANCEAMENTO.md` (DEC-013).

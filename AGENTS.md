@@ -39,6 +39,8 @@ Para cada personagem manter \`character_id\`, referência canônica, altura em p
 Fornecer o que mudou, quais referências foram usadas, capturas de gameplay e testes realizados, arquivos criados/alterados, itens ainda provisórios e riscos de inconsistência. Preserve o trabalho aprovado, evite renomeações arbitrárias e não declare pronto aquilo que é apenas estudo.
 
 ## Método de criação (adicionado em 15/11/2026)
+**Obrigatório:** antes de criar ou alterar qualquer coisa neste jogo, **consulte e siga** as instruções gerais de criação de jogos do dono: https://github.com/andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES (`PROMPT_MESTRE.md` e `modulos/`). Se faltar acesso, avise o dono; não improvise (DEC-012).
+
 Seguir o **Prompt Mestre Universal V4.3**: https://github.com/andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES (PROMPT_MESTRE.md e modulos/). Resumo que vale mesmo sem acesso ao repositório central:
 1. **Ao chegar:** liste branches e PRs abertos; leia `docs/ESTADO_ATUAL.md` (obrigatório), depois `docs/DECISOES.md`, `docs/TAREFAS.md` e `docs/HANDOFF.md` se a tarefa tocar neles. Branch de trabalho: `dev`; `main` só recebe merge nos portões, com o "ok" do dono. Vale o Git, não as anotações.
 2. **Tarefas:** sem tarefa aberta em `docs/TAREFAS.md`, não edite o jogo. FAZER -> REVISAR (outro agente) -> TESTAR (roda de verdade) -> FECHADA. Um commit por tarefa, começando pelo ID.
@@ -49,4 +51,4 @@ Seguir o **Prompt Mestre Universal V4.3**: https://github.com/andrervarella/PROM
 7. **Controles de toque e convenções de gênero:** `docs/CONTROLES_E_CONVENCOES.md` (aprovado). Siga o padrão dos jogos de plataforma/ação; fugir dele exige aviso prévio.
 8. **Link jogável de teste:** https://arashi-vanguard-prototipo.vercel.app; publicação e ferramentas em `tools/README.md`.
 9. **Divisão:** conceito/especificação no Fable, execução no Sonnet, sprites no Codex/PixelLab, cutscenes/música no Fenaky. Gastos sempre com estimativa e autorização do dono. Ao parar: commit, push e handoff.
-
+10. **Chefes e balanceamento:** cada chefe tem ciclo de ataque fixo e legível (estilo Mega Man), dificuldade moderada; os itens escolhidos mudam a dificuldade de cada luta e **não existe combinação melhor** (a escolha expressa o estilo do jogador). Ver `docs/10_CHEFES_E_BALANCEAMENTO.md` e DEC-013.

@@ -14,9 +14,10 @@ Etapas: **FAZER → REVISAR → TESTAR → FECHADA** · ou **BLOQUEADA** (com mo
 | T-006 | Tela inicial com animação leve + introdução com a história + **versão/commit visível na tela** | EXECUÇÃO | Sonnet | outro agente | FAZER | Primeiros 10 s com gancho; pulável | render + dono | — |
 | T-007 | Testes automáticos (Godot headless) + GitHub Actions (`.github/workflows/testes.yml`) + smoke de export | EXECUÇÃO | Sonnet | outro agente | FAZER | `npm test`/equivalente roda e passa no push | saída anexada | — |
 | T-008 | **Especificar** botão de magia/poder e combos (janela de entrada, buffer, hitboxes, hit-stop, medidor de Ruptura, layout de 3 botões) e depois implementar | CRIATIVO→EXECUÇÃO | Fable → Sonnet | outro agente | FAZER | Especificação aprovada pelo dono; link atualizado | dono joga | — |
-| T-009 | **Portão 1:** microárea da forja, 2 inimigos, mini-chefe com 2 fases, 1 poder, tela de 3 recompensas com persistência | EXECUÇÃO | Sonnet | outro agente | FAZER | Dono responde 3 sim/não | dono joga | — |
+| T-009 | **Portão 1:** microárea da forja, 2 inimigos, mini-chefe com 2 fases **seguindo o modelo de `docs/10` (ciclo fixo, telégrafo, janela de punição)**, 1 poder, tela de 3 recompensas com persistência | EXECUÇÃO | Sonnet | outro agente | FAZER | Dono responde 3 sim/não e confirma que o padrão do mini-chefe é legível | dono joga | — |
 | T-010 | Arte final do HUD (botões, direcional, ícones) como assets | EXECUÇÃO | Codex/PixelLab | Claude | FAZER | Arte aprovada; sem círculos crus | dono | — |
 | T-011 | Reconectar conector PixelLab ("Pixellab2" precisa reconectar) e **informar custo** | — | Dono + IA | — | BLOQUEADA | Custo conhecido e autorizado | — | — |
+| T-013 | **Especificar** o sistema de chefes e balanceamento: ciclo de ataque de cada chefe, planilha item × chefe (21 itens, afinidades −2..+2), script de soma por item e por trilha, texto das cartas de escolha (`docs/10`) | CRIATIVO | Fable | outro agente | FAZER | Especificação aprovada pelo dono; somas dentro da faixa | script rodado + dono joga 2 trilhas | — |
 | T-012 | Fichas individuais de Mei Shian, Shuyin e Seiran; novos recortes do Ren oficial | CRIATIVO | Codex/Fable | — | FAZER | Fichas aprovadas | — | — |
 
 \* Fechadas sem revisão independente e com a regra 3 do método quebrada (DEC-010); a revisão cruzada entra junto com T-005.

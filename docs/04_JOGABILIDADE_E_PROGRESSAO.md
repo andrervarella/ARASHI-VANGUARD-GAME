@@ -43,3 +43,6 @@ Um pequeno trecho do distrito/forja, movimentação, Luke simples, dois tipos de
 ## Atualização 15/11/2026 — controles de toque aprovados
 O jogo é jogado no celular (paisagem). Controles de toque **aprovados** e a mecânica de **agachar/andar agachado** estão em `docs/CONTROLES_E_CONVENCOES.md`. Pedidos do dono ainda a especificar: **botão de magia/poder** (ligado à Ruptura e às habilidades de chefes) e **combos** do Ren (T-008 em `docs/TAREFAS.md`).
 
+
+
+**Atualização 15/11/2026 (chefes e itens):** a escolha de itens muda a dificuldade de cada chefe e não há combinação melhor; chefes têm padrão fixo estilo Mega Man. Ver `docs/10_CHEFES_E_BALANCEAMENTO.md` e DEC-013.

@@ -2,7 +2,7 @@
 
 > Leitura obrigatória de quem chega. Se divergir do Git, vale o Git.
 
-- Atualizado em: 2026-11-15 18:40 (America/Sao_Paulo)
+- Atualizado em: 2026-11-15 18:55 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
 - **Commit-base desta atualização:** `e7ab5de` (merge das branches de importação e de história)
@@ -25,6 +25,8 @@
 - Personagens desenhados por código violam o método (DEC-010): substituir antes do Portão 1 (T-005).
 - Sem menu, introdução, testes automáticos nem GitHub Actions (T-006, T-007).
 - Botão de magia/poder e combos: pedidos do dono, sem especificação (T-008).
+- Chefes com padrão fixo (estilo Mega Man) e itens que mudam a dificuldade sem combinação melhor: princípios aprovados (DEC-013), rascunho em `docs/10_CHEFES_E_BALANCEAMENTO.md`, especificação e planilha em T-013.
+- Regra do dono (DEC-012): consultar e seguir o método geral (`PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`) antes de criar.
 - Sem revisão independente de T-001 e T-002.
 
 ## Testes recentes

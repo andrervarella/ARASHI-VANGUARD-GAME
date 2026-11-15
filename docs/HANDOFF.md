@@ -23,6 +23,9 @@
 - wasm de ~43 MB: carga lenta em 4G (não medida).
 - O link Vercel pertence ao projeto `arashi-vanguard-prototipo` na conta do dono; reautorizar o acesso da equipe quando o conector pedir.
 
+## Direção nova do dono (15/11, 18:36)
+- DEC-012: consultar e seguir o método geral antes de criar. DEC-013: chefes com padrão fixo e itens que mudam a luta, sem combinação melhor (`docs/10`, T-013). Padrões por chefe e números são rascunho a validar.
+
 ## Decisões para aprovação
 - DEC-001 (push na `dev`), DEC-010 (manter ou trocar a arte provisória), merge do PR na `main` no Portão V.
 

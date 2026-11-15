@@ -48,3 +48,12 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Data: 2026-11-15 · Estado: aprovada (padrão do dono)
 - Conceito, história e especificação: Claude no modelo mais forte (Fable). Execução/código: Sonnet. Sprites e imagens: ChatGPT/Codex com PixelLab. Cutscenes, música e vídeos: Fenaky. Revisão: outro agente que não escreveu. Nenhuma IA troca o próprio modelo; o dono troca no seletor.
 - Gastos (PixelLab, Fenaky, ElevenLabs, Vercel pago) **sempre** pedem estimativa e autorização antes.
+
+## DEC-012 — Método geral é obrigatório e consultado antes de criar
+- Data: 2026-11-15 · Estado: aprovada pelo dono
+- Decisão: quem trabalhar no ARASHI VANGUARD **deve consultar e seguir** as instruções gerais de criação de jogos (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`, `PROMPT_MESTRE.md` V4.3 e módulos) antes de criar ou alterar qualquer coisa. Registrado em `AGENTS.md`, `CLAUDE.md` e no prompt do Fable. O pedido do dono vale mesmo se o repositório geral mudar de versão: usar a versão mais recente e anotar qual.
+
+## DEC-013 — Chefes com padrão fixo e itens que mudam a luta, sem combinação melhor
+- Data: 2026-11-15 · Estado: **princípios aprovados pelo dono**; padrões por chefe e números = rascunho a validar (T-013)
+- Decisão: cada chefe tem ciclo de ataque fixo e legível (estilo Mega Man), dificuldade moderada, identidade mecânica própria. Os itens/poderes escolhidos mudam a facilidade de cada chefe, e **nenhuma combinação é a melhor**: a escolha expressa o estilo de jogo. Detalhes e regras de balanceamento em `docs/10_CHEFES_E_BALANCEAMENTO.md`.
+- Relação com regras anteriores: complementa "três itens por chefe, escolha única" (`docs/04`); a escolha nunca bloqueia travessia ou final.

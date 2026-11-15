@@ -1,6 +1,6 @@
 # Instruções para Claude — ARASHI VANGUARD
 
-**Antes de tudo:** leia `docs/ESTADO_ATUAL.md` e a seção "Método de criação" do `AGENTS.md` (branch `dev`, tarefas, evidência, portões). Controles e convenções: `docs/CONTROLES_E_CONVENCOES.md`.
+**Antes de tudo:** consulte e siga o método geral de criação de games do dono (repositório `andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`, `PROMPT_MESTRE.md` e `modulos/`; DEC-012). Depois leia `docs/ESTADO_ATUAL.md` e a seção "Método de criação" do `AGENTS.md` (branch `dev`, tarefas, evidência, portões). Controles e convenções: `docs/CONTROLES_E_CONVENCOES.md`. Chefes e balanceamento: `docs/10_CHEFES_E_BALANCEAMENTO.md`.
 
 Leia primeiro \`AGENTS.md\`, \`docs/01_VISAO_E_ESCOPO.md\`, \`docs/02_HISTORIA_E_UNIVERSO.md\`, \`docs/03_ELENCO_E_CHEFES.md\`, \`docs/04_JOGABILIDADE_E_PROGRESSAO.md\`, \`docs/05_DIRECAO_DE_ARTE_E_PIPELINE.md\`, \`docs/06_ROTEIRO_DE_PRODUCAO.md\` e \`docs/07_DECISOES_E_PENDENCIAS.md\`.
 
