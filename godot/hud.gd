@@ -24,12 +24,14 @@ func _layout() -> void:
 	var ra := 31.0   # atacar
 	var rj := 36.0   # pular
 	var rd := 28.0   # agachar
-	var row_y := h - MARGIN - rs
-	var mid_x := MARGIN + rs * 2.0 + 6.0
+	var down_y := h - MARGIN - rd                      # ▼ na linha de baixo
+	var row_y := down_y - rd - 6.0 - rs                # ◀ ▶ acima dele (direcional em cruz)
+	var left_x := MARGIN + rs
+	var right_x := MARGIN + rs * 3.0 + 12.0
 	BTN = {
-		"down":   {"pos": Vector2(mid_x, row_y - rs - 6.0 - rd), "r": rd},
-		"left":   {"pos": Vector2(MARGIN + rs, h - MARGIN - rs), "r": rs},
-		"right":  {"pos": Vector2(MARGIN + rs * 3.0 + 12.0, h - MARGIN - rs), "r": rs},
+		"down":   {"pos": Vector2((left_x + right_x) / 2.0, down_y), "r": rd},
+		"left":   {"pos": Vector2(left_x, row_y), "r": rs},
+		"right":  {"pos": Vector2(right_x, row_y), "r": rs},
 		"attack": {"pos": Vector2(w - MARGIN_R - rj * 2.0 - 12.0 - ra, h - MARGIN - ra), "r": ra},
 		"jump":   {"pos": Vector2(w - MARGIN_R - rj, h - MARGIN - rj - 10.0), "r": rj},
 	}
