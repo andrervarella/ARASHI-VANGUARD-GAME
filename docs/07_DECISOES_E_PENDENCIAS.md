@@ -36,3 +36,7 @@ O proprietário aprovou como **conceito visual de pré-produção** o conjunto d
 O arquivo \`docs/08_PACOTE_VISUAL_E_IMPORTACAO.md\` documenta os 19 originais + 40 recortes, com checksum para importação. O ZIP do kit ainda deverá ser transferido ao repositório; as imagens não estão embutidas nestes arquivos Markdown.
 
 As artes aprovadas que devem ter prioridade máxima quando disponíveis são Kairen, Xui, Baku e Wu, além da identidade estabelecida de Ren e Luke. A referência individual de Seiran e o boss final também integram o kit. Os designs individuais de Mei Shian e Shuyin continuam pendentes de produção consistente, apesar da aprovação da direção geral das pranchas.
+
+## Atualização narrativa (15/11/2026)
+O proprietário aprovou seis ajustes de história (culpa real do Ren, marcas de ofício nos selos, final com reforja do selo, aliado-descendente por mundo, mistério leve de Luke e escolha final jogável). Estão em \`docs/02_HISTORIA_E_UNIVERSO.md\`, seção "Ajustes narrativos aprovados". Pendentes: nomes e ofícios dos aliados, marcas exatas por selo, causa do faro de Luke e regras da escolha final.
+
