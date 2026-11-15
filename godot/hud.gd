@@ -11,18 +11,29 @@ var jump_pressed := false
 var attack_pressed := false
 
 var _fingers := {}   # index -> nome do botão
-const BTN := {
-	"left":   {"pos": Vector2(110, 440), "r": 62.0, "label": "◀"},
-	"right":  {"pos": Vector2(270, 440), "r": 62.0, "label": "▶"},
-	"attack": {"pos": Vector2(690, 455), "r": 58.0, "label": "ATACAR"},
-	"jump":   {"pos": Vector2(840, 420), "r": 68.0, "label": "PULAR"},
-}
+var BTN := {}        # recalculado a cada quadro conforme o tamanho da tela
+const MARGIN := 22.0
+
+func _layout() -> void:
+	var w := size.x
+	var h := size.y
+	var rs := 40.0   # setas
+	var ra := 44.0   # atacar
+	var rj := 50.0   # pular
+	BTN = {
+		"left":   {"pos": Vector2(MARGIN + rs, h - MARGIN - rs), "r": rs},
+		"right":  {"pos": Vector2(MARGIN + rs * 3.0 + 16.0, h - MARGIN - rs), "r": rs},
+		"attack": {"pos": Vector2(w - MARGIN - rj * 2.0 - 18.0 - ra, h - MARGIN - ra), "r": ra},
+		"jump":   {"pos": Vector2(w - MARGIN - rj, h - MARGIN - rj - 26.0), "r": rj},
+	}
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_layout()
 
 func _button_at(p: Vector2) -> String:
+	_layout()
 	var best := ""
 	var best_d := 1e9
 	for k in BTN:
@@ -44,6 +55,7 @@ func _input(event: InputEvent) -> void:
 		_fingers[event.index] = _button_at(event.position)
 
 func _process(_dt: float) -> void:
+	_layout()
 	var l := false
 	var r := false
 	var j := false
@@ -82,11 +94,32 @@ func _draw() -> void:
 			"jump": on = jump_down
 			"attack": on = attack_down
 		var c: Vector2 = BTN[k]["pos"]
-		var rad: float = BTN[k]["r"]
-		draw_circle(c, rad, Color(0.85, 0.15, 0.2, 0.55 if on else 0.22))
-		draw_arc(c, rad, 0, TAU, 40, Color(1, 1, 1, 0.55), 3.0)
-		var t: String = BTN[k]["label"]
-		var fs := 26 if t.length() == 1 else 18
-		var sz := font.get_string_size(t, HORIZONTAL_ALIGNMENT_CENTER, -1, fs)
-		draw_string(font, c + Vector2(-sz.x / 2.0, fs * 0.35), t, HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color(1, 1, 1, 0.9))
-	draw_string(font, Vector2(16, 26), "ARASHI VANGUARD — protótipo (arte provisória, não é o design final)", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1, 1, 1, 0.75))
+		var rad: float = BTN[k]["r"] * (0.94 if on else 1.0)
+		draw_circle(c + Vector2(0, 3), rad + 2.0, Color(0, 0, 0, 0.25))
+		draw_circle(c, rad, Color(0.07, 0.05, 0.09, 0.62 if on else 0.42))
+		draw_arc(c, rad - 1.5, 0, TAU, 48, Color(0.64, 0.09, 0.16, 0.95 if on else 0.62), 3.5)
+		draw_arc(c, rad - 7.0, 0, TAU, 48, Color(0.85, 0.7, 0.4, 0.55 if on else 0.28), 1.5)
+		if on:
+			draw_circle(c, rad - 8.0, Color(0.64, 0.09, 0.16, 0.30))
+		_icon(k, c, rad, on)
+	draw_string(font, Vector2(14, 22), "ARASHI VANGUARD — protótipo (arte provisória)", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(1, 1, 1, 0.38))
+
+func _icon(k: String, c: Vector2, rad: float, on: bool) -> void:
+	var col := Color(0.96, 0.92, 0.86, 0.95 if on else 0.7)
+	var u := rad * 0.36
+	match k:
+		"left":
+			draw_colored_polygon(PackedVector2Array([c + Vector2(-u, 0), c + Vector2(u * 0.8, -u), c + Vector2(u * 0.8, u)]), col)
+		"right":
+			draw_colored_polygon(PackedVector2Array([c + Vector2(u, 0), c + Vector2(-u * 0.8, -u), c + Vector2(-u * 0.8, u)]), col)
+		"jump":
+			for i in range(2):
+				var y := c.y + u * 0.5 - float(i) * u * 0.9
+				draw_polyline(PackedVector2Array([Vector2(c.x - u, y + u * 0.2), Vector2(c.x, y - u * 0.6), Vector2(c.x + u, y + u * 0.2)]), col, 4.0)
+		"attack":
+			var tip := c + Vector2(u * 1.2, -u * 1.2)
+			var guard := c + Vector2(-u * 0.35, u * 0.35)
+			draw_line(guard, tip, col, 3.5)
+			var perp := Vector2(0.7, 0.7) * u * 0.55
+			draw_line(guard - perp, guard + perp, Color(0.85, 0.7, 0.4, 0.9 if on else 0.65), 3.0)
+			draw_line(guard, c + Vector2(-u * 1.1, u * 1.1), Color(0.64, 0.09, 0.16, 0.95), 5.0)

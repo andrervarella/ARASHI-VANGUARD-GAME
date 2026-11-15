@@ -34,7 +34,7 @@ func _ready() -> void:
 	bg_layer.add_child(bg)
 
 	# chão e plataformas
-	_solid(Rect2(-200, GROUND_Y, LEVEL_W + 400, 200), Color("24181c"))
+	_solid(Rect2(-200, GROUND_Y, LEVEL_W + 400, 600), Color("24181c"))
 	_solid(Rect2(-200, GROUND_Y, LEVEL_W + 400, 8), Color("4a2a30"))
 	var plats := [
 		Rect2(520, 380, 180, 18), Rect2(820, 310, 180, 18), Rect2(1150, 380, 220, 18),
@@ -86,6 +86,6 @@ func _ready() -> void:
 	cam.position_smoothing_speed = 7.0
 	cam.limit_left = -200
 	cam.limit_right = int(LEVEL_W + 200)
-	cam.limit_bottom = int(GROUND_Y + 70)
-	cam.offset = Vector2(0, -80)
+	cam.limit_bottom = int(GROUND_Y + 400)
+	cam.offset = Vector2(0, -110)
 	player.add_child(cam)
