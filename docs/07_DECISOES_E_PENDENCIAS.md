@@ -29,3 +29,10 @@
 - "Aprovado como referência" não implica que todos os detalhes de um pôster ou sua legenda estejam aprovados.
 - Não usar retratos da prancha coletiva para refazer arbitrariamente bosses individuais aprovados.
 - Manter os assets separados dos documentos para revisão; gerar turnaround e sprites antes de chamar game-ready.
+
+## Atualização de aprovação de artes (15/11/2026)
+O proprietário aprovou como **conceito visual de pré-produção** o conjunto disponível de Ren, Luke, chefes, itens e pranchas de sistemas/ambientes. As fichas visuais individuais e exemplos de assets podem ser usados como fonte para os sprites. Isso **não** significa que recortes automáticos, turnarounds, paletas de sprite, dimensões ou animações estejam prontos/validados.
+
+O arquivo \`docs/08_PACOTE_VISUAL_E_IMPORTACAO.md\` documenta os 19 originais + 40 recortes, com checksum para importação. O ZIP do kit ainda deverá ser transferido ao repositório; as imagens não estão embutidas nestes arquivos Markdown.
+
+As artes aprovadas que devem ter prioridade máxima quando disponíveis são Kairen, Xui, Baku e Wu, além da identidade estabelecida de Ren e Luke. A referência individual de Seiran e o boss final também integram o kit. Os designs individuais de Mei Shian e Shuyin continuam pendentes de produção consistente, apesar da aprovação da direção geral das pranchas.
