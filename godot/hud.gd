@@ -4,6 +4,7 @@ extends Control
 
 var move := 0.0
 var jump_down := false
+var crouch_down := false
 var attack_down := false
 var _jump_prev := false
 var _attack_prev := false
@@ -22,7 +23,11 @@ func _layout() -> void:
 	var rs := 30.0   # setas
 	var ra := 31.0   # atacar
 	var rj := 36.0   # pular
+	var rd := 28.0   # agachar
+	var row_y := h - MARGIN - rs
+	var mid_x := MARGIN + rs * 2.0 + 6.0
 	BTN = {
+		"down":   {"pos": Vector2(mid_x, row_y - rs - 6.0 - rd), "r": rd},
 		"left":   {"pos": Vector2(MARGIN + rs, h - MARGIN - rs), "r": rs},
 		"right":  {"pos": Vector2(MARGIN + rs * 3.0 + 12.0, h - MARGIN - rs), "r": rs},
 		"attack": {"pos": Vector2(w - MARGIN_R - rj * 2.0 - 12.0 - ra, h - MARGIN - ra), "r": ra},
@@ -62,17 +67,22 @@ func _process(_dt: float) -> void:
 	var r := false
 	var j := false
 	var a := false
+	var dn := false
 	for idx in _fingers:
 		match _fingers[idx]:
 			"left": l = true
 			"right": r = true
 			"jump": j = true
 			"attack": a = true
+			"down": dn = true
 	# teclado (teste no computador)
 	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT): l = true
 	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT): r = true
 	if Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP): j = true
 	if Input.is_key_pressed(KEY_J) or Input.is_key_pressed(KEY_X): a = true
+	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN): dn = true
+	if OS.get_cmdline_user_args().has("--demo-crouch"): dn = true   # só para teste de render
+	crouch_down = dn
 	move = (1.0 if r else 0.0) - (1.0 if l else 0.0)
 	jump_pressed = j and not _jump_prev
 	attack_pressed = a and not _attack_prev
@@ -95,6 +105,7 @@ func _draw() -> void:
 			"right": on = _state_r
 			"jump": on = jump_down
 			"attack": on = attack_down
+			"down": on = crouch_down
 		var c: Vector2 = BTN[k]["pos"]
 		var rad: float = BTN[k]["r"] * (0.94 if on else 1.0)
 		draw_circle(c + Vector2(0, 3), rad + 2.0, Color(0, 0, 0, 0.25))
@@ -110,6 +121,8 @@ func _icon(k: String, c: Vector2, rad: float, on: bool) -> void:
 	var col := Color(0.96, 0.92, 0.86, 0.95 if on else 0.7)
 	var u := rad * 0.36
 	match k:
+		"down":
+			draw_colored_polygon(PackedVector2Array([c + Vector2(0, u), c + Vector2(-u, -u * 0.8), c + Vector2(u, -u * 0.8)]), col)
 		"left":
 			draw_colored_polygon(PackedVector2Array([c + Vector2(-u, 0), c + Vector2(u * 0.8, -u), c + Vector2(u * 0.8, u)]), col)
 		"right":

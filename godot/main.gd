@@ -40,6 +40,7 @@ func _ready() -> void:
 		Rect2(520, 380, 180, 18), Rect2(820, 310, 180, 18), Rect2(1150, 380, 220, 18),
 		Rect2(1650, 330, 200, 18), Rect2(1950, 260, 180, 18), Rect2(2400, 360, 260, 18),
 		Rect2(2900, 300, 200, 18)]
+	plats.append(Rect2(1430, 350, 260, 60))   # túnel baixo: só passa agachado
 	for r in plats:
 		_solid(r, Color("3b2a30"))
 	# paredes de limite

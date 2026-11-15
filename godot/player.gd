@@ -16,24 +16,58 @@ var coyote := 0.0
 var jump_buf := 0.0
 var anim_t := 0.0
 var _hit_done := {}
+var crouching := false
+var _shape: RectangleShape2D
+var _cshape: CollisionShape2D
+const H_STAND := 84.0
+const H_CROUCH := 50.0
 
 func _ready() -> void:
 	var cs := CollisionShape2D.new()
 	var rs := RectangleShape2D.new()
-	rs.size = Vector2(34, 84)
+	rs.size = Vector2(34, H_STAND)
 	cs.shape = rs
-	cs.position = Vector2(0, -42)
+	cs.position = Vector2(0, -H_STAND / 2.0)
 	add_child(cs)
+	_shape = rs
+	_cshape = cs
 	add_to_group("player")
 
 func hit_rect() -> Rect2:
 	var w := 92.0
 	var x := 14.0 if facing > 0 else -14.0 - w
+	if crouching:
+		return Rect2(global_position + Vector2(x, -48), Vector2(w, 44))
 	return Rect2(global_position + Vector2(x, -78), Vector2(w, 66))
+
+func _can_stand() -> bool:
+	# há espaço livre acima para levantar?
+	var q := PhysicsShapeQueryParameters2D.new()
+	var r := RectangleShape2D.new()
+	r.size = Vector2(32, H_STAND - 4.0)
+	q.shape = r
+	q.transform = Transform2D(0.0, global_position + Vector2(0, -H_STAND / 2.0 - 1.0))
+	q.exclude = [get_rid()]
+	return get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty()
+
+func _set_crouch(v: bool) -> void:
+	if v == crouching:
+		return
+	crouching = v
+	var h := H_CROUCH if v else H_STAND
+	_shape.size = Vector2(34, h)
+	_cshape.position = Vector2(0, -h / 2.0)
 
 func _physics_process(dt: float) -> void:
 	anim_t += dt
 	var dir: float = ctl.move if ctl else 0.0
+	var want_crouch: bool = ctl != null and ctl.crouch_down and is_on_floor()
+	if want_crouch:
+		_set_crouch(true)
+	elif crouching and not (ctl != null and ctl.crouch_down) and _can_stand():
+		_set_crouch(false)
+	if crouching:
+		dir *= 0.45   # andar agachado é mais lento
 	if attack_t > 0.0:
 		attack_t -= dt
 		dir *= 0.35   # atacando: anda pouco
@@ -50,7 +84,7 @@ func _physics_process(dt: float) -> void:
 	if ctl and ctl.jump_pressed:
 		jump_buf = 0.12
 	jump_buf -= dt
-	if jump_buf > 0.0 and coyote > 0.0:
+	if jump_buf > 0.0 and coyote > 0.0 and not crouching:
 		velocity.y = JUMP_V
 		jump_buf = 0.0
 		coyote = 0.0
@@ -73,6 +107,8 @@ func _try_hit() -> void:
 			t.take_hit(facing)
 
 func _draw() -> void:
+	if crouching:
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2(1.0, 0.62))   # provisório: achata o corpo
 	var f := float(facing)
 	var moving := absf(velocity.x) > 20.0 and is_on_floor()
 	var bob := sin(anim_t * 14.0) * 3.0 if moving else sin(anim_t * 3.0) * 1.2
