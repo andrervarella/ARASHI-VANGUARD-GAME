@@ -1,0 +1,1541 @@
+{
+  "project": "ARASHI VANGUARD",
+  "version": "1.0",
+  "created": "2026-11-15",
+  "intent": "Kit de referencias aprovadas e recortes padronizados para handoff Claude/Codex/PixelLab, NAO sprites prontos",
+  "approval": "Usuario aprovou as artes e sistema conceitual em 2026-11-15; detalhes operacionais/visuais precisam ser validados no motor do jogo.",
+  "privacy": "Fotos reais do proprietario e fotos originais do cachorro NÃO incluídas. Repositorio atual é publico.",
+  "crops": [
+    {
+      "id": "Kairen_corpo_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Kairen_Avareza_original.png",
+      "dest": "assets/recortes-referencia/chefes/Kairen/Kairen_corpo_recorte.png",
+      "bbox_source_pixels": [
+        45,
+        30,
+        1040,
+        995
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "personagem_principal",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Kairen_rosto_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Kairen_Avareza_original.png",
+      "dest": "assets/recortes-referencia/chefes/Kairen/Kairen_rosto_recorte.png",
+      "bbox_source_pixels": [
+        395,
+        100,
+        675,
+        520
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "rosto_e_detalhes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Kairen_reliquia_ou_detalhe_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Kairen_Avareza_original.png",
+      "dest": "assets/recortes-referencia/chefes/Kairen/Kairen_reliquia_ou_detalhe_recorte.png",
+      "bbox_source_pixels": [
+        855,
+        900,
+        1085,
+        1275
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "VERIFICAR_RECORTES",
+      "purpose": "item_ou_detalhe",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Xui_corpo_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Xui_Gula_original.png",
+      "dest": "assets/recortes-referencia/chefes/Xui/Xui_corpo_recorte.png",
+      "bbox_source_pixels": [
+        50,
+        55,
+        1000,
+        1010
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "personagem_principal",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Xui_rosto_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Xui_Gula_original.png",
+      "dest": "assets/recortes-referencia/chefes/Xui/Xui_rosto_recorte.png",
+      "bbox_source_pixels": [
+        265,
+        135,
+        760,
+        600
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "rosto_e_detalhes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Xui_reliquia_ou_detalhe_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Xui_Gula_original.png",
+      "dest": "assets/recortes-referencia/chefes/Xui/Xui_reliquia_ou_detalhe_recorte.png",
+      "bbox_source_pixels": [
+        855,
+        895,
+        1090,
+        1278
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "VERIFICAR_RECORTES",
+      "purpose": "item_ou_detalhe",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Baku_corpo_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Baku_Ira_original.png",
+      "dest": "assets/recortes-referencia/chefes/Baku/Baku_corpo_recorte.png",
+      "bbox_source_pixels": [
+        35,
+        50,
+        1040,
+        1010
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "personagem_principal",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Baku_rosto_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Baku_Ira_original.png",
+      "dest": "assets/recortes-referencia/chefes/Baku/Baku_rosto_recorte.png",
+      "bbox_source_pixels": [
+        305,
+        95,
+        820,
+        560
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "rosto_e_detalhes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Baku_reliquia_ou_detalhe_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Baku_Ira_original.png",
+      "dest": "assets/recortes-referencia/chefes/Baku/Baku_reliquia_ou_detalhe_recorte.png",
+      "bbox_source_pixels": [
+        850,
+        890,
+        1095,
+        1270
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "VERIFICAR_RECORTES",
+      "purpose": "item_ou_detalhe",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Wu_corpo_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Wu_Preguica_original.png",
+      "dest": "assets/recortes-referencia/chefes/Wu/Wu_corpo_recorte.png",
+      "bbox_source_pixels": [
+        35,
+        80,
+        1030,
+        1030
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "personagem_principal",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Wu_rosto_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Wu_Preguica_original.png",
+      "dest": "assets/recortes-referencia/chefes/Wu/Wu_rosto_recorte.png",
+      "bbox_source_pixels": [
+        365,
+        145,
+        725,
+        585
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "rosto_e_detalhes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Wu_reliquia_ou_detalhe_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Wu_Preguica_original.png",
+      "dest": "assets/recortes-referencia/chefes/Wu/Wu_reliquia_ou_detalhe_recorte.png",
+      "bbox_source_pixels": [
+        850,
+        895,
+        1090,
+        1280
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "VERIFICAR_RECORTES",
+      "purpose": "item_ou_detalhe",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Seiran_corpo_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Seiran_Soberba_ficha_conceitual.png",
+      "dest": "assets/recortes-referencia/chefes/Seiran/Seiran_corpo_recorte.png",
+      "bbox_source_pixels": [
+        45,
+        70,
+        875,
+        1050
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "personagem_principal",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Seiran_rosto_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Seiran_Soberba_ficha_conceitual.png",
+      "dest": "assets/recortes-referencia/chefes/Seiran/Seiran_rosto_recorte.png",
+      "bbox_source_pixels": [
+        350,
+        125,
+        710,
+        490
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "rosto_e_detalhes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Seiran_reliquia_ou_detalhe_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Seiran_Soberba_ficha_conceitual.png",
+      "dest": "assets/recortes-referencia/chefes/Seiran/Seiran_reliquia_ou_detalhe_recorte.png",
+      "bbox_source_pixels": [
+        900,
+        800,
+        1100,
+        1200
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "VERIFICAR_RECORTES",
+      "purpose": "item_ou_detalhe",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "BossFinal_corpo_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Senhor_Sete_Pecados_conceito_individual.png",
+      "dest": "assets/recortes-referencia/chefes/BossFinal/BossFinal_corpo_recorte.png",
+      "bbox_source_pixels": [
+        90,
+        65,
+        941,
+        1300
+      ],
+      "source_size_px": [
+        941,
+        1672
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "personagem_principal",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "BossFinal_rosto_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Senhor_Sete_Pecados_conceito_individual.png",
+      "dest": "assets/recortes-referencia/chefes/BossFinal/BossFinal_rosto_recorte.png",
+      "bbox_source_pixels": [
+        345,
+        145,
+        790,
+        535
+      ],
+      "source_size_px": [
+        941,
+        1672
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "rosto_e_detalhes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "BossFinal_reliquia_ou_detalhe_recorte",
+      "src": "assets/referencias-aprovadas/chefes/Senhor_Sete_Pecados_conceito_individual.png",
+      "dest": "assets/recortes-referencia/chefes/BossFinal/BossFinal_reliquia_ou_detalhe_recorte.png",
+      "bbox_source_pixels": [
+        440,
+        450,
+        695,
+        790
+      ],
+      "source_size_px": [
+        941,
+        1672
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "VERIFICAR_RECORTES",
+      "purpose": "item_ou_detalhe",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_pe",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_pe.png",
+      "bbox_source_pixels": [
+        250,
+        95,
+        740,
+        570
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        768
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "pose",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_sentado",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_sentado.png",
+      "bbox_source_pixels": [
+        725,
+        120,
+        1105,
+        565
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        768
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "pose",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_corrida",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_corrida.png",
+      "bbox_source_pixels": [
+        15,
+        575,
+        380,
+        820
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        768
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "pose",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_farejando",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_farejando.png",
+      "bbox_source_pixels": [
+        368,
+        578,
+        778,
+        813
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        768
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "pose",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_brincando",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_brincando.png",
+      "bbox_source_pixels": [
+        772,
+        582,
+        1100,
+        811
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        768,
+        768
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "pose",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_turnaround",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_turnaround.png",
+      "bbox_source_pixels": [
+        10,
+        878,
+        545,
+        1102
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        640,
+        480
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "referencia_vistas",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_expressoes",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_expressoes.png",
+      "bbox_source_pixels": [
+        556,
+        875,
+        1100,
+        1108
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        640,
+        480
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "referencia_expressoes",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_lenco",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_lenco.png",
+      "bbox_source_pixels": [
+        528,
+        1150,
+        691,
+        1270
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        640,
+        480
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "acessorio",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_pingente",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_pingente.png",
+      "bbox_source_pixels": [
+        694,
+        1145,
+        819,
+        1269
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        640,
+        480
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "acessorio",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Luke_arnes",
+      "src": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "dest": "assets/recortes-referencia/luke/Luke_arnes.png",
+      "bbox_source_pixels": [
+        827,
+        1151,
+        1010,
+        1270
+      ],
+      "source_size_px": [
+        1122,
+        1402
+      ],
+      "output_size_px": [
+        640,
+        480
+      ],
+      "status": "APROVADO_REF",
+      "purpose": "acessorio",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Ren_base_corpo",
+      "src": "assets/referencias-aprovadas/protagonistas/Ren_Luke_poster_original.png",
+      "dest": "assets/recortes-referencia/ren/Ren_base_corpo.png",
+      "bbox_source_pixels": [
+        5,
+        10,
+        670,
+        1125
+      ],
+      "source_size_px": [
+        1086,
+        1448
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_CONCEITO_CONFERIR_IDENTIDADE",
+      "purpose": "pose_ou_rosto",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Ren_rosto",
+      "src": "assets/referencias-aprovadas/protagonistas/Ren_Luke_poster_original.png",
+      "dest": "assets/recortes-referencia/ren/Ren_rosto.png",
+      "bbox_source_pixels": [
+        500,
+        10,
+        1050,
+        510
+      ],
+      "source_size_px": [
+        1086,
+        1448
+      ],
+      "output_size_px": [
+        512,
+        512
+      ],
+      "status": "APROVADO_CONCEITO_CONFERIR_IDENTIDADE",
+      "purpose": "pose_ou_rosto",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "Ren_transformado",
+      "src": "assets/referencias-aprovadas/protagonistas/Ren_Luke_poster_original.png",
+      "dest": "assets/recortes-referencia/ren/Ren_transformado.png",
+      "bbox_source_pixels": [
+        600,
+        465,
+        1060,
+        888
+      ],
+      "source_size_px": [
+        1086,
+        1448
+      ],
+      "output_size_px": [
+        768,
+        960
+      ],
+      "status": "APROVADO_CONCEITO_CONFERIR_IDENTIDADE",
+      "purpose": "pose_ou_rosto",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "katana",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/itens/katana.png",
+      "bbox_source_pixels": [
+        420,
+        846,
+        492,
+        944
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        384,
+        384
+      ],
+      "status": "APROVADO_CONCEITO_NAO_ATLAS",
+      "purpose": "item_referencia_baixa_resolucao",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "manopla",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/itens/manopla.png",
+      "bbox_source_pixels": [
+        491,
+        845,
+        568,
+        944
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        384,
+        384
+      ],
+      "status": "APROVADO_CONCEITO_NAO_ATLAS",
+      "purpose": "item_referencia_baixa_resolucao",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "talisma",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/itens/talisma.png",
+      "bbox_source_pixels": [
+        562,
+        842,
+        646,
+        944
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        384,
+        384
+      ],
+      "status": "APROVADO_CONCEITO_NAO_ATLAS",
+      "purpose": "item_referencia_baixa_resolucao",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "traje",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/itens/traje.png",
+      "bbox_source_pixels": [
+        637,
+        841,
+        718,
+        944
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        384,
+        384
+      ],
+      "status": "APROVADO_CONCEITO_NAO_ATLAS",
+      "purpose": "item_referencia_baixa_resolucao",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "contas",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/itens/contas.png",
+      "bbox_source_pixels": [
+        704,
+        842,
+        786,
+        944
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        384,
+        384
+      ],
+      "status": "APROVADO_CONCEITO_NAO_ATLAS",
+      "purpose": "item_referencia_baixa_resolucao",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "HUD_base",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/sistemas/HUD_base.png",
+      "bbox_source_pixels": [
+        789,
+        803,
+        1141,
+        1017
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        1024,
+        640
+      ],
+      "status": "APROVADO_CONCEITO",
+      "purpose": "sistema_conceito",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "mapas_e_cenarios",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/sistemas/mapas_e_cenarios.png",
+      "bbox_source_pixels": [
+        0,
+        625,
+        510,
+        791
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        1024,
+        640
+      ],
+      "status": "APROVADO_CONCEITO",
+      "purpose": "sistema_conceito",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "exemplos_combate_2d",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/sistemas/exemplos_combate_2d.png",
+      "bbox_source_pixels": [
+        509,
+        624,
+        1066,
+        790
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        1024,
+        640
+      ],
+      "status": "APROVADO_CONCEITO",
+      "purpose": "sistema_conceito",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    },
+    {
+      "id": "arvore_evolucao",
+      "src": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "dest": "assets/recortes-referencia/sistemas/arvore_evolucao.png",
+      "bbox_source_pixels": [
+        0,
+        805,
+        404,
+        1016
+      ],
+      "source_size_px": [
+        1536,
+        1024
+      ],
+      "output_size_px": [
+        1024,
+        640
+      ],
+      "status": "APROVADO_CONCEITO",
+      "purpose": "sistema_conceito",
+      "limitations": "Recorte retangular com plano de fundo interno, NÃO sprite com fundo removido."
+    }
+  ],
+  "files": [
+    {
+      "path": "assets/conceitos-em-avaliacao/chefes/senhor_sete_pecados_conceito_A.png",
+      "sha256": "c040cc9305ed8f3f2e7525d49c485ba1d709538df8e435f4e95550398eaebbe1",
+      "bytes": 3421545,
+      "size_px": [
+        941,
+        1672
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/chefes/senhor_sete_pecados_conceito_B.png",
+      "sha256": "6ac9ee50a34ed00bcb3dfb9b6afe6e58365c770179ea57416ea99386580c60fd",
+      "bytes": 3526344,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/luke/luke_ficha_preproducao.png",
+      "sha256": "2e08fcc0e82c376f0be7ea49e1aee62f64d0259672d89d1dff0f3efba4777796",
+      "bytes": 2726191,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/mundos/mundo_fortaleza.png",
+      "sha256": "43b5a66547ae35cbe83b1f68e356b3f4e627b977a605fbe32478d9fd84ae1420",
+      "bytes": 3333062,
+      "size_px": [
+        1086,
+        1448
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/mundos/mundo_lua_carmesim.png",
+      "sha256": "ff8650fda85b48689b6481e9ee47f76b36c54ec637bd6c67715364c8553e09b8",
+      "bytes": 3188992,
+      "size_px": [
+        1086,
+        1448
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/pranchas/prancha_combate_e_assets.png",
+      "sha256": "f618c72bdb6ef2b903b7dd84597891fcbb49a0af0a5ccf90bc5db9306fcbce95",
+      "bytes": 3063321,
+      "size_px": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/pranchas/prancha_direcao_visual_geral.png",
+      "sha256": "94b0865ea82148e0304786beee3e586d73a27c479b6df78b81829fd2bd538bc7",
+      "bytes": 3299274,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/ren/ren_com_luke_capa_conceito.png",
+      "sha256": "27448ebc5dcfa987b8b9e1c435e9487c3ea96d22b8235e7c4af45248a0d95e38",
+      "bytes": 3019959,
+      "size_px": [
+        1086,
+        1448
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/conceitos-em-avaliacao/ren/ren_transformacao_conceito.png",
+      "sha256": "495984a11a505210ff2b45abbd15285599f1c8bcb303278824af7725de371484",
+      "bytes": 3103570,
+      "size_px": [
+        1086,
+        1448
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Baku/Baku_corpo_recorte.png",
+      "sha256": "0d347367ded84922bba5613b7134cc4fa2ccaff3a9f38c682e035bba344c20af",
+      "bytes": 1256021,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Baku/Baku_reliquia_ou_detalhe_recorte.png",
+      "sha256": "cde4c126b4529f0ebbc41f494e5318e7c664e82cdcebbcf3e6f064ae0557789a",
+      "bytes": 277708,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Baku/Baku_rosto_recorte.png",
+      "sha256": "1af32268bda74b881fd6c9902bedfaaa289835a7038eb957da6d7df8dd75b69b",
+      "bytes": 545784,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/BossFinal/BossFinal_corpo_recorte.png",
+      "sha256": "f50cb0eaabe89da6de53c1e8424664c5ef6d98538ecc468a0f929102c476867b",
+      "bytes": 1499871,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/BossFinal/BossFinal_reliquia_ou_detalhe_recorte.png",
+      "sha256": "b66bb5565cbde3a2216b5f2b5bcbc1c7e1d74b988c35060860ffb7bd79e5da85",
+      "bytes": 403638,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/BossFinal/BossFinal_rosto_recorte.png",
+      "sha256": "240dfd3ab31efc8e74d092192460743a474bc201db991b9f21b61a40c9f15ec5",
+      "bytes": 523442,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Kairen/Kairen_corpo_recorte.png",
+      "sha256": "51e78d3ee0dfb366b38607ff3bb3cde35869268cab9d2dcfb77f9052c4674dc0",
+      "bytes": 1167455,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Kairen/Kairen_reliquia_ou_detalhe_recorte.png",
+      "sha256": "6d1d365fa167697d4184beed9d9fa5685cf090c0e43ea604e9dcef08b12108c1",
+      "bytes": 234283,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Kairen/Kairen_rosto_recorte.png",
+      "sha256": "259dcbb855d821732fae20f181020bc2c366120f2381851f42a1f28b60b053e3",
+      "bytes": 390018,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Seiran/Seiran_corpo_recorte.png",
+      "sha256": "6eb790dcdc9ca54abbdbb6995035b6ad25e2f4f391d20741a2e11121694f87c5",
+      "bytes": 1688054,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Seiran/Seiran_reliquia_ou_detalhe_recorte.png",
+      "sha256": "652e77419c16a69f23f81907c42932f3026fb60d6662028ae5c1625140a25071",
+      "bytes": 277114,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Seiran/Seiran_rosto_recorte.png",
+      "sha256": "fc8af9433194d77ee4e1fffde026b3588dc02596dc675d0c27d7894e138eb516",
+      "bytes": 587290,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Wu/Wu_corpo_recorte.png",
+      "sha256": "2b2ab70e1e1dc2c096187b8ee58c870c1baf278b7053beca667a268dcb963374",
+      "bytes": 1054301,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Wu/Wu_reliquia_ou_detalhe_recorte.png",
+      "sha256": "c32181d763f9f512a9a00678409148f3612febdea58e0e83d319e272e7c1341e",
+      "bytes": 224540,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Wu/Wu_rosto_recorte.png",
+      "sha256": "e609ec4434bd8e264ec4353c6341589dcc43e53d8b0f2c1d573dab0f4549d95d",
+      "bytes": 428476,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Xui/Xui_corpo_recorte.png",
+      "sha256": "d660368be4f6bed29a860e928729efb614cd588ba6cb507f47e3d356422fd70c",
+      "bytes": 1291492,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Xui/Xui_reliquia_ou_detalhe_recorte.png",
+      "sha256": "5a351b123e5c396e570f2fbaff8a321c03d058c4e954585202efcb472d37feea",
+      "bytes": 251881,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/chefes/Xui/Xui_rosto_recorte.png",
+      "sha256": "6eda3bf4fb011925704b229514752c91325ec9c90e81c7f8c0fe018d9468f939",
+      "bytes": 538167,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/itens/contas.png",
+      "sha256": "2667bd4878933009caad78a781d54de059537d1e28d737ae962aaa18282b2421",
+      "bytes": 92780,
+      "size_px": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/itens/katana.png",
+      "sha256": "22999e47f1c8cb0badb04fb7565badac09d1ec633fdaf6d0ccb8c7793268df8b",
+      "bytes": 81767,
+      "size_px": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/itens/manopla.png",
+      "sha256": "99b305a2896dd9227bdee937bed1451c7fc4afa58e705a461f4fd9f82de62a3c",
+      "bytes": 131565,
+      "size_px": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/itens/talisma.png",
+      "sha256": "4cad699dae9d6d29396c5c0ec3fb5e440d23c5ff9fa3a4963753583f02fc12ca",
+      "bytes": 111397,
+      "size_px": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/itens/traje.png",
+      "sha256": "826b2ec420140f0947d643d6fe7375a8cedddf816b75ded4738c4af488e4ad95",
+      "bytes": 125327,
+      "size_px": [
+        384,
+        384
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_arnes.png",
+      "sha256": "21ba45aa889f0b2eb97b99b8fe4cc6564f84b8370a0a62d920178e55c97bd05d",
+      "bytes": 207791,
+      "size_px": [
+        640,
+        480
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_brincando.png",
+      "sha256": "0c6c9fd50ee74577b2ff6663310d14909e5312fe4e386f3f9a3d5313113538f7",
+      "bytes": 515327,
+      "size_px": [
+        768,
+        768
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_corrida.png",
+      "sha256": "401292d05506652eca0ea763d407e744bcae14ceb38fa7771c178eabb8ab69cf",
+      "bytes": 501658,
+      "size_px": [
+        768,
+        768
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_expressoes.png",
+      "sha256": "73c588848a5e830468b082537de3eeec6c93b9b27b9ee068ed3c7622b68d9018",
+      "bytes": 315806,
+      "size_px": [
+        640,
+        480
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_farejando.png",
+      "sha256": "8569d270c85e8029aeedd1054d2b153ccc353beccdc1402a766ba24dabdb7712",
+      "bytes": 517051,
+      "size_px": [
+        768,
+        768
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_lenco.png",
+      "sha256": "70fcbb1c653cbfd59c4f61abc912a44ce0d750532bd5fc79e6e62131682413cc",
+      "bytes": 294095,
+      "size_px": [
+        640,
+        480
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_pe.png",
+      "sha256": "3ad50e2f4d05a9a11bd529158e3f24c50cf9b5e4ecdc23ccfccfb6390ce22736",
+      "bytes": 885268,
+      "size_px": [
+        768,
+        768
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_pingente.png",
+      "sha256": "28c12d368103a241ad8c6d2033186c676b9ff32727ab0048679fbf286d94866d",
+      "bytes": 167498,
+      "size_px": [
+        640,
+        480
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_sentado.png",
+      "sha256": "b2cca9e989bfb85a5e138fa56ab0554ca39e814b1da31962a8a54b5d00fdb2c9",
+      "bytes": 659089,
+      "size_px": [
+        768,
+        768
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/luke/Luke_turnaround.png",
+      "sha256": "03a967aad1a577c35c7180de9840c7549ed812819a53fe59ec6c4ea7f1f1edf1",
+      "bytes": 297478,
+      "size_px": [
+        640,
+        480
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/ren/Ren_base_corpo.png",
+      "sha256": "e39c64bbe83592ab7a69c6fc97f263205b8ced6fa4aecb56e8352938a7a9b9ba",
+      "bytes": 1129685,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/ren/Ren_rosto.png",
+      "sha256": "b0c303be2070699cec845059a35af7e21f4370657b8ce61cee3a812a6b14c9a7",
+      "bytes": 465616,
+      "size_px": [
+        512,
+        512
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/ren/Ren_transformado.png",
+      "sha256": "e935b3fc0104deb27966a96471f32a557983d9479f1e6aebaeea2b40700cbde7",
+      "bytes": 909100,
+      "size_px": [
+        768,
+        960
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/sistemas/HUD_base.png",
+      "sha256": "cd78f4197390a144532f885ab3e632ad55499036067361af3674590729e45bc4",
+      "bytes": 626273,
+      "size_px": [
+        1024,
+        640
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/sistemas/arvore_evolucao.png",
+      "sha256": "8b5fffd7ad37554782f085324ed84b53d17a24fbed777443f20e74582d287023",
+      "bytes": 655753,
+      "size_px": [
+        1024,
+        640
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/sistemas/exemplos_combate_2d.png",
+      "sha256": "ca7daabc2849aa2ce609d68df48eed039cca6bb30f93cab8b83917b755ab8eae",
+      "bytes": 432357,
+      "size_px": [
+        1024,
+        640
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/recortes-referencia/sistemas/mapas_e_cenarios.png",
+      "sha256": "847856bf5a6aaf03282b4ba97c447a69796d8fdb455352013d86f1e8a36ae631",
+      "bytes": 544758,
+      "size_px": [
+        1024,
+        640
+      ],
+      "mode": "RGBA",
+      "kind": "recorte_referencia"
+    },
+    {
+      "path": "assets/referencias-aprovadas/chefes/Baku_Ira_original.png",
+      "sha256": "2cbd4ab240d7c4051abf3c1d0f3e638cc510d860a7a7cb83f785fa029eb74c1f",
+      "bytes": 2928438,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/chefes/Kairen_Avareza_original.png",
+      "sha256": "80b6a623c7f9652a748a0102dd4dce05f7c5b130c5c2a49ed6b60a10344018e7",
+      "bytes": 2701915,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/chefes/Seiran_Soberba_ficha_conceitual.png",
+      "sha256": "9840d8a2c6c55dd97920f8a9b796d088ae223041d252654de6597acbe73b19ae",
+      "bytes": 3511280,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/chefes/Senhor_Sete_Pecados_conceito_individual.png",
+      "sha256": "c040cc9305ed8f3f2e7525d49c485ba1d709538df8e435f4e95550398eaebbe1",
+      "bytes": 3421545,
+      "size_px": [
+        941,
+        1672
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/chefes/Wu_Preguica_original.png",
+      "sha256": "db113aa1bc9ee64b23a8ed95d22dcd32214e393385765c91e53945d9cab1efaf",
+      "bytes": 2566879,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/chefes/Xui_Gula_original.png",
+      "sha256": "eaa07762119b5241d885340ebdc2bf9ac0c958c5c80f364571eca13ed580bfd2",
+      "bytes": 2837713,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/direcao/prancha_layout_historia_itens.png",
+      "sha256": "f618c72bdb6ef2b903b7dd84597891fcbb49a0af0a5ccf90bc5db9306fcbce95",
+      "bytes": 3063321,
+      "size_px": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/direcao/prancha_visual_enviada_usuario.png",
+      "sha256": "fb806b4ce53f8c9a4e7ee02e8afd86b93622b695f4fe5b4dd130c8bf70b31535",
+      "bytes": 3889726,
+      "size_px": [
+        1536,
+        1024
+      ],
+      "mode": "RGBA",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/luke/Luke_ficha_conceitual_original.png",
+      "sha256": "2e08fcc0e82c376f0be7ea49e1aee62f64d0259672d89d1dff0f3efba4777796",
+      "bytes": 2726191,
+      "size_px": [
+        1122,
+        1402
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    },
+    {
+      "path": "assets/referencias-aprovadas/protagonistas/Ren_Luke_poster_original.png",
+      "sha256": "27448ebc5dcfa987b8b9e1c435e9487c3ea96d22b8235e7c4af45248a0d95e38",
+      "bytes": 3019959,
+      "size_px": [
+        1086,
+        1448
+      ],
+      "mode": "RGB",
+      "kind": "original_integro"
+    }
+  ]
+}
