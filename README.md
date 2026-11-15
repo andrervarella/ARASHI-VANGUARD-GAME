@@ -16,6 +16,7 @@
 - [Roteiro técnico de produção](docs/06_ROTEIRO_DE_PRODUCAO.md)
 - [Decisões e pendências](docs/07_DECISOES_E_PENDENCIAS.md)
 - [Referências visuais](assets/README.md)
+- [Pacote visual aprovado e importação para Claude/Codex](docs/08_PACOTE_VISUAL_E_IMPORTACAO.md)
 
 ## Identidade do jogo
 
