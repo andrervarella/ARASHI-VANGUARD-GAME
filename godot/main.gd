@@ -87,5 +87,6 @@ func _ready() -> void:
 	cam.limit_left = -200
 	cam.limit_right = int(LEVEL_W + 200)
 	cam.limit_bottom = int(GROUND_Y + 400)
-	cam.offset = Vector2(0, -110)
+	cam.offset = Vector2(0, -85)
+	cam.zoom = Vector2(1.3, 1.3)
 	player.add_child(cam)

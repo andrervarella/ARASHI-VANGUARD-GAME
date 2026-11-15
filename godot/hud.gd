@@ -12,19 +12,20 @@ var attack_pressed := false
 
 var _fingers := {}   # index -> nome do botão
 var BTN := {}        # recalculado a cada quadro conforme o tamanho da tela
-const MARGIN := 22.0
+const MARGIN := 18.0
 
 func _layout() -> void:
-	var w := size.x
-	var h := size.y
-	var rs := 40.0   # setas
-	var ra := 44.0   # atacar
-	var rj := 50.0   # pular
+	var vs := get_viewport_rect().size   # tamanho real da tela (não depende do tamanho do Control)
+	var w := vs.x
+	var h := vs.y
+	var rs := 30.0   # setas
+	var ra := 31.0   # atacar
+	var rj := 36.0   # pular
 	BTN = {
 		"left":   {"pos": Vector2(MARGIN + rs, h - MARGIN - rs), "r": rs},
-		"right":  {"pos": Vector2(MARGIN + rs * 3.0 + 16.0, h - MARGIN - rs), "r": rs},
-		"attack": {"pos": Vector2(w - MARGIN - rj * 2.0 - 18.0 - ra, h - MARGIN - ra), "r": ra},
-		"jump":   {"pos": Vector2(w - MARGIN - rj, h - MARGIN - rj - 26.0), "r": rj},
+		"right":  {"pos": Vector2(MARGIN + rs * 3.0 + 12.0, h - MARGIN - rs), "r": rs},
+		"attack": {"pos": Vector2(w - MARGIN - rj * 2.0 - 12.0 - ra, h - MARGIN - ra), "r": ra},
+		"jump":   {"pos": Vector2(w - MARGIN - rj, h - MARGIN - rj - 10.0), "r": rj},
 	}
 
 func _ready() -> void:
@@ -97,10 +98,10 @@ func _draw() -> void:
 		var rad: float = BTN[k]["r"] * (0.94 if on else 1.0)
 		draw_circle(c + Vector2(0, 3), rad + 2.0, Color(0, 0, 0, 0.25))
 		draw_circle(c, rad, Color(0.07, 0.05, 0.09, 0.62 if on else 0.42))
-		draw_arc(c, rad - 1.5, 0, TAU, 48, Color(0.64, 0.09, 0.16, 0.95 if on else 0.62), 3.5)
-		draw_arc(c, rad - 7.0, 0, TAU, 48, Color(0.85, 0.7, 0.4, 0.55 if on else 0.28), 1.5)
+		draw_arc(c, rad - 1.5, 0, TAU, 48, Color(0.64, 0.09, 0.16, 0.95 if on else 0.62), 3.0)
+		draw_arc(c, rad - 5.0, 0, TAU, 48, Color(0.85, 0.7, 0.4, 0.55 if on else 0.28), 1.2)
 		if on:
-			draw_circle(c, rad - 8.0, Color(0.64, 0.09, 0.16, 0.30))
+			draw_circle(c, rad - 6.0, Color(0.64, 0.09, 0.16, 0.30))
 		_icon(k, c, rad, on)
 	draw_string(font, Vector2(14, 22), "ARASHI VANGUARD — protótipo (arte provisória)", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(1, 1, 1, 0.38))
 
