@@ -77,3 +77,9 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Trama, portão físico/tranca do selo, frase do jogo, ordem das fases (Baku fixo primeiro; seis em ordem livre a partir da Vila), Tetsu, revelação do Shin-Oni, finais, poderes que mudam a roupa, Mei Shian verde, Shin-Oni como nome e "Senhor dos Sete Pecados" como título: `docs/13_HISTORIA_CONSOLIDADA.md`.
 - Higgsfield: no máximo 1 cutscene de uma tomada (8–10 s) por fase + 1 no final; resto em cena no jogo (estilo RPG). Áudio PT ou EN; legenda sempre no jogo. Sem voz do dono; sem dublagem por enquanto.
 - Imagens enviadas em 16/11 são as oficiais atuais e prevalecem sobre as anteriores em conflito (ajusta a observação 1 de `docs/12`).
+
+## DEC-017 — Proporção adulta para todos os personagens (sprites)
+- Data: 2026-11-16 15:29 · Estado: **aprovada pelo dono** (Ren V2 aprovado como base)
+- Todos os personagens jogáveis e chefes usam a **proporção da ficha oficial** (adulto: ~7,5–8 cabeças, pernas longas), nunca proporção de boneco/chibi. Exceções naturais da própria ficha: Luke (cão pequeno), Xui (obeso), Shin-Oni e Baku (gigantes).
+- Pipeline padrão do sprite: recorte de corpo inteiro da ficha → `image_to_pixelart` fiel (faithful, força ~200, altura ~150 px para o Ren) → `remove_background` → `create_character` v3 com referência de frente (gira para os lados mantendo a proporção) → limpeza de pixels → animações. O modo `pro` a partir de conceito **não** é usado para personagem principal: ele redesenha o corpo e encurtou o Ren (V1 reprovada).
+- Ren base V2: personagem PixelLab `036acc6d` (72×156 por quadro). V1 `5e988eef` reprovada (proporção de boneco).
