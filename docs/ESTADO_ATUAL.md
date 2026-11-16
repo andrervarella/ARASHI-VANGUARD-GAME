@@ -19,7 +19,7 @@
 
 ## Em andamento
 - T-003 (Portão V): GDD v0 pronto; cenário do distrito dos ferreiros gerado no Fenaky e aprovado pelo dono ("gostei"). Tela de título com o Ren foi **recusada pelo Fenaky** (rosto realista); próximo passo: dono gera fichas e telas do Ren no ChatGPT e envia.
-- T-014 (acervo V4.4): 49 arquivos no Drive conferidos; 7 PNG > 3,1 MB, `kit.zip` e o cenário do Fenaky **pendentes** (limite do conector). Ver `docs/ACERVO_DRIVE.md`.
+- T-014 (acervo V4.4): 56 arquivos no Drive (7 como cópia sem perda); `kit.zip` redundante; cenário do Fenaky **pendente** (dono baixa e envia). Ver `docs/ACERVO_DRIVE.md`.
 
 ## Pendente / bloqueado
 - Lote-piloto de animação do Ren (T-004): PixelLab conectado (avaliação de 40 gerações, nada gasto); aguarda ficha limpa do Ren (ChatGPT) e o "ok" do dono. Plano de ferramentas e custos: `docs/11_PLANO_DE_PRODUCAO_E_CUSTOS.md`.
@@ -34,7 +34,7 @@
 - 2026-11-15, `88b1634`: headless sem erros; render Xvfb OK; dono aprovou no celular. FPS/carga/áudio NÃO TESTADOS. Detalhes em `docs/TESTES.md`.
 
 ## Próxima ação objetiva
-- Dono: enviar ao Drive (ou autorizar cópia otimizada) os 9 itens pendentes do acervo; gerar no ChatGPT a ficha (frente/lado/costas) do Ren e mandar. IA: conferir a ficha, registrar no Drive (`01`) e no manifesto, e então propor o Ren piloto no PixelLab (custo antes).
+- Dono: baixar o cenário do Fenaky e enviar ao Drive (`03_CENARIOS_UI`); gerar no ChatGPT a ficha (frente/lado/costas) do Ren e mandar. IA: conferir a ficha, registrar no Drive (`01`) e no manifesto, e então propor o Ren piloto no PixelLab (custo antes).
 
 ## Atenção
 Este arquivo não comprova conclusão sozinho. Fotos do dono e de Luke não entram no repositório público.
