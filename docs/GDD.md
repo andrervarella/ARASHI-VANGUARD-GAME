@@ -40,3 +40,6 @@ Vertical slice: tela inicial + introdução + prólogo + 1 chefe + tela de recom
 
 ## Alvo técnico
 Android, navegador, paisagem, base 960×540, Godot 4.4.1 (Web, sem threads). Link de teste: https://arashi-vanguard-prototipo.vercel.app.
+
+
+> **Atualização 16/11 (DEC-016):** frase do jogo, abertura, cenas e trama agora em `docs/13_HISTORIA_CONSOLIDADA.md`. A tabela de cenas acima vale só onde não conflitar com o doc 13 (cutscenes: 1 por fase + final, uma tomada de 8–10 s).

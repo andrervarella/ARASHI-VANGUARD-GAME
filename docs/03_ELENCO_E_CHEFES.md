@@ -53,3 +53,7 @@ Paleta própria, leitura de silhueta, acessórios próprios, comportamento e mov
 
 ## Padrão de ataque e balanceamento (adicionado em 15/11/2026)
 Cada chefe tem ciclo de ataque fixo e identidade mecânica própria, e os itens escolhidos mudam a facilidade de cada luta sem existir combinação melhor. Regras e rascunhos em `docs/10_CHEFES_E_BALANCEAMENTO.md` (DEC-013).
+
+
+## Atualização 16/11 (DEC-016)
+Chefe final: **Shin-Oni** (nome) · "Senhor dos Sete Pecados" (título). Mei Shian: **verde-esmeralda**. Imagens de 16/11 são as oficiais atuais. Detalhes em `docs/13_HISTORIA_CONSOLIDADA.md`.

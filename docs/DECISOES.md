@@ -71,3 +71,9 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - **Limite do conector Drive (~3,1 MB por envio):** não enviar em partes soltas; enviar cópia **sem perda** (PNG recomprimido ou WebP lossless, pixels conferidos por script) e registrar os dois hashes; ZIP cujo conteúdo já está no acervo não é reenviado.
 - **Repositório público:** arte não lançada no GitHub fica visível a qualquer pessoa. Tornar o repo privado é decisão do dono (pendente). Os PNG de referência que já estão em `assets/` **não serão removidos** sem decisão do dono.
 - Link do Drive, URLs assinadas e credenciais nunca entram no repositório.
+
+## DEC-016 — História consolidada, abertura e regra de cenas
+- Data: 2026-11-16 15:06 · Estado: **aprovada pelo dono** ("Eu aprovo tudo")
+- Trama, portão físico/tranca do selo, frase do jogo, ordem das fases (Baku fixo primeiro; seis em ordem livre a partir da Vila), Tetsu, revelação do Shin-Oni, finais, poderes que mudam a roupa, Mei Shian verde, Shin-Oni como nome e "Senhor dos Sete Pecados" como título: `docs/13_HISTORIA_CONSOLIDADA.md`.
+- Higgsfield: no máximo 1 cutscene de uma tomada (8–10 s) por fase + 1 no final; resto em cena no jogo (estilo RPG). Áudio PT ou EN; legenda sempre no jogo. Sem voz do dono; sem dublagem por enquanto.
+- Imagens enviadas em 16/11 são as oficiais atuais e prevalecem sobre as anteriores em conflito (ajusta a observação 1 de `docs/12`).

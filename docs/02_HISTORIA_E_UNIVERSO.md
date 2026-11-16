@@ -49,3 +49,7 @@ Aprovados pelo proprietário em conversa. Reforçam o gancho e amarram o ofício
 6. **Escolha final jogável.** Aceitar ou recusar os poderes acumulados deve ser mecânica (o jogador pode abrir mão de habilidades), não só diálogo. Regras e balanceamento: a definir.
 
 Continuam valendo: Ren é homem comum sem destino de sangue, sem origem nobre/eleito predestinado, e o chefe final é distinto dos sete.
+
+
+## História consolidada (16/11/2026)
+Trama completa aprovada em `docs/13_HISTORIA_CONSOLIDADA.md` (DEC-016). Ela fecha: o que é o portão, ordem das fases, aliado Tetsu, revelação do Shin-Oni e os dois finais.
