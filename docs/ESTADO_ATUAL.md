@@ -2,12 +2,12 @@
 
 > Leitura obrigatória de quem chega. Se divergir do Git, vale o Git.
 
-- Atualizado em: 2026-11-15 18:55 (America/Sao_Paulo)
+- Atualizado em: 2026-11-15 21:40 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- **Commit-base desta atualização:** `e7ab5de` (merge das branches de importação e de história)
+- **Commit-base desta atualização:** `8417365` (dev)
 - Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (v7; sem versão visível na tela ainda — T-006)
-- Método: Prompt Mestre Universal V4.3 (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
+- Método: Prompt Mestre Universal **V4.4** (acervo Drive + GitHub, DEC-014) (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **conceito aprovado + protótipo de dinâmica**; Portão V ainda não passado
 - Quem está com a vez: ninguém (próxima: sessão com Fable, `docs/PROMPT_FABLE_JOGO_COMPLETO.md`)
 
@@ -18,10 +18,11 @@
 - Documentos de controle do método criados (este arquivo, DECISOES, TAREFAS, HANDOFF, TESTES, APRENDIZADOS, MANIFESTO_ASSETS) e `docs/CONTROLES_E_CONVENCOES.md`.
 
 ## Em andamento
-- Nada aberto.
+- T-003 (Portão V): GDD v0 pronto; cenário do distrito dos ferreiros gerado no Fenaky e aprovado pelo dono ("gostei"). Tela de título com o Ren foi **recusada pelo Fenaky** (rosto realista); próximo passo: dono gera fichas e telas do Ren no ChatGPT e envia.
+- T-014 (acervo V4.4): 49 arquivos no Drive conferidos; 7 PNG > 3,1 MB, `kit.zip` e o cenário do Fenaky **pendentes** (limite do conector). Ver `docs/ACERVO_DRIVE.md`.
 
 ## Pendente / bloqueado
-- Portão V (T-003) e lote-piloto de animação do Ren (T-004, depende de PixelLab; conector precisa reconectar; custo **não verificado**).
+- Lote-piloto de animação do Ren (T-004): PixelLab conectado (avaliação de 40 gerações, nada gasto); aguarda ficha limpa do Ren (ChatGPT) e o "ok" do dono. Plano de ferramentas e custos: `docs/11_PLANO_DE_PRODUCAO_E_CUSTOS.md`.
 - Personagens desenhados por código violam o método (DEC-010): substituir antes do Portão 1 (T-005).
 - Sem menu, introdução, testes automáticos nem GitHub Actions (T-006, T-007).
 - Botão de magia/poder e combos: pedidos do dono, sem especificação (T-008).
@@ -33,7 +34,7 @@
 - 2026-11-15, `88b1634`: headless sem erros; render Xvfb OK; dono aprovou no celular. FPS/carga/áudio NÃO TESTADOS. Detalhes em `docs/TESTES.md`.
 
 ## Próxima ação objetiva
-- Fable abre T-003: pacote visual mínimo + história curta + roteiro de cenas, mostrando **uma imagem por vez**; dono responde 3 sim/não (Portão V). Em paralelo, ordem de serviço ao Codex para T-004 (sem gastar crédito antes do "ok").
+- Dono: enviar ao Drive (ou autorizar cópia otimizada) os 9 itens pendentes do acervo; gerar no ChatGPT a ficha (frente/lado/costas) do Ren e mandar. IA: conferir a ficha, registrar no Drive (`01`) e no manifesto, e então propor o Ren piloto no PixelLab (custo antes).
 
 ## Atenção
 Este arquivo não comprova conclusão sozinho. Fotos do dono e de Luke não entram no repositório público.

@@ -26,6 +26,10 @@
 ## Direção nova do dono (15/11, 18:36)
 - DEC-012: consultar e seguir o método geral antes de criar. DEC-013: chefes com padrão fixo e itens que mudam a luta, sem combinação melhor (`docs/10`, T-013). Padrões por chefe e números são rascunho a validar.
 
+## Sessão 15/11 noite (Claude Opus) — acervo V4.4
+- Drive verificado (ler, listar, criar, renomear). 49 arquivos enviados e conferidos; pendentes por limite de 3,1 MB por chamada: AV-REF-003/004/008, AV-CON-001..004, `kit.zip`; cenário Fenaky não chegou ao ambiente. Detalhes: `docs/ACERVO_DRIVE.md`, `docs/MANIFESTO_ASSETS.md`.
+- Ferramentas: Fenaky recusa o Ren como referência (rosto realista); ChatGPT vai fazer fichas e telas com o Ren; PixelLab transforma as fichas em sprites; Higgsfield fora por custo; cutscenes CGI podem vir do Google Flow; músicas do Suno (só as feitas em plano pago) podem entrar no jogo. Plano: `docs/11`.
+
 ## Decisões para aprovação
 - DEC-001 (push na `dev`), DEC-010 (manter ou trocar a arte provisória), merge do PR na `main` no Portão V.
 

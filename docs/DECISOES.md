@@ -57,3 +57,7 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Data: 2026-11-15 · Estado: **princípios aprovados pelo dono**; padrões por chefe e números = rascunho a validar (T-013)
 - Decisão: cada chefe tem ciclo de ataque fixo e legível (estilo Mega Man), dificuldade moderada, identidade mecânica própria. Os itens/poderes escolhidos mudam a facilidade de cada chefe, e **nenhuma combinação é a melhor**: a escolha expressa o estilo de jogo. Detalhes e regras de balanceamento em `docs/10_CHEFES_E_BALANCEAMENTO.md`.
 - Relação com regras anteriores: complementa "três itens por chefe, escolha única" (`docs/04`); a escolha nunca bloqueia travessia ou final.
+
+## DEC-014 — Acervo no Google Drive + GitHub (método V4.4)
+- Data: 2026-11-15 · Estado: **aprovada pelo dono** (regra do método V4.4, `modulos/ACERVO_DRIVE_GITHUB.md`)
+- Decisão: arte original, arquivos grandes, sprites de trabalho, áudio, vídeo e ZIPs vão para `GAMES_IA/ARASHI VANGUARD/` no Drive (pastas 00–05). GitHub guarda código, projeto Godot, docs, manifestos e **assets finais de runtime**. Link do Drive não entra no repositório público. Detalhes: `docs/ACERVO_DRIVE.md`.
