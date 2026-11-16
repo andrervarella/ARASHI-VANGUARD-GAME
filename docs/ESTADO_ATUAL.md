@@ -5,10 +5,14 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.2 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.3 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.3 (16/11, tarde) — T-016, retorno do dono sobre a v0.2
+- Câmera mais próxima (zoom 1,0). Botão **DEFESA** com aparo. Caixas, plataformas, blocos, chãos, portais e o Grande Portão com arte do PixelLab; coletáveis e itens com ícones; fogo/vapor/acertos com efeitos do PixelLab (VFX).
+- História em escala de mundo (Sete Terras, sete selos, aldeia de Arashi, Refúgio) e falas épicas (DEC-019). 7 quadros novos de história em pixel art; Ren abre o Grande Portão jogando, no fim do tutorial.
 
 ## Novo nesta sessão (16/11) — T-015
 - Jogo refeito em `godot/src/` com **sprites PixelLab fiéis às fichas (proporção adulta, DEC-017)**; protótipo desenhado por código arquivado em `godot/legacy/` (ignorado pelo Godot) → resolve DEC-010/T-005.

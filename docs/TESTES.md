@@ -26,3 +26,9 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (EMULADO): render Xvfb 960×540 com jogador automático (`--auto`): título, abertura, ferreiros (viga, combo), torii (plataformas, inimigos), arena do Baku, arena do Xui (vapor, Bocarra de Jade), Vila (Tetsu). Imagens conferidas.
 - EXECUTADO: export Web (wasm 43,7 MB, pck 16,5 MB) e deploy no Vercel a partir de `web-build` 39c2495.
 - NÃO TESTADO: toque real no Android, FPS no celular, áudio no navegador, dificuldade com jogador humano, fluxo completo de ponta a ponta numa única partida.
+
+## 2026-11-16 (tarde) — T-016 v0.3, commit ccf12bc
+- EXECUTADO: import sem erros; 7 cenas rodam 500 quadros headless com jogador automático, sem erro de script.
+- EXECUTADO (EMULADO): render Xvfb 1170×540 (tela larga de celular): palácio com parede rachada (arte nova), torii, refúgio com portais torii, recompensa com ícones, sequência do Grande Portão → storyboard "cicatriz", legenda com faixa escura.
+- Corrigido no caminho: texturas carregadas dentro de `_draw` sem referência ficavam brancas (agora ficam em cache).
+- NÃO TESTADO: toque real (DEFESA/aparo no celular), FPS, áudio no navegador, dificuldade com jogador humano.
