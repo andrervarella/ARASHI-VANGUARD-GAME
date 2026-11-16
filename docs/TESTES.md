@@ -20,3 +20,9 @@ Testador único = **"SÓ DONO"**.
 
 ## Scorecard
 Não aplicado (Portão 2 ainda longe).
+
+## 2026-11-16 — T-015 (fases 1 e 2), commit 26279bb
+- EXECUTADO: `godot --headless --import` sem erros; cada cena (título, história, 4 fases, recompensa) roda 400 quadros headless sem erro de script.
+- EXECUTADO (EMULADO): render Xvfb 960×540 com jogador automático (`--auto`): título, abertura, ferreiros (viga, combo), torii (plataformas, inimigos), arena do Baku, arena do Xui (vapor, Bocarra de Jade), Vila (Tetsu). Imagens conferidas.
+- EXECUTADO: export Web (wasm 43,7 MB, pck 16,5 MB) e deploy no Vercel a partir de `web-build` 39c2495.
+- NÃO TESTADO: toque real no Android, FPS no celular, áudio no navegador, dificuldade com jogador humano, fluxo completo de ponta a ponta numa única partida.

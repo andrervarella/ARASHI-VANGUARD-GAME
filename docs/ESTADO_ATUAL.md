@@ -2,14 +2,21 @@
 
 > Leitura obrigatória de quem chega. Se divergir do Git, vale o Git.
 
-- Atualizado em: 2026-11-15 21:40 (America/Sao_Paulo)
+- Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- **Commit-base desta atualização:** `8417365` (dev)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (v7; sem versão visível na tela ainda — T-006)
-- Método: Prompt Mestre Universal **V4.4** (acervo Drive + GitHub, DEC-014) (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
-- Estágio: **conceito aprovado + protótipo de dinâmica**; Portão V ainda não passado
-- Quem está com a vez: ninguém (próxima: sessão com Fable, `docs/PROMPT_FABLE_JOGO_COMPLETO.md`)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.2 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
+- Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
+- Quem está com a vez: dono (jogar e dar retorno)
+
+## Novo nesta sessão (16/11) — T-015
+- Jogo refeito em `godot/src/` com **sprites PixelLab fiéis às fichas (proporção adulta, DEC-017)**; protótipo desenhado por código arquivado em `godot/legacy/` (ignorado pelo Godot) → resolve DEC-010/T-005.
+- Fluxo: tela-título (arte oficial) → 3 telas de texto + **storyboard** de imagens (vaga para a cutscene Higgsfield: `res://assets/video/abertura.ogv` toca no lugar se existir) → **Prólogo/tutorial no Distrito dos Ferreiros** (andar, pular, agachar sob a viga, combo, plataformas, salvar o Luke, Baku aparece e vence o Ren) → storyboard "cicatriz" → **Fase 1 Vale das Torii + chefe Baku** → vitória (poder + 1 de 3 itens) → **Vila de Arashi** (hub com Tetsu e 7 portais; só o Palácio de Xui abre) → **Fase 2 Palácio de Xui + chefe Xui** (parede rachada com segredo) → storyboard "dois chefes" + fim da demonstração.
+- Poderes estilo Mega Man: **Golpe da Fúria** (Baku; investida que quebra parede) e **Bocarra de Jade** (Xui; engole projéteis e cura). Equipar troca as cores da roupa do Ren (shader) e acende uma aura. Itens: 6 no total, escolhe 1 de 3 por chefe; salvam em `user://`.
+- HUD aprovado (v7) mantido + botão **PODER** em arco acima de ATACAR/PULAR (some sem poderes), retrato e barras estilo jogo de luta, barra do chefe, pausa.
+- Cenários: 4 fundos PixelLab (`assets/bg`). Inimigos novos: Guarda das Sete Famílias, Oni de Brasa, Servo do Banquete, Espírito do Incenso; NPC mestre Tetsu. Créditos: `godot/assets/CREDITOS.md`.
+- Som: SFX do Oculus Audio Pack 1 (CC BY 4.0, crédito na tela). Músicas (título, fase, chefe, vila) feitas no PixelLab; no link Web são baixadas no build do Vercel por variável secreta `MUSIC_URLS` (DEC-018).
 
 ## Implementado e confirmado
 - Kit visual v1 (59 arquivos + prancha oficial do Ren) importado e verificado por script: `assets/`, `docs/09_AUDITORIA_KIT_v1.md` (EXECUTADO).
@@ -33,7 +40,11 @@
 ## Testes recentes
 - 2026-11-15, `88b1634`: headless sem erros; render Xvfb OK; dono aprovou no celular. FPS/carga/áudio NÃO TESTADOS. Detalhes em `docs/TESTES.md`.
 
-## Próxima ação objetiva
+## Próxima ação objetiva (16/11)
+- Dono: jogar o link v0.2 no celular e dizer o que ajustar (dificuldade, tamanho dos personagens, controles, textos).
+- IA: corrigir pelo retorno; cutscenes Higgsfield quando o dono assinar; vozes depois (ElevenLabs).
+
+## Próxima ação objetiva (anterior, 15/11)
 - Dono: baixar o cenário do Fenaky e enviar ao Drive (`03_CENARIOS_UI`); gerar no ChatGPT a ficha (frente/lado/costas) do Ren e mandar. IA: conferir a ficha, registrar no Drive (`01`) e no manifesto, e então propor o Ren piloto no PixelLab (custo antes).
 
 ## Atenção

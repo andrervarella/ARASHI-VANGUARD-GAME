@@ -120,3 +120,6 @@ Lote de 15 imagens no Drive, com hashes, versões e estado individual: [`docs/12
 | AV-FIC-015 | v01 | pôster em avaliação | `01_ASSETS_EM_PRODUCAO/FICHAS_PERSONAGENS_2026-11-16/AV-FIC-015_PANTEÃO_CHEFES_poster_eclipse_v01.webp` | — | `9aee7016aa465752a6ddb779690589a1252e5b0408a98dd2e901bd3f1f226ab0` |
 
 Nenhum link do Google Drive foi publicado aqui. O `MANIFESTO_FICHAS_CLAUDE_2026-11-16.json` (somente no Drive) registra o SHA-256 da origem e o do arquivo salvo, indicando os 2 casos de conversão **sem perda** com igualdade RGBA exata verificada por script.
+
+## Runtime das fases 1 e 2 (16/11/2026, T-015)
+Origem, IDs do PixelLab e licenças: `godot/assets/CREDITOS.md`. Pastas: `godot/assets/{sprites,bg,story,portraits,ui,sfx,fonts}`. Status: **em teste** (dono ainda não aprovou no celular). Fundos PixelLab: ferreiros, torii, vila, xui (688×384). Músicas: biblioteca PixelLab do dono (AV - Titulo, AV - Fase, AV - Chefe, AV - Vila; take 1), fora do repositório (DEC-018).

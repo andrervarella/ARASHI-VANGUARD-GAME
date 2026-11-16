@@ -40,3 +40,9 @@
 - [x] Mudanças enviadas ao repositório remoto (`dev`)
 - [ ] Incorporadas à branch canônica (aguarda o dono)
 - [ ] `ESTADO_ATUAL.md` reflete a branch canônica (reflete `dev`)
+
+## Sessão 16/11 (Claude Opus) — T-015 fases 1 e 2
+- Código novo em `godot/src/` (autoload `Game`, `level.gd` lê `levels.gd`; chefes `boss_baku.gd`/`boss_xui.gd`; `story.gd` lê `stories.gd`). Teste rápido: `godot --path godot -- --go level torii --x 6900 --nodlg --auto --power furia --shots /tmp/s 60,400`.
+- Sprites: pipeline DEC-017 + `tools/montar_anim.py` (aceita `scale`, `recolor`, e acrescenta animações ao JSON existente).
+- Publicação: branch `web-build` (artefatos + `vercel.json` + `baixar_musica.sh`); projeto Vercel com build `sh baixar_musica.sh` e saída `dist` (DEC-018).
+- Riscos: toque real, FPS e áudio no celular não testados pela IA; dificuldade não calibrada com jogador humano; cutscenes ainda são storyboards.
