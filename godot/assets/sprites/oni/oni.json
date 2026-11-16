@@ -1,0 +1,44 @@
+{
+ "walk": {
+  "frames": [
+   "walk_00.png",
+   "walk_01.png",
+   "walk_02.png",
+   "walk_03.png",
+   "walk_04.png",
+   "walk_05.png",
+   "walk_06.png",
+   "walk_07.png"
+  ],
+  "fps": 9,
+  "loop": true,
+  "anchor": [
+   87.1,
+   144
+  ],
+  "size": [
+   168,
+   168
+  ]
+ },
+ "attack": {
+  "frames": [
+   "attack_00.png",
+   "attack_01.png",
+   "attack_02.png",
+   "attack_03.png",
+   "attack_04.png",
+   "attack_05.png"
+  ],
+  "fps": 9,
+  "loop": false,
+  "anchor": [
+   87.1,
+   144
+  ],
+  "size": [
+   168,
+   168
+  ]
+ }
+}

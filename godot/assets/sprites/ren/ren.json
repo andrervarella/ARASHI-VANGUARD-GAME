@@ -1,0 +1,128 @@
+{
+ "idle": {
+  "frames": [
+   "idle_00.png",
+   "idle_01.png",
+   "idle_02.png",
+   "idle_03.png",
+   "idle_04.png",
+   "idle_05.png",
+   "idle_06.png",
+   "idle_07.png",
+   "idle_08.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "run": {
+  "frames": [
+   "run_00.png",
+   "run_01.png",
+   "run_02.png",
+   "run_03.png",
+   "run_04.png",
+   "run_05.png",
+   "run_06.png",
+   "run_07.png"
+  ],
+  "fps": 12,
+  "loop": true,
+  "anchor": [
+   116.3,
+   188
+  ],
+  "size": [
+   224,
+   224
+  ]
+ },
+ "attack": {
+  "frames": [
+   "attack_00.png",
+   "attack_01.png",
+   "attack_02.png",
+   "attack_03.png",
+   "attack_04.png"
+  ],
+  "fps": 14,
+  "loop": false,
+  "anchor": [
+   111.6,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "jump_up": {
+  "frames": [
+   "jump_up_00.png"
+  ],
+  "fps": 1,
+  "loop": false,
+  "anchor": [
+   130.2,
+   123
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "jump_down": {
+  "frames": [
+   "jump_down_00.png"
+  ],
+  "fps": 1,
+  "loop": false,
+  "anchor": [
+   135.2,
+   207
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "crouch": {
+  "frames": [
+   "crouch_00.png",
+   "crouch_01.png"
+  ],
+  "fps": 6,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "hurt": {
+  "frames": [
+   "hurt_00.png",
+   "hurt_01.png"
+  ],
+  "fps": 8,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ }
+}
