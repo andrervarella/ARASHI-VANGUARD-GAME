@@ -38,6 +38,13 @@
 
 **Importante:** poderes e os três itens exatos por chefe ainda precisam de revisão de balanceamento e da lógica de exploração. Não criar sprites finais de recompensas com nomes visuais inconsistentes.
 
+
+## Novas fichas de referência — 16/11/2026
+
+Foram salvas no Drive fichas de Ren (2 formas), Luke, Kairen, Xui, Baku, Wu, Mei Shian (corpo+poses), Shuyin (visual+poses), Seiran (corpo), Shin-Oni (físico+combate) e pôster dos chefes, IDs `AV-FIC-001` a `AV-FIC-015`. **Fichas não são sprites de runtime**. As referências oficiais originais dos personagens continuam prioritárias. A ficha de poses independente do Seiran permanece pendente; o Claude pode derivar as animações usando o original canônico. Veja `docs/12_HANDOFF_FICHAS_PIXELLAB_2026-11-16.md`.
+
+As fichas de Mei Shian e Shuyin não substituem automaticamente os nomes, poderes, recompensas ou aprovações do GDD. Inimigos comuns podem ser concebidos pelo Claude por briefing escrito (região, função de combate e estilo), sem ficha visual individual. Sua coerência com história/jogabilidade deve ser testada.
+
 ## Regra visual por personagem
 Paleta própria, leitura de silhueta, acessórios próprios, comportamento e movimento característicos. **NÃO inserir o mesmo halo circular atrás de todos**. Artistas e agentes devem consultar ilustração individual aprovada, não miniaturas genéricas de painéis coletivos.
 

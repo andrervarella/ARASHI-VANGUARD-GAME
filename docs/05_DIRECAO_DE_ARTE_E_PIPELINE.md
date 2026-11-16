@@ -40,3 +40,10 @@ Pinturas 2D multicamadas, aproximações de câmera, parallax, efeitos de chuva/
 
 ## Controle de qualidade
 Uma ficha aprovada deve conter: ID, versão/data, paleta, nome, altura-proposta, vistas, gestos, arma e alcance, lista de golpes, camada de equipamento, expressão, QA, status de aprovação. Nunca usar texto em imagem como única fonte: geradores erram nomes, legendas e detalhes.
+
+## Novas orientações de produção — 16/11/2026
+
+- Lote de fichas no Drive: `GAMES_IA/ARASHI VANGUARD/01_ASSETS_EM_PRODUCAO/FICHAS_PERSONAGENS_2026-11-16/`, IDs `AV-FIC-001`–`015`; inventário em `docs/12_HANDOFF_FICHAS_PIXELLAB_2026-11-16.md`. O Claude tem a tarefa de realizar sprites no PixelLab e integração/teste no Godot.
+- **Inimigos comuns**: o dono **dispensou fichas individuais**. O Claude pode gerar a arte a partir do texto do GDD, respeitando ambientação, região, estilo, silhueta, padrões de ataque e legibilidade. Validar conjuntos de inimigos por fase.
+- **Seiran**: falta uma prancha dedicada exclusivamente às poses; gerar animações a partir do original canônico e da ficha de corpo; não reciclar a estética de Kairen/Shuyin.
+- Não considerar pôster ou ficha conceitual PNG como spritesheet jogável. Não publicar artes inéditas no repositório público sem informar o dono. **Originais no Drive, runtime otimizado no GitHub (V4.5).**

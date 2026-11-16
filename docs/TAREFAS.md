@@ -26,3 +26,11 @@ Etapas: **FAZER → REVISAR → TESTAR → FECHADA** · ou **BLOQUEADA** (com mo
 ## Ordem de serviço
 
 Use o formato da seção 2 de `modulos/COMUNICACAO_CLAUDE_CODEX.md` (repositório do método) ao delegar. O texto pronto para abrir uma sessão do Fable está em `docs/PROMPT_FABLE_JOGO_COMPLETO.md`.
+
+
+## Atualização de handoff do lote visual — 16/11/2026
+
+- **AV-FIC-001 a AV-FIC-015:** 15 imagens salvas no Drive e verificadas por listagem; documento de instruções e manifesto JSON também no Drive. IDs/hashes em `docs/12_HANDOFF_FICHAS_PIXELLAB_2026-11-16.md`.
+- **T-004:** ainda **NÃO executado**. Claude é responsável pelo piloto de sprites Ren no PixelLab e depois integração/teste no Godot; verificar custo e obter aprovações.
+- **T-012:** fichas de personagens reunidas; faltam revisão técnica de fidelidade, ficha de poses Seiran (opcional para começar piloto Ren) e confirmação de que Claude conseguiu ler os arquivos no Drive.
+- **Inimigos comuns:** autorizado pelo dono uso de briefing textual em vez de fichas individuais.
