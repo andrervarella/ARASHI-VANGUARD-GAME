@@ -52,3 +52,6 @@ Seguir o **Prompt Mestre Universal V4.3**: https://github.com/andrervarella/PROM
 8. **Link jogável de teste:** https://arashi-vanguard-prototipo.vercel.app; publicação e ferramentas em `tools/README.md`.
 9. **Divisão:** conceito/especificação no Fable, execução no Sonnet, sprites no Codex/PixelLab, cutscenes/música no Fenaky. Gastos sempre com estimativa e autorização do dono. Ao parar: commit, push e handoff.
 10. **Chefes e balanceamento:** cada chefe tem ciclo de ataque fixo e legível (estilo Mega Man), dificuldade moderada; os itens escolhidos mudam a dificuldade de cada luta e **não existe combinação melhor** (a escolha expressa o estilo do jogador). Ver `docs/10_CHEFES_E_BALANCEAMENTO.md` e DEC-013.
+
+## Acervo (DEC-014/DEC-015)
+GitHub = só o que o jogo usa para rodar + código e docs. Drive (`GAMES_IA/ARASHI VANGUARD/`, pastas 00–05) = originais, rascunhos, descartes, vídeo, música e ZIP. Não duplicar tudo; manifesto é a ponte. Ver `docs/ACERVO_DRIVE.md`. Nunca publicar link do Drive.

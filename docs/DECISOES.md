@@ -61,3 +61,13 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 ## DEC-014 — Acervo no Google Drive + GitHub (método V4.4)
 - Data: 2026-11-15 · Estado: **aprovada pelo dono** (regra do método V4.4, `modulos/ACERVO_DRIVE_GITHUB.md`)
 - Decisão: arte original, arquivos grandes, sprites de trabalho, áudio, vídeo e ZIPs vão para `GAMES_IA/ARASHI VANGUARD/` no Drive (pastas 00–05). GitHub guarda código, projeto Godot, docs, manifestos e **assets finais de runtime**. Link do Drive não entra no repositório público. Detalhes: `docs/ACERVO_DRIVE.md`.
+
+## DEC-015 — Divisão padrão Drive × GitHub (refinamento da DEC-014)
+- Data: 2026-11-15 22:50 · Estado: **aprovada pelo dono** ("vamos deixar padronizado assim")
+- **GitHub:** só o que o jogo usa para rodar (sprites finais, cenários, UI, sons/músicas finais otimizados), código, projeto Godot, documentação, decisões, tarefas e manifestos.
+- **Drive:** originais e referências aprovadas, rascunhos, versões descartadas, sprites de trabalho, vídeos, músicas-fonte e ZIPs.
+- **Não duplicar tudo nos dois.** Exceção: o asset final de runtime fica no GitHub (o jogo não depende do Drive) e sua fonte/original fica no Drive.
+- **Manifesto** (`docs/MANIFESTO_ASSETS.md`) é a ponte: ID, versão, status, local no Drive, local no GitHub, hash.
+- **Limite do conector Drive (~3,1 MB por envio):** não enviar em partes soltas; enviar cópia **sem perda** (PNG recomprimido ou WebP lossless, pixels conferidos por script) e registrar os dois hashes; ZIP cujo conteúdo já está no acervo não é reenviado.
+- **Repositório público:** arte não lançada no GitHub fica visível a qualquer pessoa. Tornar o repo privado é decisão do dono (pendente). Os PNG de referência que já estão em `assets/` **não serão removidos** sem decisão do dono.
+- Link do Drive, URLs assinadas e credenciais nunca entram no repositório.

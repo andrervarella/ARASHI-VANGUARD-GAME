@@ -2,6 +2,15 @@
 
 Regra do método V4.4 (`modulos/ACERVO_DRIVE_GITHUB.md`, DEC-014). Drive = acervo mestre de arte e arquivos grandes. GitHub = código, projeto Godot, documentação, manifestos e assets finais que o jogo precisa para rodar.
 
+## Regra padrão (DEC-015)
+| Vai para o GitHub | Vai para o Drive |
+|---|---|
+| Sprites, cenários, UI e áudio **finais**, otimizados, que o Godot carrega | Originais e referências aprovadas (`00`) |
+| Código, projeto Godot, docs, decisões, tarefas, manifestos | Rascunhos, testes, versões descartadas, sprites de trabalho (`01`, `02`) |
+| | Cenários e UI em alta resolução (`03`), vídeos e músicas-fonte (`04`), ZIPs (`05`) |
+
+Não duplicar tudo nos dois. O final de runtime fica no GitHub; a fonte dele, no Drive. Arquivo > 3,1 MB: cópia sem perda (pixels conferidos), nunca partes soltas.
+
 ## Caminho lógico
 ```
 Meu Drive/GAMES_IA/ARASHI VANGUARD/
