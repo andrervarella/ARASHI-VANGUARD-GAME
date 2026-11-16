@@ -76,6 +76,13 @@ func take_hit(dmg: int, dir: int, _kind: String) -> void:
 	else:
 		on_hurt()
 
+var stun_t := 0.0
+
+# chamado quando o Ren apara o golpe no instante exato
+func parried() -> void:
+	stun_t = 0.9
+	velocity.x = -facing * 200.0
+
 func on_hurt() -> void:
 	pass
 
@@ -102,13 +109,24 @@ func _physics_process(dt: float) -> void:
 		return
 	if level == null or level.frozen:
 		return
+	if stun_t > 0.0:
+		stun_t -= dt
+		telegraph_t = 0.0
+		velocity.x = move_toward(velocity.x, 0.0, 2000.0 * dt)
+		if uses_gravity:
+			velocity.y = minf(velocity.y + GRAVITY * dt, 1500.0)
+		move_and_slide()
+		spr.pause()
+		if stun_t <= 0.0:
+			spr.play()
+		return
 	ai(dt)
 	if uses_gravity:
 		velocity.y = minf(velocity.y + GRAVITY * dt, 1500.0)
 	move_and_slide()
 	var p := player()
 	if p and contact > 0 and hurt_rect().grow(-8).intersects(p.hurt_rect()):
-		p.take_damage(contact, global_position.x)
+		p.take_damage(contact, global_position.x, self)
 
 var telegraph_t := 0.0
 func _telegraph() -> float:
@@ -124,7 +142,7 @@ func ai(_dt: float) -> void:
 func hit_player(rect: Rect2, dmg: int) -> void:
 	var p := player()
 	if p and rect.intersects(p.hurt_rect()):
-		p.take_damage(dmg, global_position.x)
+		p.take_damage(dmg, global_position.x, self)
 
 func shoot(pos: Vector2, vel: Vector2, opts := {}) -> Node:
 	var s = load("res://src/shot.gd").new()

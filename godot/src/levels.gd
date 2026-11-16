@@ -12,7 +12,7 @@ const GY := 900.0
 
 const L := {
 	"ferreiros": {
-		"nome": "Prólogo — Distrito dos Ferreiros",
+		"nome": "Prólogo — Aldeia de Arashi",
 		"bg": "ferreiros", "musica": "fase", "amb": "amb_rain", "particulas": "brasas",
 		"chao": Color(0.16, 0.11, 0.10), "borda": Color(0.42, 0.26, 0.18),
 		"largura": 6600.0, "inicio": 220.0, "luke_inicio": false,
@@ -23,12 +23,13 @@ const L := {
 		"prompts": [
 			[120, "Deslize o direcional  ◀ ▶  para andar"],
 			[700, "PULAR salta. Segure para ir mais alto."],
-			[1300, "Uma viga em chamas!  ▼  Agache e passe por baixo."],
+			[1300, "Um telhado em chamas!  ▼  Agache e passe por baixo."],
 			[2150, "ATACAR corta com a katana. Toque 3 vezes seguidas para o combo."],
-			[3100, "Plataformas: pule nelas. ▼ + PULAR desce. A katana corta no ar e agachado."],
-			[4250, "Algo se mexe nos escombros... Quebre as caixas com a katana."],
+			[3100, "Pule nas plataformas. ▼ + PULAR desce delas. A katana também corta no ar e agachado."],
+			[4250, "Algo se mexe nos escombros... Quebre as caixas com a katana."], [5000, "Segure DEFESA para bloquear. No instante exato do golpe, o inimigo vacila."],
 		],
-		"events": [[60, "intro_ferreiros"], [6000, "baku_prologo"]],
+		"events": [[60, "intro_ferreiros"], [5800, "portao"]],
+		"portao_x": 6250.0,
 		"breakables": [[4480, 150, 120, "caixa", "luke"]],
 		"pickups": [[2800, 60, "cura"], [3680, 380, "ki"]],
 	},
@@ -63,8 +64,8 @@ const L := {
 		"chefe": "xui", "arena": [6900.0, 8200.0],
 	},
 	"vila": {
-		"nome": "Vila de Arashi",
-		"bg": "vila", "musica": "vila", "amb": "amb_rain", "particulas": "chuva",
+		"nome": "Refúgio de Arashi",
+		"bg": "refugio", "musica": "vila", "amb": "amb_rain", "particulas": "chuva",
 		"chao": Color(0.13, 0.11, 0.12), "borda": Color(0.40, 0.31, 0.25),
 		"largura": 4200.0, "inicio": 300.0, "luke_inicio": true, "hub": true,
 		"ground": [[0, 4200]],
@@ -88,67 +89,72 @@ const L := {
 	},
 }
 
-# Diálogos: [quem, fala]. Retratos: ren, baku, xui, luke, tetsu.
+# Diálogos: [quem, fala]. Retratos: ren, baku, xui, luke, tetsu. Linguagem épica (DEC-019).
 const D := {
 	"intro_ferreiros": [
-		["ren", "As famílias trancaram a gente aqui dentro... e o distrito está pegando fogo."],
-		["ren", "Luke! Cadê você, parceiro?!"],
+		["ren", "A aldeia arde... e as Sete Casas selaram o Portão às nossas costas."],
+		["ren", "Luke! Onde estás? Responde-me!"],
 	],
 	"luke": [
 		["luke", "Au! Au!"],
-		["ren", "Te achei. Fica colado em mim, Luke. Vamos tirar todo mundo daqui."],
+		["ren", "Aqui estás, velho amigo. Não te afastes de mim. Ainda há gente a salvar."],
+	],
+	"portao": [
+		["ren", "O eixo-mestre do Portão... foi meu pai quem o assentou."],
+		["ren", "Se ele ceder, o Portão inteiro cede. Que os céus me perdoem pelo que vou fazer."],
 	],
 	"baku_prologo": [
-		["baku", "Séculos no escuro... e quem abre a jaula é um ferreiro."],
-		["ren", "Eu só queria salvar o meu povo."],
-		["baku", "Você abriu a jaula, ferreiro. Agora aguente o que saiu."],
+		["baku", "Séculos de trevas... e quem rompe a minha jaula é um simples ferreiro."],
+		["ren", "Rompi-a para salvar o meu povo. Não para te libertar."],
+		["baku", "Tu abriste a jaula, ferreiro. Agora suporta o que dela saiu."],
 	],
 	"intro_torii": [
-		["ren", "Os guardas das famílias estão caçando o Baku também... ou caçando a mim."],
-		["ren", "Tanto faz. Ninguém mais paga pelo que eu abri."],
+		["ren", "Os soldados das Sete Casas caçam o demônio... ou caçam a mim."],
+		["ren", "Seja como for, ninguém mais pagará pelo portão que eu abri."],
 	],
 	"chefe_baku": [
-		["baku", "Voltou pra apanhar de novo, ferreiro? Essa marca no seu rosto ainda arde?"],
-		["ren", "Arde. E vai me lembrar de te prender de novo."],
-		["baku", "Então venha! A Ira não se ajoelha!"],
+		["baku", "Voltaste para sangrar outra vez, ferreiro? A marca em teu rosto ainda arde?"],
+		["ren", "Arde. E me recorda, a cada passo, o que devo reparar."],
+		["baku", "Então vem! A Ira jamais se curva!"],
 	],
 	"fim_baku": [
-		["baku", "Essa marca... nas engrenagens do selo... é marca de ferreiro..."],
-		["baku", "Pergunte ao velho... quem forjou a nossa jaula..."],
-		["ren", "...O que você quer dizer?"],
+		["baku", "Essa marca... gravada nas engrenagens do selo... é marca de ferreiro..."],
+		["baku", "Pergunta ao velho... quem forjou a nossa prisão..."],
+		["ren", "Que queres dizer com isso, demônio?"],
 	],
 	"intro_vila": [
-		["tetsu", "Vila de Arashi. Aqui ninguém pergunta de onde você veio, garoto."],
+		["tetsu", "Este é o Refúgio de Arashi. Aqui ninguém pergunta de onde vens, filho."],
 	],
 	"tetsu_1": [
-		["tetsu", "Então é você o ferreiro que abriu o portão."],
-		["ren", "Eu precisava tirar o povo de lá, mestre Tetsu."],
-		["tetsu", "Eu sei. Por isso ainda estou falando com você."],
-		["tetsu", "Seis demônios andam soltos. Escolha um portal ali adiante e traga a força dele de volta."],
-		["tetsu", "E o que você arrancou do Baku é seu agora. Toque no nome do poder, lá em cima, para trocar. Botão PODER para usar."],
+		["tetsu", "Então és tu o ferreiro que abriu o Grande Portão."],
+		["ren", "Não havia outro caminho, mestre Tetsu. Teriam perecido todos."],
+		["tetsu", "Eu sei. É por isso que ainda te dirijo a palavra."],
+		["tetsu", "Seis demônios correm livres pelas Sete Terras. Cada torii além deste refúgio conduz a um deles."],
+		["tetsu", "A força que arrancaste de Baku agora te pertence. Toca no nome do poder, no alto, para trocá-lo; o botão PODER o desperta."],
+		["tetsu", "E aprende a defender-te, filho. Segura DEFESA diante do golpe; se o fizeres no instante exato, o inimigo vacila."],
 	],
 	"tetsu_2": [
-		["tetsu", "Cada poder que você toma muda você um pouco. Cuidado com o que veste, garoto."],
-		["ren", "Mestre... o Baku falou de uma marca de ferreiro no selo."],
-		["tetsu", "...Hoje não. Primeiro sobreviva."],
+		["tetsu", "Cada poder que tomas muda um pouco quem és. Cuida do que vestes, filho."],
+		["ren", "Mestre... Baku falou de uma marca de ferreiro no selo."],
+		["tetsu", "...Hoje não. Primeiro, sobrevive."],
 	],
 	"tetsu_3": [
-		["tetsu", "Dois caídos. As cicatrizes estão subindo pelo seu braço."],
-		["tetsu", "Quando arder demais, fique perto do cachorro. Ele sabe o caminho de volta."],
+		["tetsu", "Dois demônios tombaram. As cicatrizes já sobem pelo teu braço."],
+		["tetsu", "Quando a dor arder demais, fica junto do cão. Ele conhece o caminho de volta."],
 	],
 	"intro_palacio": [
-		["ren", "Cheiro de banquete... no meio de uma cidade que passa fome."],
+		["ren", "Cheiro de banquete... em terras onde o povo morre de fome."],
 	],
 	"chefe_xui": [
-		["xui", "Um convidado magro! Que desperdício de prato."],
-		["xui", "Senta, come. Aqui ninguém passa fome... desde que eu coma primeiro."],
-		["ren", "O seu banquete é feito do meu povo."],
+		["xui", "Um convidado tão magro! Que desperdício para a minha mesa."],
+		["xui", "Senta-te e come. Aqui ninguém passa fome... desde que eu coma primeiro."],
+		["ren", "O teu banquete é feito da vida do meu povo."],
 	],
 	"fim_xui": [
-		["xui", "Ainda... estou... com fome..."],
-		["ren", "Agora sabe como eles se sentem."],
+		["xui", "Ainda... tenho... fome..."],
+		["ren", "Agora sabes o que eles sentiram."],
 	],
 	"segredo": [
-		["ren", "Uma sala escondida... e um fragmento de selo ainda quente."],
+		["ren", "Uma câmara oculta... e um fragmento de selo, ainda morno."],
 	],
 }

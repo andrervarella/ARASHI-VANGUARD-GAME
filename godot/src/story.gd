@@ -14,6 +14,7 @@ var _typing: Tween
 var _busy := false
 var _video: VideoStreamPlayer
 var _bars: Array = []
+var _subbg: TextureRect
 
 func _ready() -> void:
 	var st: Dictionary = load("res://src/stories.gd").S.get(story_id, {})
@@ -32,6 +33,19 @@ func _ready() -> void:
 		bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		add_child(bar)
 		_bars.append(bar)
+	_subbg = TextureRect.new()
+	var gt := GradientTexture2D.new()
+	gt.fill_from = Vector2(0, 0)
+	gt.fill_to = Vector2(0, 1)
+	var gr := Gradient.new()
+	gr.set_color(0, Color(0, 0, 0, 0))
+	gr.set_color(1, Color(0, 0, 0, 0.85))
+	gt.gradient = gr
+	_subbg.texture = gt
+	_subbg.stretch_mode = TextureRect.STRETCH_SCALE
+	_subbg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_subbg.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(_subbg)
 	_sub = Game.label("", 24, Color(0.98, 0.95, 0.9))
 	_sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	_sub.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
@@ -67,6 +81,8 @@ func _layout() -> void:
 	_bars[0].size = Vector2(vs.x, 62)
 	_bars[1].position = Vector2(0, vs.y - 62)
 	_bars[1].size = Vector2(vs.x, 62)
+	_subbg.position = Vector2(0, vs.y - 62 - 150)
+	_subbg.size = Vector2(vs.x, 150)
 	_sub.position = Vector2(vs.x * 0.08, vs.y - 62 - 96)
 	_sub.size = Vector2(vs.x * 0.84, 90)
 	_center.position = Vector2(vs.x * 0.1, 0)
@@ -92,7 +108,10 @@ func _next() -> void:
 	_img2.scale = _img.scale
 	_img2.position = _img.position
 	_img2.modulate = _img.modulate
-	_img.texture = load("res://assets/story/%s.jpg" % s["img"])
+	var ip := "res://assets/story/%s.png" % s["img"]
+	if not ResourceLoader.exists(ip):
+		ip = "res://assets/story/%s.jpg" % s["img"]
+	_img.texture = load(ip)
 	_img.modulate.a = 0.0
 	var dim: bool = s.get("texto_tela", false) or s.get("titulo", false)
 	var target_mod := Color(0.42, 0.38, 0.42, 1) if dim else Color(1, 1, 1, 1)
@@ -106,6 +125,7 @@ func _next() -> void:
 	kb.tween_property(_img, "scale", Vector2.ONE * 1.14, _dur + 1.0).set_trans(Tween.TRANS_SINE)
 	kb.tween_property(_img, "position", Vector2(18.0 * dir, -6.0), _dur + 1.0).set_trans(Tween.TRANS_SINE)
 	var txt: String = s["txt"]
+	_subbg.visible = not dim
 	if dim:
 		_sub.text = ""
 		_center.text = txt

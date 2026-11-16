@@ -124,5 +124,22 @@
    216,
    216
   ]
+ },
+ "guard": {
+  "frames": [
+   "guard_00.png",
+   "guard_01.png",
+   "guard_02.png"
+  ],
+  "fps": 12,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
  }
 }

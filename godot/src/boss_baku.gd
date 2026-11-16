@@ -27,6 +27,13 @@ func start() -> void:
 	state = "idle"
 	t = 0.0
 
+func parried() -> void:
+	if state in ["slash", "breath", "approach"]:
+		state = "tired"
+		t = 0.0
+		telegraph_t = 0.0
+		spr.play_anim("tired" if spr.has_anim("tired") else "idle")
+
 func damage_mult() -> float:
 	return 2.0 if state == "tired" else 1.0
 
@@ -34,7 +41,7 @@ func on_hurt() -> void:
 	if phase == 1 and hp <= hp_max / 2:
 		phase = 2
 		Game.sfx("baku_laugh", -2.0)
-		level.toast("Baku entra em fúria!")
+		level.toast("A ira de Baku transborda!")
 		level.shake(10.0)
 		load("res://src/fx.gd").spawn(level, "ring", global_position + Vector2(0, -120), {"col": Color(1, 0.2, 0.1), "r": 220.0, "life": 0.6})
 	elif randf() < 0.3:
@@ -74,7 +81,7 @@ func ai(dt: float) -> void:
 				var p := player()
 				if p and r.intersects(p.hurt_rect()):
 					_hit_done = true
-					p.take_damage(2, global_position.x)
+					p.take_damage(2, global_position.x, self)
 				if spr.frame == 5 and t > 0.05 and not get_meta("swung", false):
 					set_meta("swung", true)
 					Game.sfx("slash3", 0.0)
@@ -125,8 +132,8 @@ func ai(dt: float) -> void:
 				Game.sfx("slam", 0.0)
 				level.shake(14.0)
 				for d in [-1, 1]:
-					shoot(global_position + Vector2(d * 60.0, 0), Vector2(d * 520.0, 0), {"kind": "wave", "ground_wave": true, "radius": 26.0, "dmg": 2, "life": 1.4, "col": Color(0.9, 0.3, 0.15), "absorbable": false})
-				load("res://src/fx.gd").spawn(level, "wave", global_position, {"r": 200.0, "col": Color(1, 0.4, 0.2), "life": 0.4})
+					shoot(global_position + Vector2(d * 60.0, 0), Vector2(d * 520.0, 0), {"kind": "wave", "ground_wave": true, "radius": 26.0, "dmg": 2, "life": 1.4, "col": Color(1, 1, 1), "absorbable": false})
+				load("res://src/fxsprite.gd").play(level, "choque", global_position, {"scale_px": 2.6})
 
 func _landed_tick() -> void:
 	pass
@@ -151,7 +158,7 @@ func _begin_leap() -> void:
 	t = 0.0
 
 func _ember_wave() -> void:
-	shoot(global_position + Vector2(facing * 80.0, 0), Vector2(facing * 600.0, 0), {"kind": "wave", "ground_wave": true, "radius": 30.0, "dmg": 1, "life": 2.0, "col": Color(1, 0.45, 0.05)})
+	shoot(global_position + Vector2(facing * 80.0, 0), Vector2(facing * 600.0, 0), {"kind": "wave", "ground_wave": true, "radius": 30.0, "dmg": 1, "life": 2.0, "col": Color(1, 0.85, 0.7)})
 	Game.sfx("power", -6.0)
 
 func die() -> void:
@@ -164,7 +171,7 @@ func die() -> void:
 	var tw := create_tween()
 	for i in range(6):
 		tw.tween_callback(func():
-			load("res://src/fx.gd").spawn(level, "spark", global_position + Vector2(randf_range(-60, 60), randf_range(-200, -40)), {"r": 90.0, "col": Color(1, 0.5, 0.2)})
+			load("res://src/fxsprite.gd").play(level, "aparo", global_position + Vector2(randf_range(-60, 60), randf_range(-200, -40)), {"scale_px": 2.5})
 			Game.sfx("hit_big", -4.0))
 		tw.tween_interval(0.22)
 	tw.tween_property(spr, "modulate", Color(1, 0.2, 0.1, 0.0), 1.0)

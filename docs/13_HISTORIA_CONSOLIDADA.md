@@ -1,4 +1,7 @@
-# 13 — História consolidada (aprovada pelo dono em 16/11/2026, 15:06)
+# 13 — História consolidada (aprovada pelo dono em 16/11/2026, 15:06; revisão de escala em 16/11, 17h — DEC-019)
+
+> **Revisão DEC-019 (pedido do dono, 16/11 tarde):** a história não fica só numa cidade. O mundo são as **Sete Terras**; em cada uma, um **selo** prende um demônio. As **Sete Casas** governam o mundo, guardam os selos e tiram poder deles com a vida dos humildes. Todos os selos respondem a **uma única tranca: o Grande Portão**, erguido sobre a **aldeia de Arashi** (aldeia de ferreiros onde Ren vive; foram eles que forjaram as engrenagens). Na Lua Vermelha o ritual falha, as Casas trancam o Portão com o povo dentro, Ren rompe o eixo-mestre, o povo foge e os sete demônios escapam para as Sete Terras (cada fase é uma terra). O hub passa a ser o **Refúgio de Arashi**, nas montanhas, guiado pelo mestre Tetsu. **Falas em registro épico** (tu/vós quando cabe, sem gíria atual). Onde este documento disser "cidade", leia "Sete Terras"; onde disser "Vila de Arashi" (hub), leia "Refúgio de Arashi".
+
 
 Fonte única da trama. Complementa `docs/02` (regras fixas continuam valendo) e substitui as partes "a definir" que este documento fecha. DEC-016.
 

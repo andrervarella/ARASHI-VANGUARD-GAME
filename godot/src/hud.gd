@@ -4,7 +4,7 @@ extends Control
 #  - ATACAR e PULAR à direita; PODER em arco acima deles (proposta do doc de controles)
 #  - toque no ícone do poder (canto superior esquerdo) troca o poder equipado
 #  - ❚❚ no canto superior direito pausa
-# Teclado: A/D ou setas, S/↓ agachar, espaço/W/↑ pular, J/X atacar, K/C poder, Q trocar poder, Esc pausa.
+# Teclado: A/D ou setas, S/↓ agachar, espaço/W/↑ pular, J/X atacar, K/C poder, L/V defesa, Q trocar poder, Esc pausa.
 
 signal pause_requested
 signal power_cycle_requested
@@ -13,6 +13,7 @@ var move := 0.0
 var jump_down := false
 var attack_down := false
 var power_down := false
+var guard_down := false
 var crouch_down := false
 var jump_pressed := false
 var attack_pressed := false
@@ -36,6 +37,7 @@ const STICK_R := 68.0
 const MARGIN := 18.0
 const MARGIN_R := 104.0
 var _portrait: Texture2D
+var _icons := {}
 var _q_prev := false
 var _esc_prev := false
 var _auto := OS.get_cmdline_user_args().has("--auto")
@@ -62,6 +64,7 @@ func _layout() -> void:
 		"attack": {"pos": atk, "r": ra},
 		"jump": {"pos": jmp, "r": rj},
 		"power": {"pos": Vector2((atk.x + jmp.x) / 2.0 - 8.0, h - 160.0), "r": 34.0},
+		"guard": {"pos": Vector2(atk.x - 64.0, h - 148.0), "r": 34.0},
 	}
 
 func _icon_power_rect() -> Rect2:
@@ -132,11 +135,13 @@ func _process(_dt: float) -> void:
 	var j := false
 	var a := false
 	var pw := false
+	var gd := false
 	for idx in _fingers:
 		match _fingers[idx]:
 			"jump": j = true
 			"attack": a = true
 			"power": pw = true
+			"guard": gd = true
 	var v := _stick_vec if _stick_finger != -1 else _demo_vec
 	var dead := STICK_R * 0.30
 	var l := v.x < -dead
@@ -148,6 +153,7 @@ func _process(_dt: float) -> void:
 	if Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP): j = true
 	if Input.is_key_pressed(KEY_J) or Input.is_key_pressed(KEY_X): a = true
 	if Input.is_key_pressed(KEY_K) or Input.is_key_pressed(KEY_C): pw = true
+	if Input.is_key_pressed(KEY_L) or Input.is_key_pressed(KEY_V): gd = true
 	var q := Input.is_key_pressed(KEY_Q)
 	if q and not _q_prev:
 		power_cycle_requested.emit()
@@ -163,6 +169,7 @@ func _process(_dt: float) -> void:
 		a = fmod(_auto_t, 0.45) < 0.12
 		j = fmod(_auto_t, 1.7) < 0.35
 		pw = fmod(_auto_t, 5.0) < 0.1
+		gd = fmod(_auto_t, 4.0) > 3.5
 	move = (1.0 if r else 0.0) - (1.0 if l else 0.0)
 	crouch_down = dn
 	jump_pressed = j and not _jump_prev
@@ -174,6 +181,7 @@ func _process(_dt: float) -> void:
 	jump_down = j
 	attack_down = a
 	power_down = pw
+	guard_down = gd
 	_sl = l
 	_sr = r
 	_sd = dn
@@ -215,7 +223,13 @@ func _draw() -> void:
 			var r := _icon_power_rect()
 			draw_rect(r, Color(0.05, 0.02, 0.04, 0.55))
 			draw_rect(r, Color(pcol.r, pcol.g, pcol.b, 0.9), false, 2.0)
-			draw_circle(r.position + Vector2(18, 18), 9, pcol)
+			var pi := "res://assets/icons/%s.png" % Game.data["equipado"]
+			if Game.data["equipado"] != "" and not _icons.has(pi) and ResourceLoader.exists(pi):
+				_icons[pi] = load(pi)
+			if _icons.has(pi):
+				draw_texture_rect(_icons[pi], Rect2(r.position + Vector2(2, 2), Vector2(32, 32)), false)
+			else:
+				draw_circle(r.position + Vector2(18, 18), 9, pcol)
 			draw_string_outline(font, r.position + Vector2(34, 23), pname, HORIZONTAL_ALIGNMENT_LEFT, 144, 13, 4, Color(0, 0, 0, 0.9))
 			draw_string(font, r.position + Vector2(34, 23), pname, HORIZONTAL_ALIGNMENT_LEFT, 144, 13, Color(1, 0.95, 0.85))
 	# --- pausa ---
@@ -253,7 +267,7 @@ func _draw() -> void:
 	for k in BTN:
 		if k == "power" and Game.data["poderes"].is_empty():
 			continue
-		var on: bool = {"jump": jump_down, "attack": attack_down, "power": power_down}[k]
+		var on: bool = {"jump": jump_down, "attack": attack_down, "power": power_down, "guard": guard_down}[k]
 		var bc: Vector2 = BTN[k]["pos"]
 		var rad: float = BTN[k]["r"] * (0.94 if on else 1.0)
 		var ring := RED
@@ -297,6 +311,13 @@ func _icon(k: String, c: Vector2, rad: float, on: bool) -> void:
 			var perp := Vector2(0.7, 0.7) * u * 0.55
 			draw_line(guard - perp, guard + perp, Color(GOLD.r, GOLD.g, GOLD.b, 0.9 if on else 0.65), 3.0)
 			draw_line(guard, c + Vector2(-u * 1.1, u * 1.1), Color(RED.r, RED.g, RED.b, 0.95), 5.0)
+		"guard":
+			# tsuba (guarda da katana)
+			draw_circle(c, u * 1.25, Color(col.r, col.g, col.b, 0.85))
+			draw_circle(c, u * 0.95, Color(0.12, 0.06, 0.06, 0.95))
+			draw_rect(Rect2(c - Vector2(u * 0.18, u * 0.6), Vector2(u * 0.36, u * 1.2)), Color(col.r, col.g, col.b, 0.9))
+			for ang in [0.785, 2.356, 3.927, 5.498]:
+				draw_circle(c + Vector2(cos(ang), sin(ang)) * u * 0.62, u * 0.16, Color(GOLD.r, GOLD.g, GOLD.b, 0.9))
 		"power":
 			# chama estilizada
 			var pts := PackedVector2Array()

@@ -86,3 +86,7 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 
 ## DEC-018 — Músicas no link Web via build do Vercel (16/11/2026)
 - O ambiente da IA não baixa arquivos do PixelLab (rede bloqueada). As músicas ficam na biblioteca PixelLab do dono e o **build do Vercel** (`baixar_musica.sh` na branch `web-build`) as baixa para `/music/` usando a variável **secreta** `MUSIC_URLS` do projeto (os links não vão para o repositório público). O jogo carrega `music/<nome>.mp3` sob demanda (`Game.music`). Para levar as músicas ao repositório/Drive, o dono baixa no site do PixelLab e envia.
+
+## DEC-019 — Mundo das Sete Terras e linguagem épica (16/11/2026)
+- Pedido do dono após jogar a v0.2: a trama vale para o **mundo** (Sete Terras, sete selos), Ren mora numa **aldeia**; falas em linguagem épica, sem gíria. Resumo em `docs/13` (cabeçalho). Ren abre o Portão **jogando** (fim do tutorial), não só em cena.
+- Também pedidos e feitos: câmera mais próxima (zoom 1,0), **botão DEFESA** com aparo no instante exato, arte de objetos/coletáveis/ícones no PixelLab, fogo do Baku refeito com efeitos do PixelLab (VFX workbench).

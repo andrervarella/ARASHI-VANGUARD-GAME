@@ -14,3 +14,11 @@
 | músicas | PixelLab `create_music` (biblioteca do dono); no link Web são baixadas no deploy para `/music/` | conta do dono |
 
 Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab, fundo removido por cor).
+
+## Acréscimos v0.3 (16/11/2026)
+| Pasta | Origem |
+|---|---|
+| `story/*.png` (mapa, aldeia, ritual, lua_vermelha, portao_trancado, fuga, refugio) e `bg/refugio.png` | PixelLab `create_image_pro` 688×384 (estilo dos cenários do jogo) |
+| `icons/*.png` (coletáveis, itens, poderes) e `props/*.png` (caixa, pedra, plataformas, mesa, telhado, parede rachada, torii, portão, chãos) | PixelLab `create_image_pixen` |
+| `fx/*.png` (onda de brasa, brasa do oni, acerto, aparo, vapor, onda de choque, defesa) | PixelLab VFX workbench (salvos em "My effects" do dono) |
+| `sprites/ren/guard_*` | PixelLab, animação do Ren `036acc6d` |

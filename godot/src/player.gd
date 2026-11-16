@@ -45,6 +45,8 @@ var revived := false
 var step_t := 0.0
 var was_floor := true
 var drop_t := 0.0
+var guarding := false
+var guard_t := 0.0
 var _shape: RectangleShape2D
 var _cshape: CollisionShape2D
 var _aura: CPUParticles2D
@@ -169,6 +171,23 @@ func _physics_process(dt: float) -> void:
 				velocity.x = facing * 300.0
 			return
 	var dir: float = _inp("move")
+	# defesa: segurar DEFESA no chão
+	if _inp("guard_down") and is_on_floor() and state == "normal":
+		if not guarding:
+			guarding = true
+			guard_t = 0.0
+			_set_crouch(false)
+			spr.play_anim("guard", true, 1.6)
+		guard_t += dt
+		if dir != 0.0 and guard_t < 0.05:
+			facing = 1 if dir > 0.0 else -1
+			spr.set_facing(facing)
+		velocity.x = move_toward(velocity.x, 0.0, 3000.0 * dt)
+		velocity.y = minf(velocity.y + GRAVITY * dt, FALL_MAX)
+		move_and_slide()
+		_blink()
+		return
+	guarding = false
 	# agachar
 	var want_crouch: bool = _inp("crouch_down") and on_floor
 	if want_crouch:
@@ -298,7 +317,7 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 			f.take_hit(dmg, facing, kind)
 			ki = minf(100.0, ki + 5.0)
 			var c: Rect2 = f.hurt_rect()
-			load("res://src/fx.gd").spawn(level, "spark", Vector2(clampf(rect.get_center().x, c.position.x, c.end.x), rect.get_center().y), {"r": 60.0, "col": Color(1, 0.8, 0.5)})
+			load("res://src/fxsprite.gd").play(level, "acerto" if dmg < 3 else "aparo", Vector2(clampf(rect.get_center().x, c.position.x, c.end.x), rect.get_center().y), {"scale_px": 2.2 if dmg < 3 else 1.8})
 			level.hitstop(0.05 if dmg < 3 else 0.09)
 			level.shake(4.0 if dmg < 3 else 9.0)
 	for b in get_tree().get_nodes_in_group("breakable"):
@@ -355,9 +374,37 @@ func _draw() -> void:
 		draw_circle(Vector2(0, -70), 150.0, Color(0.15, 0.85, 0.5, 0.12 * a / 0.6))
 		draw_arc(Vector2(0, -70), 150.0, 0, TAU, 64, Color(0.6, 1.0, 0.75, 0.7 * a / 0.6), 4.0)
 
-func take_damage(n: int, src_x: float) -> void:
+func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void:
 	if invuln > 0.0 or state == "dead" or locked:
 		return
+	if guarding and (src_x - global_position.x) * facing >= 0.0:
+		var front := global_position + Vector2(facing * 34.0, -78.0)
+		if guard_t < 0.2:
+			# aparo perfeito: sem custo, inimigo vacila
+			Game.sfx("clash", 0.0)
+			Game.sfx("hit_big", -6.0)
+			load("res://src/fxsprite.gd").play(level, "aparo", front, {"scale_px": 2.0})
+			ki = minf(100.0, ki + 15.0)
+			level.hitstop(0.09)
+			level.shake(5.0)
+			level.toast("Aparo!")
+			if src and src.has_method("parried"):
+				src.parried()
+			invuln = 0.25
+			return
+		var cost := 20.0 if heavy else 10.0
+		if ki >= cost:
+			ki -= cost
+			Game.sfx("clash", -3.0)
+			load("res://src/fxsprite.gd").play(level, "defesa", global_position + Vector2(facing * 22.0, -80.0), {"scale_px": 1.6, "flip": facing < 0})
+			velocity.x = -facing * 260.0
+			level.shake(3.0)
+			invuln = 0.2
+			return
+		# guarda quebrada: metade do dano
+		level.toast("Guarda quebrada!")
+		n = int(ceil(n / 2.0))
+		guarding = false
 	hp -= n
 	hp_changed.emit()
 	Game.sfx("ren_hurt", -4.0)

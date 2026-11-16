@@ -30,8 +30,21 @@ func _process(dt: float) -> void:
 func _col() -> Color:
 	return {"cura": Color(1, 0.25, 0.3), "ki": Color(1, 0.8, 0.25), "vida": Color(1, 0.5, 0.9)}[kind]
 
+var _icon: Texture2D
+
 func _draw() -> void:
 	var c := _col()
+	if _icon == null:
+		var ip := "res://assets/icons/%s.png" % {"cura": "cura", "ki": "ki", "vida": "selo"}[kind]
+		if ResourceLoader.exists(ip):
+			_icon = load(ip)
+	if _icon:
+		draw_circle(Vector2.ZERO, 34.0, Color(c.r, c.g, c.b, 0.16 + 0.08 * sin(_t * 6.0)))
+		var sz := Vector2(_icon.get_width(), _icon.get_height()) * (1.3 if kind != "vida" else 1.1)
+		draw_texture_rect(_icon, Rect2(-sz / 2.0, sz), false)
+		if int(_t * 2.0) % 3 == 0:
+			draw_circle(Vector2(sz.x * 0.25, -sz.y * 0.3), 3.0, Color(1, 1, 1, 0.8))
+		return
 	var r := 16.0 if kind != "vida" else 22.0
 	draw_circle(Vector2.ZERO, r * 1.8, Color(c.r, c.g, c.b, 0.18 + 0.08 * sin(_t * 6.0)))
 	draw_circle(Vector2.ZERO, r, c)

@@ -103,7 +103,7 @@ func _guarda(dt: float, dx: float, near: bool) -> void:
 				var pl := player()
 				if pl and r.intersects(pl.hurt_rect()):
 					_hit_done = true
-					pl.take_damage(2, global_position.x)
+					pl.take_damage(2, global_position.x, self)
 			if t > 0.5:
 				state = "chase"
 				cd = randf_range(1.0, 1.6)
@@ -173,7 +173,7 @@ func _servo(dt: float, dx: float, near: bool) -> void:
 				var pl := player()
 				if pl and r.intersects(pl.hurt_rect()):
 					_hit_done = true
-					pl.take_damage(2, global_position.x)
+					pl.take_damage(2, global_position.x, self)
 			if t > 0.55:
 				state = "chase"
 				cd = randf_range(1.1, 1.7)

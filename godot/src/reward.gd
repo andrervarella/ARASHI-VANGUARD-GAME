@@ -4,7 +4,7 @@ extends CanvasLayer
 var boss := "baku"
 const POWER_OF := {"baku": "furia", "xui": "jade"}
 const ART := {"baku": "baku2", "xui": "xui"}
-const OUTFIT := {"furia": "Ombreira oni e lâmina em brasa: a roupa do Ren ganha detalhes cor de fogo.", "jade": "Contas de jade e faixa vinho: a roupa do Ren ganha detalhes verde-jade."}
+const OUTFIT := {"furia": "A ira do demônio tinge as vestes de Ren com a cor da brasa.", "jade": "A fome do demônio tinge as vestes de Ren com o verde do jade."}
 
 var _picked := false
 
@@ -35,7 +35,19 @@ func _ready() -> void:
 	pc.add_theme_stylebox_override("panel", Game.panel_style(0.88, info["cor"]))
 	var pl := Game.label("Novo poder: %s\n%s\n%s" % [info["nome"], info["desc"], OUTFIT[p]], 17, Color(0.98, 0.94, 0.88), false)
 	pl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	pc.add_child(pl)
+	var hbp := HBoxContainer.new()
+	hbp.add_theme_constant_override("separation", 14)
+	var ipp := "res://assets/icons/%s.png" % p
+	if ResourceLoader.exists(ipp):
+		var tr := TextureRect.new()
+		tr.texture = load(ipp)
+		tr.custom_minimum_size = Vector2(80, 80)
+		tr.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tr.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		hbp.add_child(tr)
+	pl.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	hbp.add_child(pl)
+	pc.add_child(hbp)
 	root.add_child(pc)
 	var sub := Game.label("Escolha 1 item (fica com você para sempre):", 19, Color(1, 0.9, 0.75))
 	sub.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -52,8 +64,13 @@ func _ready() -> void:
 	for i in range(mini(3, pool.size())):
 		var k: String = pool[i]
 		var it: Dictionary = Game.ITEMS[k]
-		var b := Game.button("%s\n\n%s" % [it["nome"], it["desc"]], func(): _pick(k), 16)
-		b.custom_minimum_size = Vector2((vs.x * 0.84 - 30.0) / 3.0, 130)
+		var b := Game.button("%s\n%s" % [it["nome"], it["desc"]], func(): _pick(k), 15)
+		b.custom_minimum_size = Vector2((vs.x * 0.84 - 30.0) / 3.0, 170)
+		var ip := "res://assets/icons/%s.png" % k
+		if ResourceLoader.exists(ip):
+			b.icon = load(ip)
+			b.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			b.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
 		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		var sb: StyleBoxFlat = b.get_theme_stylebox("normal").duplicate()
 		sb.border_color = it["cor"]

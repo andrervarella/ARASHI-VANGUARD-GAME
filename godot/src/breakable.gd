@@ -9,6 +9,7 @@ var size := Vector2(120, 120)
 var hp := 2
 var level: Node
 var _shake := 0.0
+var _tex: Texture2D
 
 func _ready() -> void:
 	collision_layer = 1
@@ -48,6 +49,15 @@ func _process(dt: float) -> void:
 func _draw() -> void:
 	var o := Vector2(randf_range(-3, 3), 0) if _shake > 0.0 else Vector2.ZERO
 	var r := Rect2(Vector2(0, -size.y) + o, size)
+	var tp := "res://assets/props/%s.png" % ("caixa" if kind == "caixa" else "parede_rachada")
+	if _tex == null and ResourceLoader.exists(tp):
+		_tex = load(tp)
+	if _tex:
+		draw_texture_rect(_tex, Rect2(r.position - Vector2(6, 8), r.size + Vector2(12, 10)), false)
+		if kind == "rachada":
+			var c := r.get_center()
+			draw_circle(c, 40.0, Color(1, 0.45, 0.1, 0.10 + 0.08 * sin(Time.get_ticks_msec() * 0.005)))
+		return
 	if kind == "caixa":
 		var wood := Color(0.36, 0.22, 0.13)
 		draw_rect(r, wood)

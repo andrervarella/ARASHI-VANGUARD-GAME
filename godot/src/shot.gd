@@ -28,7 +28,7 @@ func _physics_process(dt: float) -> void:
 		queue_free()
 		return
 	if not ground_wave and level and position.y > level.ground_at(position.x) - radius * 0.5:
-		load("res://src/fx.gd").spawn(level, "spark", position, {"r": 40.0, "col": col})
+		load("res://src/fxsprite.gd").play(level, "acerto", position, {"scale_px": 1.6})
 		queue_free()
 		return
 	var p = level.player if level else null
@@ -41,30 +41,28 @@ func _physics_process(dt: float) -> void:
 		if ground_wave:
 			r = Rect2(position + Vector2(-radius, -60), Vector2(radius * 2.0, 60))
 		if r.intersects(p.hurt_rect()):
-			p.take_damage(dmg, position.x - signf(vel.x) * 10.0)
+			p.take_damage(dmg, position.x - signf(vel.x) * 10.0, null, ground_wave)
 			queue_free()
 			return
 	queue_redraw()
 
 func _draw() -> void:
+	var FS = load("res://src/fxsprite.gd")
 	match kind:
 		"ember":
-			draw_circle(Vector2.ZERO, radius * 1.4, Color(col.r, col.g, col.b, 0.25))
-			draw_circle(Vector2.ZERO, radius, col)
-			draw_circle(Vector2.ZERO, radius * 0.5, Color(1, 0.95, 0.6))
-			draw_line(Vector2.ZERO, -vel.normalized() * radius * 2.2, Color(col.r, col.g, col.b, 0.5), radius * 0.8)
+			draw_set_transform(Vector2.ZERO, vel.angle(), Vector2.ONE)
+			FS.draw_sheet(self, "brasa_oni", _frame("brasa_oni"), Vector2.ZERO, 1.6, false)
 		"vapor":
-			var s := 1.0 + 0.15 * sin(_t * 9.0)
-			for i in range(4):
-				var o := Vector2(cos(_t * 3.0 + i * 1.6), sin(_t * 2.6 + i * 1.6)) * radius * 0.45
-				draw_circle(o, radius * 0.7 * s, Color(col.r, col.g, col.b, 0.55))
-			draw_circle(Vector2.ZERO, radius * 0.45, Color(0.85, 1, 0.6, 0.8))
+			draw_set_transform(Vector2.ZERO, vel.angle(), Vector2.ONE)
+			FS.draw_sheet(self, "vapor", _frame("vapor"), Vector2.ZERO, 2.2, false)
 		"wave":
-			var hgt := 54.0 + 8.0 * sin(_t * 30.0)
-			var pts := PackedVector2Array([Vector2(-radius, 0), Vector2(-radius * 0.4, -hgt), Vector2(0, -hgt * 0.6), Vector2(radius * 0.5, -hgt * 0.9), Vector2(radius, 0)])
-			draw_colored_polygon(pts, Color(col.r, col.g, col.b, 0.75))
-			draw_polyline(pts, Color(1, 0.9, 0.6, 0.9), 2.0)
+			FS.draw_sheet(self, "onda_brasa", _frame("onda_brasa"), Vector2.ZERO, 2.4, vel.x < 0.0, col)
 		"food":
 			draw_circle(Vector2.ZERO, radius, col)
 			draw_circle(Vector2(-radius * 0.3, -radius * 0.3), radius * 0.35, Color(1, 1, 1, 0.5))
 			draw_line(Vector2(0, -radius), Vector2(4, -radius - 8), Color(0.3, 0.5, 0.2), 3.0)
+
+func _frame(name: String) -> Rect2:
+	var m: Array = load("res://src/fxsprite.gd").SHEETS[name]
+	var n := int(_t * float(m[4])) % int(m[3])
+	return Rect2((n % int(m[2])) * m[0], (n / int(m[2])) * m[1], m[0], m[1])

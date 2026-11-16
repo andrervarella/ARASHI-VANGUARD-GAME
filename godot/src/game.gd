@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.2 · fases 1 e 2 · 16/11/2026"
+const VERSION := "v0.3 · fases 1 e 2 · 16/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")

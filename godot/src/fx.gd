@@ -80,5 +80,13 @@ func _draw() -> void:
 			var font := Game.FONT_SERIF
 			draw_string_outline(font, Vector2(-80, 0), txt, HORIZONTAL_ALIGNMENT_CENTER, 160, 30, 8, Color(0, 0, 0, a))
 			draw_string(font, Vector2(-80, 0), txt, HORIZONTAL_ALIGNMENT_CENTER, 160, 30, Color(col.r, col.g, col.b, a))
+		"streak":
+			# rastro de luz subindo ao céu (selos se rompendo)
+			var d := Vector2(cos(r), sin(r))
+			var head := d * 1400.0 * minf(1.0, k * 1.6)
+			var tail := d * 1400.0 * maxf(0.0, k * 1.6 - 0.45)
+			draw_line(tail, head, Color(col.r, col.g, col.b, 0.35 * a), 26.0)
+			draw_line(tail, head, Color(col.r, col.g, col.b, 0.9 * a), 9.0)
+			draw_circle(head, 14.0, Color(1, 1, 1, a))
 		"aura":
 			draw_circle(Vector2.ZERO, r * (0.6 + 0.4 * k), Color(col.r, col.g, col.b, 0.25 * a))

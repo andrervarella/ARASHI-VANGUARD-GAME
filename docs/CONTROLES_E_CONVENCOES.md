@@ -30,3 +30,7 @@ Resolução-base 960×540, `stretch=canvas_items`, `aspect=expand` (a tela larga
 
 ## Lista de conferência antes de entregar controle/HUD
 1. Segui a convenção do gênero? 2. Centro limpo? 3. Folga à direita de 104 px? 4. Renderizei e **olhei** a imagem (EXECUTADO (EMULADO))? 5. Avisei que toque real só o dono testa?
+
+## Atualização 16/11/2026 (v0.3)
+- Câmera com **zoom 1,0** (personagem ~29% da altura), pedido do dono ("visão mais próxima").
+- **DEFESA** (raio 34) à esquerda e acima de ATACAR, em arco com PODER: segurar = bloquear de frente (gasta 10 de poder; 20 contra ondas no chão); apertar no instante do golpe (0,2 s) = **aparo**: sem custo, +15 de poder, inimigo vacila (chefe fica ofegante). Sem poder suficiente: guarda quebra e o dano cai pela metade. Teclado: L/V.

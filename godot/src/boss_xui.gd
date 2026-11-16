@@ -26,6 +26,13 @@ func start() -> void:
 	state = "idle"
 	t = 0.0
 
+func parried() -> void:
+	if state in ["slash", "breath", "approach"]:
+		state = "tired"
+		t = 0.0
+		telegraph_t = 0.0
+		spr.play_anim("tired" if spr.has_anim("tired") else "idle")
+
 func damage_mult() -> float:
 	return 2.0 if state == "tired" else 1.0
 
@@ -33,7 +40,7 @@ func on_hurt() -> void:
 	if phase == 1 and hp <= hp_max / 2:
 		phase = 2
 		Game.sfx("xui_laugh", 0.0)
-		level.toast("Xui está faminto!")
+		level.toast("A fome de Xui desperta!")
 		level.shake(8.0)
 
 func ai(dt: float) -> void:
@@ -103,8 +110,8 @@ func ai(dt: float) -> void:
 				Game.sfx("slam", 2.0)
 				level.shake(16.0)
 				for d in [-1, 1]:
-					shoot(global_position + Vector2(d * 80.0, 0), Vector2(d * 480.0, 0), {"kind": "wave", "ground_wave": true, "radius": 28.0, "dmg": 2, "life": 1.6, "col": Color(0.75, 0.25, 0.35), "absorbable": false})
-				load("res://src/fx.gd").spawn(level, "wave", global_position, {"r": 240.0, "col": Color(0.9, 0.5, 0.3), "life": 0.45})
+					shoot(global_position + Vector2(d * 80.0, 0), Vector2(d * 480.0, 0), {"kind": "wave", "ground_wave": true, "radius": 28.0, "dmg": 2, "life": 1.6, "col": Color(0.55, 1.0, 0.65), "absorbable": false})
+				load("res://src/fxsprite.gd").play(level, "choque", global_position, {"scale_px": 3.0, "tint": Color(0.7, 1, 0.75)})
 				state = "tired"
 				t = 0.0
 		"tired":
@@ -125,7 +132,7 @@ func die() -> void:
 	var tw := create_tween()
 	for i in range(6):
 		tw.tween_callback(func():
-			load("res://src/fx.gd").spawn(level, "spark", global_position + Vector2(randf_range(-70, 70), randf_range(-180, -30)), {"r": 90.0, "col": Color(0.6, 1, 0.4)})
+			load("res://src/fxsprite.gd").play(level, "aparo", global_position + Vector2(randf_range(-70, 70), randf_range(-180, -30)), {"scale_px": 2.5, "tint": Color(0.7, 1, 0.7)})
 			Game.sfx("hit_big", -4.0))
 		tw.tween_interval(0.22)
 	tw.tween_property(spr, "modulate", Color(0.4, 1, 0.5, 0.0), 1.0)

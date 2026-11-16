@@ -62,14 +62,14 @@ func _ready() -> void:
 		_spawn_luke(Vector2(start_x - 120.0, GY))
 	# câmera
 	cam = Camera2D.new()
-	cam.zoom = Vector2(0.75, 0.75)
+	cam.zoom = Vector2(1.0, 1.0)
 	cam.position_smoothing_enabled = true
 	cam.position_smoothing_speed = 7.0
 	cam.limit_left = 0
 	cam.limit_right = int(D["largura"])
 	cam.limit_bottom = int(GY + 150.0)
 	cam.limit_top = int(GY - 2400.0)
-	cam.position = Vector2(0, -150)
+	cam.position = Vector2(0, -120)
 	player.add_child(cam)
 	cam.make_current()
 	# interface
@@ -96,7 +96,7 @@ func _ready() -> void:
 	_interact_lbl.visible = false
 	add_child(_interact_lbl)
 	_interact_lbl.z_index = 30
-	_interact_lbl.scale = Vector2(1.6, 1.6)
+	_interact_lbl.scale = Vector2(1.0, 1.0)
 	dlg = load("res://src/dialogue.gd").new()
 	add_child(dlg)
 	get_viewport().size_changed.connect(_layout_ui)
@@ -312,7 +312,7 @@ func _talk_tetsu() -> void:
 func _add_door(d: Array) -> void:
 	var x: float = d[0]
 	_doors.append(d)
-	_interactables.append({"rect": Rect2(x - 110, GY - 300, 220, 300), "prompt": "ATACAR: entrar", "cb": func(): _enter_door(d), "pos": Vector2(x, GY - 380)})
+	_interactables.append({"rect": Rect2(x - 110, GY - 300, 220, 300), "prompt": "ATACAR: entrar", "cb": func(): _enter_door(d), "pos": Vector2(x, GY - 250)})
 
 var _doors: Array = []
 
@@ -353,12 +353,40 @@ func _near_interactable() -> Variant:
 	return null
 
 # ---------------- desenho do mundo ----------------
+var _tx := {}
+func prop(name: String) -> Texture2D:
+	if not _tx.has(name):
+		var p := "res://assets/props/%s.png" % name
+		_tx[name] = load(p) if ResourceLoader.exists(p) else null
+	return _tx[name]
+
+func _draw_ground_tex(g: Array, t: Texture2D) -> void:
+	var tw := float(t.get_width())
+	var th := float(t.get_height())
+	var x: float = g[0]
+	var k := 0
+	while x < g[1]:
+		var w := minf(tw, g[1] - x)
+		var src := Rect2(0, 0, w, th)
+		if k % 2 == 1:
+			# espelhado: emenda sem costura
+			draw_texture_rect_region(t, Rect2(x + w, GY - 6.0, -w, th), Rect2(tw - w, 0, w, th))
+		else:
+			draw_texture_rect_region(t, Rect2(x, GY - 6.0, w, th), src)
+		x += w
+		k += 1
+
 func _draw() -> void:
 	var top: Color = D["borda"]
 	var fill: Color = D["chao"]
+	var gt := prop("chao_" + level_id)
 	for g in D["ground"]:
 		var r := Rect2(g[0], GY, g[1] - g[0], 800.0)
 		draw_rect(r, fill)
+		if gt:
+			_draw_ground_tex(g, gt)
+			draw_rect(Rect2(g[0], GY - 6.0 + gt.get_height(), g[1] - g[0], 800.0), fill.darkened(0.3))
+			continue
 		draw_rect(Rect2(g[0], GY, g[1] - g[0], 16.0), top)
 		draw_rect(Rect2(g[0], GY + 16.0, g[1] - g[0], 6.0), top.darkened(0.45))
 		var x: float = g[0]
@@ -373,8 +401,12 @@ func _draw() -> void:
 		# borda do abismo
 		draw_rect(Rect2(g[0], GY, 6, 800), top.darkened(0.6))
 		draw_rect(Rect2(g[1] - 6, GY, 6, 800), top.darkened(0.6))
+	var pt := prop("plataforma_jade" if level_id == "palacio" else "plataforma")
 	for p in D["plats"]:
 		var r := Rect2(p[0], GY - p[1], p[2], 22.0)
+		if pt:
+			draw_texture_rect(pt, Rect2(r.position - Vector2(6, 2), Vector2(r.size.x + 12, pt.get_height() * (r.size.x + 12) / pt.get_width())), false)
+			continue
 		draw_rect(r, Color(0.33, 0.19, 0.11))
 		draw_rect(Rect2(r.position, Vector2(r.size.x, 5)), Color(0.55, 0.35, 0.2))
 		draw_rect(Rect2(r.position + Vector2(0, 17), Vector2(r.size.x, 5)), Color(0.15, 0.08, 0.05))
@@ -386,10 +418,34 @@ func _draw() -> void:
 		_draw_block(Rect2(b[0], GY - b[1], b[2], b[3]), b[4])
 	for d in _doors:
 		_draw_door(d)
+	if D.has("portao_x"):
+		var gx: float = D["portao_x"]
+		var gtx := prop("portao")
+		var glow := _gate_glow
+		if gtx:
+			draw_texture_rect(gtx, Rect2(gx - 300, GY - 600, 600, 610), false, Color(1, 1 - glow * 0.6, 1 - glow * 0.7))
+		else:
+			draw_rect(Rect2(gx - 260, GY - 560, 520, 560), Color(0.12, 0.1, 0.1))
+			draw_circle(Vector2(gx, GY - 300), 120.0, Color(0.5, 0.35, 0.15))
+		if glow > 0.0:
+			draw_rect(Rect2(gx - 240, GY - 560, 480, 560), Color(1, 0.15, 0.1, 0.45 * glow))
 	if _luke_caged != Vector2.ZERO and not _luke_free:
 		pass
 
 func _draw_block(r: Rect2, style: String) -> void:
+	var tex_name: String = {"caixas": "caixa", "viga": "telhado", "pedra": "pedra", "mesa": "mesa"}.get(style, "")
+	var t := prop(tex_name) if tex_name != "" else null
+	if t:
+		if style == "caixas":
+			var n := maxi(1, int(round(r.size.x / r.size.y)))
+			var cw := r.size.x / n
+			for i in range(n):
+				draw_texture_rect(t, Rect2(r.position.x + i * cw - 4, r.position.y - 6, cw + 8, r.size.y + 8), false)
+		elif style == "viga":
+			draw_texture_rect(t, Rect2(r.position.x - 30, r.position.y - 40, r.size.x + 60, r.size.y + 60), false)
+		else:
+			draw_texture_rect(t, Rect2(r.position.x - 6, r.position.y - 8, r.size.x + 12, r.size.y + 10), false)
+		return
 	match style:
 		"caixas":
 			var n := int(r.size.x / 60.0)
@@ -439,6 +495,15 @@ func _draw_door(d: Array) -> void:
 	var st := _door_state(d)
 	var red := Color(0.72, 0.08, 0.1) if st == "aberto" else (Color(0.35, 0.3, 0.3) if st == "breve" else Color(0.45, 0.35, 0.15))
 	var h := 300.0
+	var tt := prop("torii")
+	if tt:
+		var mod := Color(1, 1, 1) if st == "aberto" else (Color(0.45, 0.42, 0.45) if st == "breve" else Color(0.85, 0.75, 0.55))
+		draw_texture_rect(tt, Rect2(x - 150, GY - 262, 300, 262), false, mod)
+		if st == "aberto":
+			var g2 := 0.18 + 0.12 * sin(Time.get_ticks_msec() * 0.004)
+			draw_rect(Rect2(x - 78, GY - 160, 156, 160), Color(0.9, 0.2, 0.25, g2))
+		_door_label(d, x, h, st)
+		return
 	draw_rect(Rect2(x - 100, GY - h, 22, h), red)
 	draw_rect(Rect2(x + 78, GY - h, 22, h), red)
 	draw_rect(Rect2(x - 130, GY - h - 30, 260, 26), red)
@@ -450,13 +515,16 @@ func _draw_door(d: Array) -> void:
 	elif st == "breve":
 		draw_line(Vector2(x - 78, GY - h + 60), Vector2(x + 78, GY - 20), Color(0.5, 0.5, 0.5, 0.8), 4.0)
 		draw_line(Vector2(x + 78, GY - h + 60), Vector2(x - 78, GY - 20), Color(0.5, 0.5, 0.5, 0.8), 4.0)
+	_door_label(d, x, h, st)
+
+func _door_label(d: Array, x: float, h: float, st: String) -> void:
 	var font := Game.FONT_SERIF
 	var col := Color(1, 0.9, 0.7) if st == "aberto" else Color(0.75, 0.72, 0.7)
-	draw_string_outline(font, Vector2(x - 160, GY - h - 80), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, 8, Color(0, 0, 0, 0.9))
-	draw_string(font, Vector2(x - 160, GY - h - 80), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, col)
+	draw_string_outline(font, Vector2(x - 160, GY - 330), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, 8, Color(0, 0, 0, 0.9))
+	draw_string(font, Vector2(x - 160, GY - 330), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, col)
 	var sub: String = d[3] + ("  ✓" if st == "vencido" else ("  (em breve)" if st == "breve" else ""))
-	draw_string_outline(font, Vector2(x - 160, GY - h - 48), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, 6, Color(0, 0, 0, 0.9))
-	draw_string(font, Vector2(x - 160, GY - h - 48), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, col.darkened(0.1))
+	draw_string_outline(font, Vector2(x - 160, GY - 298), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, 6, Color(0, 0, 0, 0.9))
+	draw_string(font, Vector2(x - 160, GY - 298), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, col.darkened(0.1))
 
 # ---------------- ciclo ----------------
 func _process(dt: float) -> void:
@@ -491,7 +559,7 @@ func _process(dt: float) -> void:
 	if it:
 		_interact_lbl.text = it["prompt"]
 		_interact_lbl.reset_size()
-		_interact_lbl.position = it["pos"] - Vector2(_interact_lbl.size.x * 0.8, 0)
+		_interact_lbl.position = it["pos"] - Vector2(_interact_lbl.size.x * 0.5, 0)
 
 func _update_bg() -> void:
 	if _bg == null or _bg.texture == null:
@@ -567,8 +635,12 @@ func say(id: String, after := Callable()) -> void:
 	if after.is_valid():
 		after.call()
 
+var _gate_glow := 0.0
+
 func _event(id: String) -> void:
 	match id:
+		"portao":
+			_gate_sequence()
 		"baku_prologo":
 			_baku_prologue()
 		"intro_vila":
@@ -595,6 +667,40 @@ func _on_broken(id: String) -> void:
 				Game.mark("segredo")
 				say("segredo")
 
+func _gate_sequence() -> void:
+	await say("portao")
+	frozen = true
+	player.locked = true
+	hud.release_all()
+	var gx: float = D["portao_x"]
+	var tw := create_tween()
+	player.spr.set_facing(1)
+	player.facing = 1
+	player.spr.play_anim("run")
+	tw.tween_property(player, "position:x", gx - 330.0, absf(gx - 330.0 - player.position.x) / 400.0)
+	await tw.finished
+	for i in range(3):
+		player.pose("attack")
+		Game.sfx("anvil", -2.0)
+		Game.sfx("slash3", -6.0)
+		shake(6.0 + i * 4.0)
+		load("res://src/fxsprite.gd").play(self, "aparo", Vector2(gx - 250.0, GY - 120.0), {"scale_px": 2.0 + i * 0.5})
+		await get_tree().create_timer(0.55).timeout
+	Game.sfx("impact", 2.0)
+	Game.sfx("chains", 0.0)
+	Game.flash(Color(1, 0.1, 0.1, 0.9), 1.2)
+	shake(22.0)
+	create_tween().tween_property(self, "_gate_glow", 1.0, 0.6)
+	var cols := [Color(1, 0.2, 0.15), Color(0.7, 0.95, 0.3), Color(0.65, 0.4, 1), Color(0.2, 0.9, 0.6), Color(1, 0.45, 0.75), Color(0.6, 0.3, 0.9), Color(0.95, 0.95, 1)]
+	for i in range(7):
+		var ang := -PI / 2.0 + (i - 3) * 0.32
+		load("res://src/fx.gd").spawn(self, "streak", Vector2(gx, GY - 320.0), {"r": ang, "col": cols[i], "life": 1.6})
+		Game.sfx("whisper" if i % 2 == 0 else "power", -10.0)
+		await get_tree().create_timer(0.12).timeout
+	player.pose("idle")
+	await get_tree().create_timer(1.2).timeout
+	_baku_prologue()
+
 func _baku_prologue() -> void:
 	frozen = true
 	player.locked = true
@@ -602,7 +708,7 @@ func _baku_prologue() -> void:
 	hud.release_all()
 	var b = load("res://src/actor_sprite.gd").new()
 	b.setup("baku")
-	b.position = Vector2(player.global_position.x + 520.0, GY)
+	b.position = Vector2(player.global_position.x + 360.0, GY)
 	b.set_facing(-1)
 	b.play_anim("idle")
 	b.modulate = Color(0, 0, 0, 0)
