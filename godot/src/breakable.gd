@@ -1,0 +1,71 @@
+extends StaticBody2D
+# Obstáculo quebrável: caixa (katana) ou parede rachada (só Golpe da Fúria).
+
+signal broken(id)
+
+var kind := "caixa"
+var id := ""
+var size := Vector2(120, 120)
+var hp := 2
+var level: Node
+var _shake := 0.0
+
+func _ready() -> void:
+	collision_layer = 1
+	var cs := CollisionShape2D.new()
+	var rs := RectangleShape2D.new()
+	rs.size = size
+	cs.shape = rs
+	cs.position = Vector2(size.x / 2.0, -size.y / 2.0)
+	add_child(cs)
+	add_to_group("breakable")
+
+func get_rect() -> Rect2:
+	return Rect2(global_position + Vector2(0, -size.y), size)
+
+func hit_by(k: String) -> void:
+	if kind == "rachada" and k != "furia":
+		Game.sfx("clash", -6.0)
+		_shake = 0.2
+		if level:
+			level.toast("Rachada... precisa de um golpe com mais fúria.")
+		return
+	hp -= 1 if k == "katana" else 3
+	_shake = 0.2
+	Game.sfx("hit1", -6.0)
+	if hp <= 0:
+		Game.sfx("break", -2.0)
+		for i in range(5):
+			load("res://src/fx.gd").spawn(level, "dust", get_rect().get_center() + Vector2(randf_range(-40, 40), randf_range(-40, 40)), {"r": 70.0, "life": 0.5})
+		remove_from_group("breakable")
+		broken.emit(id)
+		queue_free()
+
+func _process(dt: float) -> void:
+	_shake = maxf(0.0, _shake - dt)
+	queue_redraw()
+
+func _draw() -> void:
+	var o := Vector2(randf_range(-3, 3), 0) if _shake > 0.0 else Vector2.ZERO
+	var r := Rect2(Vector2(0, -size.y) + o, size)
+	if kind == "caixa":
+		var wood := Color(0.36, 0.22, 0.13)
+		draw_rect(r, wood)
+		draw_rect(r, Color(0.12, 0.07, 0.05), false, 4.0)
+		draw_line(r.position, r.end, Color(0.2, 0.12, 0.07), 6.0)
+		draw_line(Vector2(r.position.x, r.end.y), Vector2(r.end.x, r.position.y), Color(0.2, 0.12, 0.07), 6.0)
+		draw_rect(Rect2(r.position + Vector2(6, 6), r.size - Vector2(12, 12)), Color(0.5, 0.32, 0.18), false, 2.0)
+	else:
+		draw_rect(r, Color(0.22, 0.2, 0.18))
+		for i in range(int(size.y / 40.0)):
+			var y := r.position.y + i * 40.0
+			draw_line(Vector2(r.position.x, y), Vector2(r.end.x, y), Color(0.12, 0.11, 0.1), 3.0)
+			var xo := 50.0 if i % 2 == 0 else 0.0
+			var x := r.position.x + xo
+			while x < r.end.x:
+				draw_line(Vector2(x, y), Vector2(x, y + 40.0), Color(0.12, 0.11, 0.1), 3.0)
+				x += 100.0
+		var c := r.get_center()
+		var pts := PackedVector2Array([c + Vector2(-10, -130), c + Vector2(12, -70), c + Vector2(-8, -20), c + Vector2(20, 40), c + Vector2(-4, 90), c + Vector2(14, 140)])
+		draw_polyline(pts, Color(1, 0.45, 0.1, 0.55 + 0.25 * sin(Time.get_ticks_msec() * 0.005)), 5.0)
+		draw_rect(r, Color(0.08, 0.07, 0.06), false, 4.0)

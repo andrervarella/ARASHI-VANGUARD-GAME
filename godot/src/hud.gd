@@ -1,20 +1,32 @@
 extends Control
-# Controles de toque multitoque:
-#  - direcional único à esquerda (deslizar o polegar): ◀ ▶ andam, ▼ agacha,
-#    ▼ + ◀/▶ (diagonal) anda agachado
-#  - ATACAR e PULAR à direita
-# Teclado para teste no computador: A/D ou setas, S/↓ agachar, espaço pular, J/X atacar.
+# Controles de toque (esquema aprovado v7) + botão PODER + barras de vida/poder/chefe.
+#  - direcional único à esquerda: ◀ ▶ andam, ▼ agacha (▼+◀/▶ anda agachado)
+#  - ATACAR e PULAR à direita; PODER em arco acima deles (proposta do doc de controles)
+#  - toque no ícone do poder (canto superior esquerdo) troca o poder equipado
+#  - ❚❚ no canto superior direito pausa
+# Teclado: A/D ou setas, S/↓ agachar, espaço/W/↑ pular, J/X atacar, K/C poder, Q trocar poder, Esc pausa.
+
+signal pause_requested
+signal power_cycle_requested
 
 var move := 0.0
 var jump_down := false
 var attack_down := false
+var power_down := false
 var crouch_down := false
-var _jump_prev := false
-var _attack_prev := false
 var jump_pressed := false
 var attack_pressed := false
+var power_pressed := false
+var _jump_prev := false
+var _attack_prev := false
+var _power_prev := false
 
-var _fingers := {}          # index -> "attack" | "jump"
+var player: Node
+var boss: Node
+var boss_name := ""
+var show_controls := true
+
+var _fingers := {}
 var _stick_finger := -1
 var _stick_vec := Vector2.ZERO
 var _demo_vec := Vector2.ZERO
@@ -22,46 +34,70 @@ var BTN := {}
 var STICK_C := Vector2.ZERO
 const STICK_R := 68.0
 const MARGIN := 18.0
-const MARGIN_R := 104.0   # folga à direita: botão de sair da tela cheia do navegador
+const MARGIN_R := 104.0
+var _portrait: Texture2D
+var _q_prev := false
+var _esc_prev := false
+var _auto := OS.get_cmdline_user_args().has("--auto")
+var _auto_t := 0.0
+
+func _ready() -> void:
+	set_anchors_preset(Control.PRESET_FULL_RECT)
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_portrait = load("res://assets/portraits/ren.jpg")
+	_layout()
+	if OS.get_cmdline_user_args().has("--demo-stick"):
+		_demo_vec = Vector2(STICK_R * 0.8, STICK_R * 0.8)
 
 func _layout() -> void:
 	var vs := get_viewport_rect().size
 	var w := vs.x
 	var h := vs.y
-	var ra := 40.0   # atacar
-	var rj := 46.0   # pular
+	var ra := 40.0
+	var rj := 46.0
 	STICK_C = Vector2(MARGIN + 8.0 + STICK_R, h - MARGIN - STICK_R)
+	var atk := Vector2(w - MARGIN_R - rj * 2.0 - 14.0 - ra, h - MARGIN - ra)
+	var jmp := Vector2(w - MARGIN_R - rj, h - MARGIN - rj - 10.0)
 	BTN = {
-		"attack": {"pos": Vector2(w - MARGIN_R - rj * 2.0 - 14.0 - ra, h - MARGIN - ra), "r": ra},
-		"jump":   {"pos": Vector2(w - MARGIN_R - rj, h - MARGIN - rj - 10.0), "r": rj},
+		"attack": {"pos": atk, "r": ra},
+		"jump": {"pos": jmp, "r": rj},
+		"power": {"pos": Vector2((atk.x + jmp.x) / 2.0 - 8.0, h - 160.0), "r": 34.0},
 	}
 
-func _ready() -> void:
-	set_anchors_preset(Control.PRESET_FULL_RECT)
-	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_layout()
-	if OS.get_cmdline_user_args().has("--demo-stick"):   # só para teste de render
-		_demo_vec = Vector2(STICK_R * 0.8, STICK_R * 0.8)
+func _icon_power_rect() -> Rect2:
+	return Rect2(Vector2(10, 70), Vector2(178, 36))
+
+func _pause_rect() -> Rect2:
+	var vs := get_viewport_rect().size
+	return Rect2(Vector2(vs.x - 64, 8), Vector2(52, 44))
 
 func _button_at(p: Vector2) -> String:
-	_layout()
 	var best := ""
 	var best_d := 1e9
 	for k in BTN:
+		if k == "power" and Game.data["poderes"].is_empty():
+			continue
 		var d: float = p.distance_to(BTN[k]["pos"])
-		if d <= BTN[k]["r"] * 1.35 and d < best_d:
+		if d <= BTN[k]["r"] * 1.3 and d < best_d:
 			best = k
 			best_d = d
 	return best
 
-func _in_stick_zone(p: Vector2) -> bool:
-	_layout()
-	return p.distance_to(STICK_C) <= STICK_R * 1.8
-
 func _input(event: InputEvent) -> void:
+	if not visible:
+		return
 	if event is InputEventScreenTouch:
+		_layout()
 		if event.pressed:
-			if _stick_finger == -1 and _in_stick_zone(event.position):
+			if _pause_rect().has_point(event.position):
+				pause_requested.emit()
+				return
+			if _icon_power_rect().has_point(event.position):
+				power_cycle_requested.emit()
+				return
+			if not show_controls:
+				return
+			if _stick_finger == -1 and event.position.distance_to(STICK_C) <= STICK_R * 1.8:
 				_stick_finger = event.index
 				_stick_vec = event.position - STICK_C
 			else:
@@ -77,35 +113,67 @@ func _input(event: InputEvent) -> void:
 		if event.index == _stick_finger:
 			_stick_vec = event.position - STICK_C
 		elif _fingers.has(event.index):
-			_fingers[event.index] = _button_at(event.position)
+			var b := _button_at(event.position)
+			if b != "":
+				_fingers[event.index] = b
+	elif event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT and not DisplayServer.is_touchscreen_available():
+		if _pause_rect().has_point(event.position):
+			pause_requested.emit()
+		elif _icon_power_rect().has_point(event.position):
+			power_cycle_requested.emit()
+
+func release_all() -> void:
+	_fingers.clear()
+	_stick_finger = -1
+	_stick_vec = Vector2.ZERO
 
 func _process(_dt: float) -> void:
 	_layout()
 	var j := false
 	var a := false
+	var pw := false
 	for idx in _fingers:
 		match _fingers[idx]:
 			"jump": j = true
 			"attack": a = true
+			"power": pw = true
 	var v := _stick_vec if _stick_finger != -1 else _demo_vec
 	var dead := STICK_R * 0.30
 	var l := v.x < -dead
 	var r := v.x > dead
 	var dn := v.y > dead * 1.1
-	# teclado (teste no computador)
 	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT): l = true
 	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT): r = true
 	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN): dn = true
 	if Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP): j = true
 	if Input.is_key_pressed(KEY_J) or Input.is_key_pressed(KEY_X): a = true
+	if Input.is_key_pressed(KEY_K) or Input.is_key_pressed(KEY_C): pw = true
+	var q := Input.is_key_pressed(KEY_Q)
+	if q and not _q_prev:
+		power_cycle_requested.emit()
+	_q_prev = q
+	var esc := Input.is_key_pressed(KEY_ESCAPE) or Input.is_key_pressed(KEY_P)
+	if esc and not _esc_prev:
+		pause_requested.emit()
+	_esc_prev = esc
+	if _auto:
+		_auto_t += _dt
+		r = fmod(_auto_t, 6.0) < 5.0
+		l = not r
+		a = fmod(_auto_t, 0.45) < 0.12
+		j = fmod(_auto_t, 1.7) < 0.35
+		pw = fmod(_auto_t, 5.0) < 0.1
 	move = (1.0 if r else 0.0) - (1.0 if l else 0.0)
 	crouch_down = dn
 	jump_pressed = j and not _jump_prev
 	attack_pressed = a and not _attack_prev
+	power_pressed = pw and not _power_prev
 	_jump_prev = j
 	_attack_prev = a
+	_power_prev = pw
 	jump_down = j
 	attack_down = a
+	power_down = pw
 	_sl = l
 	_sr = r
 	_sd = dn
@@ -115,14 +183,61 @@ var _sl := false
 var _sr := false
 var _sd := false
 
+const RED := Color(0.64, 0.09, 0.16)
+const GOLD := Color(0.85, 0.7, 0.4)
+
 func _draw() -> void:
-	var font := ThemeDB.fallback_font
+	var font := Game.FONT_SERIF
+	var vs := get_viewport_rect().size
+	# --- retrato e barras (estilo jogo de luta) ---
+	if player:
+		var pc := Vector2(38, 38)
+		draw_circle(pc, 30, Color(0, 0, 0, 0.6))
+		if _portrait:
+			draw_texture_rect(_portrait, Rect2(pc - Vector2(26, 26), Vector2(52, 52)), false)
+		var pcol: Color = Game.POWERS[Game.data["equipado"]]["cor"]
+		draw_arc(pc, 28, 0, TAU, 40, GOLD, 2.5)
+		draw_arc(pc, 31, 0, TAU, 40, pcol, 2.0)
+		var hpmax := float(Game.hp_max())
+		var bw := 210.0
+		_bar(Vector2(74, 18), Vector2(bw, 16), float(player.hp) / hpmax, Color(0.86, 0.12, 0.18), Color(1, 0.55, 0.45))
+		for i in range(1, int(hpmax)):
+			var x := 74.0 + bw * i / hpmax
+			draw_line(Vector2(x, 19), Vector2(x, 33), Color(0, 0, 0, 0.5), 1.0)
+		_bar(Vector2(74, 40), Vector2(160, 9), player.ki / 100.0, pcol.lightened(0.1), pcol.lightened(0.5))
+		# custo do poder
+		var cost: float = Game.POWERS[Game.data["equipado"]]["custo"]
+		if cost > 0:
+			draw_line(Vector2(74 + 160 * cost / 100.0, 38), Vector2(74 + 160 * cost / 100.0, 51), Color(1, 1, 1, 0.8), 2.0)
+		# poder equipado (toque para trocar)
+		var pname: String = Game.POWERS[Game.data["equipado"]]["nome"]
+		if Game.data["poderes"].size() > 0:
+			var r := _icon_power_rect()
+			draw_rect(r, Color(0.05, 0.02, 0.04, 0.55))
+			draw_rect(r, Color(pcol.r, pcol.g, pcol.b, 0.9), false, 2.0)
+			draw_circle(r.position + Vector2(18, 18), 9, pcol)
+			draw_string_outline(font, r.position + Vector2(34, 23), pname, HORIZONTAL_ALIGNMENT_LEFT, 144, 13, 4, Color(0, 0, 0, 0.9))
+			draw_string(font, r.position + Vector2(34, 23), pname, HORIZONTAL_ALIGNMENT_LEFT, 144, 13, Color(1, 0.95, 0.85))
+	# --- pausa ---
+	var pr := _pause_rect()
+	draw_rect(pr, Color(0.05, 0.02, 0.04, 0.45))
+	draw_rect(Rect2(pr.get_center() + Vector2(-9, -11), Vector2(6, 22)), Color(1, 0.95, 0.85, 0.8))
+	draw_rect(Rect2(pr.get_center() + Vector2(3, -11), Vector2(6, 22)), Color(1, 0.95, 0.85, 0.8))
+	# --- chefe ---
+	if boss and is_instance_valid(boss) and boss.get("hp") != null and boss.hp > 0:
+		var bw2 := clampf(vs.x - 640.0, 260.0, 460.0)
+		var bp := Vector2((vs.x - bw2) / 2.0, 22)
+		draw_string_outline(font, bp + Vector2(0, -2), boss_name, HORIZONTAL_ALIGNMENT_CENTER, bw2, 16, 5, Color(0, 0, 0, 0.95))
+		draw_string(font, bp + Vector2(0, -2), boss_name, HORIZONTAL_ALIGNMENT_CENTER, bw2, 16, Color(1, 0.88, 0.7))
+		_bar(bp + Vector2(0, 6), Vector2(bw2, 12), float(boss.hp) / float(boss.hp_max), Color(0.7, 0.05, 0.1), Color(1, 0.5, 0.2))
+	if not show_controls:
+		return
 	# --- direcional ---
 	var c := STICK_C
 	draw_circle(c + Vector2(0, 3), STICK_R + 2.0, Color(0, 0, 0, 0.25))
 	draw_circle(c, STICK_R, Color(0.07, 0.05, 0.09, 0.42))
-	draw_arc(c, STICK_R - 1.5, 0, TAU, 64, Color(0.64, 0.09, 0.16, 0.62), 3.0)
-	draw_arc(c, STICK_R - 6.0, 0, TAU, 64, Color(0.85, 0.7, 0.4, 0.28), 1.2)
+	draw_arc(c, STICK_R - 1.5, 0, TAU, 64, Color(RED.r, RED.g, RED.b, 0.62), 3.0)
+	draw_arc(c, STICK_R - 6.0, 0, TAU, 64, Color(GOLD.r, GOLD.g, GOLD.b, 0.28), 1.2)
 	var u := STICK_R * 0.20
 	var off := STICK_R * 0.68
 	_arrow(c + Vector2(-off, 0), Vector2(-1, 0), u, _sl)
@@ -132,21 +247,35 @@ func _draw() -> void:
 	if v.length() > STICK_R * 0.55:
 		v = v.normalized() * STICK_R * 0.55
 	var active := _stick_finger != -1 or _demo_vec != Vector2.ZERO
-	draw_circle(c + v, 26.0, Color(0.64, 0.09, 0.16, 0.75 if active else 0.45))
-	draw_arc(c + v, 26.0, 0, TAU, 40, Color(0.85, 0.7, 0.4, 0.7), 2.0)
-	# --- botões de ação ---
+	draw_circle(c + v, 26.0, Color(RED.r, RED.g, RED.b, 0.75 if active else 0.45))
+	draw_arc(c + v, 26.0, 0, TAU, 40, Color(GOLD.r, GOLD.g, GOLD.b, 0.7), 2.0)
+	# --- botões ---
 	for k in BTN:
-		var on := jump_down if k == "jump" else attack_down
+		if k == "power" and Game.data["poderes"].is_empty():
+			continue
+		var on: bool = {"jump": jump_down, "attack": attack_down, "power": power_down}[k]
 		var bc: Vector2 = BTN[k]["pos"]
 		var rad: float = BTN[k]["r"] * (0.94 if on else 1.0)
+		var ring := RED
+		if k == "power":
+			ring = Game.POWERS[Game.data["equipado"]]["cor"]
+			if player and player.ki < float(Game.POWERS[Game.data["equipado"]]["custo"]):
+				ring = ring.darkened(0.5)
 		draw_circle(bc + Vector2(0, 3), rad + 2.0, Color(0, 0, 0, 0.25))
 		draw_circle(bc, rad, Color(0.07, 0.05, 0.09, 0.62 if on else 0.42))
-		draw_arc(bc, rad - 1.5, 0, TAU, 48, Color(0.64, 0.09, 0.16, 0.95 if on else 0.62), 3.0)
-		draw_arc(bc, rad - 5.0, 0, TAU, 48, Color(0.85, 0.7, 0.4, 0.55 if on else 0.28), 1.2)
+		draw_arc(bc, rad - 1.5, 0, TAU, 48, Color(ring.r, ring.g, ring.b, 0.95 if on else 0.7), 3.0)
+		draw_arc(bc, rad - 5.0, 0, TAU, 48, Color(GOLD.r, GOLD.g, GOLD.b, 0.55 if on else 0.28), 1.2)
 		if on:
-			draw_circle(bc, rad - 6.0, Color(0.64, 0.09, 0.16, 0.30))
+			draw_circle(bc, rad - 6.0, Color(ring.r, ring.g, ring.b, 0.30))
 		_icon(k, bc, rad, on)
-	draw_string(font, Vector2(14, 22), "ARASHI VANGUARD — protótipo (arte provisória)", HORIZONTAL_ALIGNMENT_LEFT, -1, 13, Color(1, 1, 1, 0.38))
+
+func _bar(p: Vector2, s: Vector2, f: float, col: Color, hi: Color) -> void:
+	f = clampf(f, 0.0, 1.0)
+	draw_rect(Rect2(p - Vector2(2, 2), s + Vector2(4, 4)), Color(0, 0, 0, 0.7))
+	draw_rect(Rect2(p, s), Color(0.15, 0.05, 0.07, 0.9))
+	draw_rect(Rect2(p, Vector2(s.x * f, s.y)), col)
+	draw_rect(Rect2(p, Vector2(s.x * f, s.y * 0.35)), Color(hi.r, hi.g, hi.b, 0.6))
+	draw_rect(Rect2(p - Vector2(2, 2), s + Vector2(4, 4)), GOLD, false, 1.5)
 
 func _arrow(p: Vector2, dir: Vector2, u: float, on: bool) -> void:
 	var col := Color(0.96, 0.92, 0.86, 0.95 if on else 0.5)
@@ -166,5 +295,14 @@ func _icon(k: String, c: Vector2, rad: float, on: bool) -> void:
 			var guard := c + Vector2(-u * 0.35, u * 0.35)
 			draw_line(guard, tip, col, 3.5)
 			var perp := Vector2(0.7, 0.7) * u * 0.55
-			draw_line(guard - perp, guard + perp, Color(0.85, 0.7, 0.4, 0.9 if on else 0.65), 3.0)
-			draw_line(guard, c + Vector2(-u * 1.1, u * 1.1), Color(0.64, 0.09, 0.16, 0.95), 5.0)
+			draw_line(guard - perp, guard + perp, Color(GOLD.r, GOLD.g, GOLD.b, 0.9 if on else 0.65), 3.0)
+			draw_line(guard, c + Vector2(-u * 1.1, u * 1.1), Color(RED.r, RED.g, RED.b, 0.95), 5.0)
+		"power":
+			# chama estilizada
+			var pts := PackedVector2Array()
+			for i in range(13):
+				var ang := TAU * i / 12.0
+				var rr := u * (1.25 if i % 2 == 0 else 0.6)
+				pts.append(c + Vector2(sin(ang), -cos(ang)) * rr)
+			draw_colored_polygon(pts, Color(col.r, col.g, col.b, 0.85))
+			draw_circle(c, u * 0.45, Color(0.1, 0.05, 0.05, 0.9))
