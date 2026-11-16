@@ -22,3 +22,6 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `icons/*.png` (coletáveis, itens, poderes) e `props/*.png` (caixa, pedra, plataformas, mesa, telhado, parede rachada, torii, portão, chãos) | PixelLab `create_image_pixen` |
 | `fx/*.png` (onda de brasa, brasa do oni, acerto, aparo, vapor, onda de choque, defesa) | PixelLab VFX workbench (salvos em "My effects" do dono) |
 | `sprites/ren/guard_*` | PixelLab, animação do Ren `036acc6d` |
+
+## Acréscimos v0.4 (16/11/2026)
+- `ui/btn_*.png`, `ui/placa.png`: PixelLab `create_image_pixen`. `bg/refugio.png` refeito sem pessoas (PixelLab `create_image_pro`). `sprites/ren/{thrust,rising,finisher}_*`: animações do Ren `036acc6d`.

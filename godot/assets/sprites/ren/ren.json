@@ -141,5 +141,59 @@
    216,
    216
   ]
+ },
+ "thrust": {
+  "frames": [
+   "thrust_00.png",
+   "thrust_01.png",
+   "thrust_02.png",
+   "thrust_03.png"
+  ],
+  "fps": 14,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "rising": {
+  "frames": [
+   "rising_00.png",
+   "rising_01.png",
+   "rising_02.png"
+  ],
+  "fps": 12,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "finisher": {
+  "frames": [
+   "finisher_00.png",
+   "finisher_01.png",
+   "finisher_02.png",
+   "finisher_03.png",
+   "finisher_04.png"
+  ],
+  "fps": 12,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
  }
 }

@@ -361,25 +361,46 @@ func prop(name: String) -> Texture2D:
 	return _tx[name]
 
 func _draw_ground_tex(g: Array, t: Texture2D) -> void:
+	# a textura já vem espelhada (emenda sem costura); repete sem cortes
 	var tw := float(t.get_width())
 	var th := float(t.get_height())
 	var x: float = g[0]
-	var k := 0
 	while x < g[1]:
 		var w := minf(tw, g[1] - x)
-		var src := Rect2(0, 0, w, th)
-		if k % 2 == 1:
-			# espelhado: emenda sem costura
-			draw_texture_rect_region(t, Rect2(x + w, GY - 6.0, -w, th), Rect2(tw - w, 0, w, th))
-		else:
-			draw_texture_rect_region(t, Rect2(x, GY - 6.0, w, th), src)
+		draw_texture_rect_region(t, Rect2(x, GY - 6.0, w, th), Rect2(fmod(x, tw) * 0.0, 0, w, th))
 		x += w
-		k += 1
+	# bordas de penhasco nos dois lados do trecho
+	for side in [0, 1]:
+		var ex: float = g[0] if side == 0 else g[1]
+		var dir := -1.0 if side == 0 else 1.0
+		if (side == 0 and g[0] <= 0.0) or (side == 1 and g[1] >= float(D["largura"])):
+			continue
+		var pts := PackedVector2Array([Vector2(ex, GY - 6), Vector2(ex + dir * 10, GY + 30), Vector2(ex + dir * 4, GY + 70), Vector2(ex + dir * 16, GY + 120), Vector2(ex + dir * 8, GY + 200), Vector2(ex - dir * 30, GY + 200), Vector2(ex - dir * 30, GY - 6)])
+		draw_colored_polygon(pts, D["chao"].darkened(0.35))
+		draw_polyline(PackedVector2Array([Vector2(ex, GY - 6), Vector2(ex + dir * 10, GY + 30), Vector2(ex + dir * 4, GY + 70), Vector2(ex + dir * 16, GY + 120), Vector2(ex + dir * 8, GY + 200)]), D["borda"].darkened(0.2), 4.0)
+
+# abismo entre trechos de chão: escuridão com névoa, para parecer buraco de verdade
+func _draw_pits() -> void:
+	var gs: Array = D["ground"]
+	for i in range(gs.size() - 1):
+		var x0: float = gs[i][1]
+		var x1: float = gs[i + 1][0]
+		var w := x1 - x0
+		for k in range(12):
+			var y := GY - 6.0 + k * 22.0
+			draw_rect(Rect2(x0, y, w, 22.0), Color(0.02, 0.01, 0.03, clampf(0.15 + k * 0.08, 0.0, 0.95)))
+		var tt := Time.get_ticks_msec() * 0.001
+		for k in range(5):
+			var fx := x0 + fmod(k * 53.0 + tt * 18.0, w)
+			draw_circle(Vector2(fx, GY + 120.0 + sin(tt + k) * 8.0), 34.0, Color(0.6, 0.55, 0.7, 0.07))
+		# pedrinhas soltas caindo da borda
+		draw_rect(Rect2(x0 + 6, GY + 10 + fmod(tt * 60.0, 120.0), 5, 5), Color(0.3, 0.25, 0.25, 0.6))
 
 func _draw() -> void:
 	var top: Color = D["borda"]
 	var fill: Color = D["chao"]
 	var gt := prop("chao_" + level_id)
+	_draw_pits()
 	for g in D["ground"]:
 		var r := Rect2(g[0], GY, g[1] - g[0], 800.0)
 		draw_rect(r, fill)
@@ -440,11 +461,12 @@ func _draw_block(r: Rect2, style: String) -> void:
 			var n := maxi(1, int(round(r.size.x / r.size.y)))
 			var cw := r.size.x / n
 			for i in range(n):
-				draw_texture_rect(t, Rect2(r.position.x + i * cw - 4, r.position.y - 6, cw + 8, r.size.y + 8), false)
+				var ch := r.size.y + 6.0
+				draw_texture_rect(t, Rect2(r.position.x + i * cw - 4, r.end.y - ch + 4.0, cw + 8, ch), false)
 		elif style == "viga":
 			draw_texture_rect(t, Rect2(r.position.x - 30, r.position.y - 40, r.size.x + 60, r.size.y + 60), false)
 		else:
-			draw_texture_rect(t, Rect2(r.position.x - 6, r.position.y - 8, r.size.x + 12, r.size.y + 10), false)
+			draw_texture_rect(t, Rect2(r.position.x - 6, r.position.y - 8, r.size.x + 12, r.size.y + 14), false)
 		return
 	match style:
 		"caixas":
@@ -576,6 +598,7 @@ func _update_bg() -> void:
 
 func _fell() -> void:
 	player.velocity = Vector2.ZERO
+	player.guarding = false
 	player.take_damage(2, player.global_position.x)
 	if player.hp > 0:
 		player.global_position = Vector2(_safe_x - 60.0 * player.facing, GY - 4.0)
@@ -749,6 +772,10 @@ func _start_arena() -> void:
 	Game.save()
 	cam.limit_left = int(arena_x0)
 	cam.limit_right = int(arena_x1)
+	# arena inteira na tela: luta concentrada, sem chefe fora de vista
+	var vs := get_viewport().get_visible_rect().size
+	var z := clampf(vs.x / (arena_x1 - arena_x0), 0.8, 1.0)
+	create_tween().tween_property(cam, "zoom", Vector2(z, z), 0.8)
 	_arena_walls.append(_static_rect(arena_x0 - 100.0, GY - 3000.0, 100.0, 3000.0, 1))
 	Game.stop_music()
 	Game.sfx("chains", -2.0)

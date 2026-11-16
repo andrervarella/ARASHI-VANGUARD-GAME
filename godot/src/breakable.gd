@@ -53,7 +53,7 @@ func _draw() -> void:
 	if _tex == null and ResourceLoader.exists(tp):
 		_tex = load(tp)
 	if _tex:
-		draw_texture_rect(_tex, Rect2(r.position - Vector2(6, 8), r.size + Vector2(12, 10)), false)
+		draw_texture_rect(_tex, Rect2(r.position - Vector2(6, 8), r.size + Vector2(12, 12)), false)
 		if kind == "rachada":
 			var c := r.get_center()
 			draw_circle(c, 40.0, Color(1, 0.45, 0.1, 0.10 + 0.08 * sin(Time.get_ticks_msec() * 0.005)))

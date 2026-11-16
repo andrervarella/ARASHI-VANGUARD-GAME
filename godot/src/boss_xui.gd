@@ -48,7 +48,7 @@ func ai(dt: float) -> void:
 	if phase == 2 and state != "intro":
 		_rain_t -= dt
 		if _rain_t <= 0.0:
-			_rain_t = 1.6
+			_rain_t = 2.6
 			var x := randf_range(level.arena_x0 + 80.0, level.arena_x1 - 80.0)
 			shoot(Vector2(x, level.ground_y - 900.0), Vector2(0, 120), {"grav": 900.0, "kind": "food", "radius": 16.0, "dmg": 1, "col": [Color(0.8, 0.2, 0.2), Color(0.9, 0.6, 0.1), Color(0.5, 0.75, 0.2)].pick_random()})
 	match state:
@@ -69,7 +69,7 @@ func ai(dt: float) -> void:
 				else:
 					state = "slam_wind"
 					spr.play_anim("slam", true, 0.8)
-				if phase == 2 and _cycle % 4 == 0 and get_tree().get_nodes_in_group("foes").size() < 4:
+				if phase == 2 and _cycle % 4 == 0 and get_tree().get_nodes_in_group("foes").size() < 2:
 					level.spawn_enemy("espirito", global_position.x + randf_range(-300, 300), level.ground_y - 300.0)
 		"breath":
 			telegraph_t = 1.0 if spr.frame < 4 else 0.0
@@ -122,18 +122,6 @@ func ai(dt: float) -> void:
 				t = 0.0
 
 func die() -> void:
-	dead = true
-	remove_from_group("foes")
-	telegraph_t = 0.0
-	Game.sfx("boss_death", 0.0)
-	level.shake(16.0)
-	for s in get_tree().get_nodes_in_group("enemy_shot"):
-		s.queue_free()
-	var tw := create_tween()
-	for i in range(6):
-		tw.tween_callback(func():
-			load("res://src/fxsprite.gd").play(level, "aparo", global_position + Vector2(randf_range(-70, 70), randf_range(-180, -30)), {"scale_px": 2.5, "tint": Color(0.7, 1, 0.7)})
-			Game.sfx("hit_big", -4.0))
-		tw.tween_interval(0.22)
-	tw.tween_property(spr, "modulate", Color(0.4, 1, 0.5, 0.0), 1.0)
-	tw.tween_callback(func(): defeated.emit())
+	if dead:
+		return
+	boss_death_sequence(Color(0.55, 1.0, 0.45))

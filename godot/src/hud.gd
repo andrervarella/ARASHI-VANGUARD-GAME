@@ -38,6 +38,8 @@ const MARGIN := 18.0
 const MARGIN_R := 104.0
 var _portrait: Texture2D
 var _icons := {}
+var _btn_tex := {}
+var _placa: Texture2D
 var _q_prev := false
 var _esc_prev := false
 var _auto := OS.get_cmdline_user_args().has("--auto")
@@ -47,6 +49,12 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_portrait = load("res://assets/portraits/ren.jpg")
+	for k in ["attack", "jump", "power", "guard"]:
+		var bp := "res://assets/ui/btn_%s.png" % k
+		if ResourceLoader.exists(bp):
+			_btn_tex[k] = load(bp)
+	if ResourceLoader.exists("res://assets/ui/placa.png"):
+		_placa = load("res://assets/ui/placa.png")
 	_layout()
 	if OS.get_cmdline_user_args().has("--demo-stick"):
 		_demo_vec = Vector2(STICK_R * 0.8, STICK_R * 0.8)
@@ -68,7 +76,7 @@ func _layout() -> void:
 	}
 
 func _icon_power_rect() -> Rect2:
-	return Rect2(Vector2(10, 70), Vector2(178, 36))
+	return Rect2(Vector2(8, 62), Vector2(210, 50))
 
 func _pause_rect() -> Rect2:
 	var vs := get_viewport_rect().size
@@ -221,17 +229,22 @@ func _draw() -> void:
 		var pname: String = Game.POWERS[Game.data["equipado"]]["nome"]
 		if Game.data["poderes"].size() > 0:
 			var r := _icon_power_rect()
-			draw_rect(r, Color(0.05, 0.02, 0.04, 0.55))
-			draw_rect(r, Color(pcol.r, pcol.g, pcol.b, 0.9), false, 2.0)
-			var pi := "res://assets/icons/%s.png" % Game.data["equipado"]
-			if Game.data["equipado"] != "" and not _icons.has(pi) and ResourceLoader.exists(pi):
-				_icons[pi] = load(pi)
-			if _icons.has(pi):
-				draw_texture_rect(_icons[pi], Rect2(r.position + Vector2(2, 2), Vector2(32, 32)), false)
+			if _placa:
+				draw_texture_rect(_placa, r, false, Color(1, 1, 1, 0.95))
 			else:
-				draw_circle(r.position + Vector2(18, 18), 9, pcol)
-			draw_string_outline(font, r.position + Vector2(34, 23), pname, HORIZONTAL_ALIGNMENT_LEFT, 144, 13, 4, Color(0, 0, 0, 0.9))
-			draw_string(font, r.position + Vector2(34, 23), pname, HORIZONTAL_ALIGNMENT_LEFT, 144, 13, Color(1, 0.95, 0.85))
+				draw_rect(r, Color(0.05, 0.02, 0.04, 0.55))
+			var key: String = Game.data["equipado"] if Game.data["equipado"] != "" else "fio"
+			var pi := "res://assets/icons/%s.png" % key
+			if not _icons.has(pi) and ResourceLoader.exists(pi):
+				_icons[pi] = load(pi)
+			draw_circle(r.position + Vector2(28, 25), 22, Color(0, 0, 0, 0.55))
+			draw_arc(r.position + Vector2(28, 25), 22, 0, TAU, 32, pcol, 2.0)
+			if _icons.has(pi):
+				draw_texture_rect(_icons[pi], Rect2(r.position + Vector2(8, 5), Vector2(40, 40)), false)
+			var pn: String = pname if Game.data["equipado"] != "" else "Katana de Ren"
+			draw_string_outline(font, r.position + Vector2(56, 24), pn, HORIZONTAL_ALIGNMENT_LEFT, 150, 14, 4, Color(0, 0, 0, 0.9))
+			draw_string(font, r.position + Vector2(56, 24), pn, HORIZONTAL_ALIGNMENT_LEFT, 150, 14, Color(1, 0.93, 0.78))
+			draw_string(font, r.position + Vector2(56, 40), "toque para trocar", HORIZONTAL_ALIGNMENT_LEFT, 150, 10, Color(1, 0.85, 0.6, 0.7))
 	# --- pausa ---
 	var pr := _pause_rect()
 	draw_rect(pr, Color(0.05, 0.02, 0.04, 0.45))
@@ -248,10 +261,13 @@ func _draw() -> void:
 		return
 	# --- direcional ---
 	var c := STICK_C
-	draw_circle(c + Vector2(0, 3), STICK_R + 2.0, Color(0, 0, 0, 0.25))
-	draw_circle(c, STICK_R, Color(0.07, 0.05, 0.09, 0.42))
-	draw_arc(c, STICK_R - 1.5, 0, TAU, 64, Color(RED.r, RED.g, RED.b, 0.62), 3.0)
-	draw_arc(c, STICK_R - 6.0, 0, TAU, 64, Color(GOLD.r, GOLD.g, GOLD.b, 0.28), 1.2)
+	draw_circle(c + Vector2(0, 4), STICK_R + 3.0, Color(0, 0, 0, 0.3))
+	draw_circle(c, STICK_R, Color(0.06, 0.05, 0.07, 0.62))
+	draw_arc(c, STICK_R - 2.0, 0, TAU, 64, Color(0.86, 0.66, 0.25, 0.95), 5.0)
+	draw_arc(c, STICK_R - 6.5, 0, TAU, 64, Color(0.45, 0.3, 0.1, 0.9), 2.0)
+	draw_arc(c, STICK_R - 12.0, 0, TAU, 64, Color(RED.r, RED.g, RED.b, 0.55), 2.0)
+	for ang in [0.0, PI / 2.0, PI, 3.0 * PI / 2.0]:
+		draw_circle(c + Vector2(cos(ang + PI / 4.0), sin(ang + PI / 4.0)) * (STICK_R - 2.0), 4.0, Color(0.95, 0.8, 0.4))
 	var u := STICK_R * 0.20
 	var off := STICK_R * 0.68
 	_arrow(c + Vector2(-off, 0), Vector2(-1, 0), u, _sl)
@@ -261,8 +277,11 @@ func _draw() -> void:
 	if v.length() > STICK_R * 0.55:
 		v = v.normalized() * STICK_R * 0.55
 	var active := _stick_finger != -1 or _demo_vec != Vector2.ZERO
-	draw_circle(c + v, 26.0, Color(RED.r, RED.g, RED.b, 0.75 if active else 0.45))
-	draw_arc(c + v, 26.0, 0, TAU, 40, Color(GOLD.r, GOLD.g, GOLD.b, 0.7), 2.0)
+	draw_circle(c + v + Vector2(0, 3), 27.0, Color(0, 0, 0, 0.35))
+	draw_circle(c + v, 26.0, Color(0.12, 0.08, 0.09, 0.95))
+	draw_circle(c + v, 20.0, Color(RED.r, RED.g, RED.b, 0.95 if active else 0.75))
+	draw_circle(c + v + Vector2(-6, -6), 7.0, Color(1, 0.6, 0.6, 0.35))
+	draw_arc(c + v, 26.0, 0, TAU, 40, Color(0.86, 0.66, 0.25, 0.95), 3.0)
 	# --- botões ---
 	for k in BTN:
 		if k == "power" and Game.data["poderes"].is_empty():
@@ -275,6 +294,16 @@ func _draw() -> void:
 			ring = Game.POWERS[Game.data["equipado"]]["cor"]
 			if player and player.ki < float(Game.POWERS[Game.data["equipado"]]["custo"]):
 				ring = ring.darkened(0.5)
+		if _btn_tex.has(k):
+			var sz := rad * 2.25 * (0.93 if on else 1.0)
+			var mod := Color(1.25, 1.15, 1.0, 1.0) if on else Color(1, 1, 1, 0.88)
+			if k == "power":
+				mod = Color(ring.r * 0.5 + 0.6, ring.g * 0.5 + 0.6, ring.b * 0.5 + 0.6, 0.92 if not on else 1.0)
+			draw_circle(bc + Vector2(0, 4), sz * 0.47, Color(0, 0, 0, 0.35))
+			draw_texture_rect(_btn_tex[k], Rect2(bc - Vector2(sz, sz) / 2.0, Vector2(sz, sz)), false, mod)
+			if on:
+				draw_circle(bc, sz * 0.42, Color(ring.r, ring.g, ring.b, 0.18))
+			continue
 		draw_circle(bc + Vector2(0, 3), rad + 2.0, Color(0, 0, 0, 0.25))
 		draw_circle(bc, rad, Color(0.07, 0.05, 0.09, 0.62 if on else 0.42))
 		draw_arc(bc, rad - 1.5, 0, TAU, 48, Color(ring.r, ring.g, ring.b, 0.95 if on else 0.7), 3.0)

@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.3 · fases 1 e 2 · 16/11/2026"
+const VERSION := "v0.4 · fases 1 e 2 · 16/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -115,13 +115,23 @@ func cycle_power() -> String:
 	return data["equipado"]
 
 # ---------------- cenas ----------------
+var _going := false
+
 func goto(kind: String, arg = null) -> void:
+	# evita duas trocas de cena ao mesmo tempo (causava fase/chefe duplicados)
+	if _going:
+		return
+	_going = true
 	await fade_out()
 	get_tree().paused = false
+	Engine.time_scale = 1.0
 	if current:
 		current.queue_free()
 		current = null
-		await get_tree().process_frame
+	for n in get_tree().get_nodes_in_group("cena"):
+		n.queue_free()
+	await get_tree().process_frame
+	await get_tree().process_frame
 	var n: Node
 	match kind:
 		"title": n = load("res://src/title.gd").new()
@@ -130,7 +140,9 @@ func goto(kind: String, arg = null) -> void:
 		"reward": n = load("res://src/reward.gd").new(); n.set("boss", arg)
 		_: n = load("res://src/title.gd").new()
 	current = n
+	n.add_to_group("cena")
 	get_tree().root.add_child(n)
+	_going = false
 	fade_in()
 
 # Para onde ir depois de cada etapa (roteiro das fases 1 e 2).

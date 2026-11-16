@@ -29,6 +29,8 @@ var atk_from := 0.06
 var atk_to := 0.16
 var atk_dmg := 1
 var atk_kind := "stand"      # stand | low | air
+var atk_reach := 150.0
+var atk_lunge := 0.0
 var queued := false
 var combo_window := 0.0
 var hit_done := {}
@@ -108,11 +110,13 @@ func hurt_rect() -> Rect2:
 	return Rect2(global_position + Vector2(-W / 2.0, -h), Vector2(W, h))
 
 func attack_rect() -> Rect2:
-	var reach := 150.0 if combo < 3 else 185.0
+	var reach := atk_reach
 	var x0 := 6.0 if facing > 0 else -6.0 - reach
 	match atk_kind:
 		"low": return Rect2(global_position + Vector2(x0, -84), Vector2(reach, 80))
 		"air": return Rect2(global_position + Vector2(x0, -165), Vector2(reach, 160))
+	if combo == 2:
+		return Rect2(global_position + Vector2(x0, -210), Vector2(reach, 200))
 	return Rect2(global_position + Vector2(x0, -150), Vector2(reach, 128))
 
 # ---------------- entrada ----------------
@@ -182,12 +186,15 @@ func _physics_process(dt: float) -> void:
 		if dir != 0.0 and guard_t < 0.05:
 			facing = 1 if dir > 0.0 else -1
 			spr.set_facing(facing)
-		velocity.x = move_toward(velocity.x, 0.0, 3000.0 * dt)
+		# anda devagar defendendo, sem virar de costas (recuar mantém a guarda)
+		velocity.x = move_toward(velocity.x, dir * speed() * 0.45, 2400.0 * dt)
 		velocity.y = minf(velocity.y + GRAVITY * dt, FALL_MAX)
 		move_and_slide()
+		spr.position.y = -absf(sin(Time.get_ticks_msec() * 0.012)) * 3.0 if absf(velocity.x) > 30.0 else 0.0
 		_blink()
 		return
 	guarding = false
+	spr.position.y = 0.0
 	# agachar
 	var want_crouch: bool = _inp("crouch_down") and on_floor
 	if want_crouch:
@@ -207,16 +214,16 @@ func _physics_process(dt: float) -> void:
 	if state == "attack":
 		atk_t += dt
 		var mult := 0.0 if on_floor and atk_kind != "air" else 0.8
-		if combo == 3 and atk_t < 0.16 and on_floor:
-			velocity.x = facing * 340.0
+		if atk_lunge > 0.0 and atk_t < atk_from + 0.06 and on_floor:
+			velocity.x = facing * atk_lunge
 		else:
 			velocity.x = move_toward(velocity.x, dir * speed() * mult, 3000.0 * dt)
 		if atk_t >= atk_from and atk_t <= atk_to:
 			_hit_check(atk_dmg, attack_rect(), "katana")
 		if atk_t >= atk_len:
 			state = "normal"
-			combo_window = 0.22
-			if queued and combo < 3:
+			combo_window = 0.25
+			if queued and combo < COMBO.size():
 				queued = false
 				_start_attack(is_on_floor())
 			else:
@@ -282,29 +289,47 @@ func _can_stand() -> bool:
 	q.exclude = [get_rid()]
 	return get_world_2d().direct_space_state.intersect_shape(q, 1).is_empty()
 
+# Combo de 5 golpes no chão: corte, corte ascendente, estocada, corte rápido, golpe final.
+# [animação, velocidade, duração, início do acerto, fim do acerto, dano, alcance, avanço]
+const COMBO := [
+	["attack", 1.3, 0.27, 0.05, 0.15, 1, 150.0, 0.0],
+	["rising", 1.2, 0.26, 0.06, 0.18, 1, 140.0, 120.0],
+	["thrust", 1.3, 0.30, 0.07, 0.20, 1, 205.0, 420.0],
+	["attack", 1.7, 0.22, 0.04, 0.13, 1, 150.0, 0.0],
+	["finisher", 1.0, 0.46, 0.24, 0.36, 3, 190.0, 260.0],
+]
+
 func _start_attack(on_floor: bool) -> void:
-	combo = combo + 1 if combo_window > 0.0 and combo < 3 else 1
+	combo = combo + 1 if combo_window > 0.0 and combo < COMBO.size() else 1
 	state = "attack"
 	atk_t = 0.0
 	hit_done = {}
 	atk_kind = "low" if crouching else ("stand" if on_floor else "air")
 	if atk_kind != "stand":
 		combo = 1
-	atk_dmg = (2 if combo == 3 else 1) + dmg_bonus()
-	atk_len = 0.42 if combo == 3 else 0.28
-	atk_from = 0.1 if combo == 3 else 0.05
-	atk_to = 0.24 if combo == 3 else 0.15
-	spr.play_anim("attack", true, 1.0 if combo == 3 else 1.3)
-	Game.sfx(["slash1", "slash2", "slash3"][combo - 1], -4.0)
-	if combo == 3:
+	var c: Array = COMBO[combo - 1]
+	atk_dmg = int(c[5]) + dmg_bonus()
+	atk_len = c[2]
+	atk_from = c[3]
+	atk_to = c[4]
+	atk_reach = c[6]
+	atk_lunge = c[7] if atk_kind == "stand" else 0.0
+	spr.play_anim(c[0] if atk_kind == "stand" else "attack", true, c[1])
+	Game.sfx(["slash1", "slash2", "slash3", "slash1", "slash3"][combo - 1], -4.0)
+	if combo >= 3:
 		Game.sfx("ren_effort", -8.0)
 	var col: Color = Game.POWERS[Game.data["equipado"]]["cor"].lightened(0.25)
-	var off := Vector2(facing * 40.0, -80.0)
+	var FX = load("res://src/fx.gd")
 	if atk_kind == "low":
-		off.y = -40.0
+		FX.spawn(self, "slash", Vector2(facing * 40.0, -40.0), {"dir": facing, "col": col, "r": 100.0, "life": 0.16, "low": true})
 	elif atk_kind == "air":
-		off.y = -90.0
-	load("res://src/fx.gd").spawn(self, "slash", off, {"dir": facing, "col": col, "r": 120.0 if combo == 3 else 100.0, "life": 0.16 if combo < 3 else 0.22, "low": atk_kind == "low"})
+		FX.spawn(self, "slash", Vector2(facing * 40.0, -90.0), {"dir": facing, "col": col, "r": 100.0, "life": 0.16})
+	else:
+		match combo:
+			2: FX.spawn(self, "rise", Vector2(facing * 50.0, -60.0), {"dir": facing, "col": col, "r": 120.0, "life": 0.2})
+			3: FX.spawn(self, "thrust", Vector2(facing * 30.0, -92.0), {"dir": facing, "col": col, "r": 200.0, "life": 0.18})
+			5: FX.spawn(self, "slash", Vector2(facing * 50.0, -80.0), {"dir": facing, "col": col.lightened(0.2), "r": 165.0, "life": 0.3})
+			_: FX.spawn(self, "slash", Vector2(facing * 40.0, -80.0), {"dir": facing, "col": col, "r": 100.0, "life": 0.16})
 
 func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 	for f in get_tree().get_nodes_in_group("foes"):
@@ -318,8 +343,8 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 			ki = minf(100.0, ki + 5.0)
 			var c: Rect2 = f.hurt_rect()
 			load("res://src/fxsprite.gd").play(level, "acerto" if dmg < 3 else "aparo", Vector2(clampf(rect.get_center().x, c.position.x, c.end.x), rect.get_center().y), {"scale_px": 2.2 if dmg < 3 else 1.8})
-			level.hitstop(0.05 if dmg < 3 else 0.09)
-			level.shake(4.0 if dmg < 3 else 9.0)
+			level.hitstop(0.05 if dmg < 3 else 0.11)
+			level.shake(4.0 if dmg < 3 else 11.0)
 	for b in get_tree().get_nodes_in_group("breakable"):
 		if hit_done.has(b):
 			continue
@@ -456,8 +481,6 @@ func _animate(dt: float) -> void:
 			spr.play_anim("crouch")
 			spr.pause()
 			spr.frame = 1
-		else:
-			spr.play_anim("attack")
 		return
 	if not is_on_floor():
 		spr.play_anim("jump_up" if velocity.y < 0.0 else "jump_down")

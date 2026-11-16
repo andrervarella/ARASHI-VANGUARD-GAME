@@ -32,3 +32,9 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (EMULADO): render Xvfb 1170×540 (tela larga de celular): palácio com parede rachada (arte nova), torii, refúgio com portais torii, recompensa com ícones, sequência do Grande Portão → storyboard "cicatriz", legenda com faixa escura.
 - Corrigido no caminho: texturas carregadas dentro de `_draw` sem referência ficavam brancas (agora ficam em cache).
 - NÃO TESTADO: toque real (DEFESA/aparo no celular), FPS, áudio no navegador, dificuldade com jogador humano.
+
+## 2026-11-16 (noite) — T-017 v0.4
+- EXECUTADO: 7 cenas rodam 600 quadros headless com jogador automático, sem erro de script.
+- EXECUTADO (EMULADO): render 1170×540 da morte do Baku e do Xui (explosões, dissolução, rastro ao selo), buraco do Vale das Torii, refúgio com fundo novo, combo no prólogo.
+- Causa provável da duplicação relatada: duas trocas de cena ao mesmo tempo (ex.: morrer enquanto o chefe morre). Corrigido com trava em `Game.goto` e limpeza do grupo "cena". Não reproduzido pela IA; precisa confirmação do dono.
+- NÃO TESTADO: toque real, FPS, áudio no navegador.

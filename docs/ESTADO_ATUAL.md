@@ -5,10 +5,19 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.3 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.4 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.4 (16/11, noite) — T-017, segundo retorno do dono
+- Chão das fases corrigido (metade das emendas não aparecia e ficava um vão escuro "pisável"); buracos agora têm borda de penhasco, escuridão e névoa; caixas assentadas no chão.
+- Troca de cena protegida contra duplicação (fase/chefe duplicados); arenas menores e enquadradas inteiras na tela; menos chuva de comida e espíritos na luta do Xui.
+- Morte de chefe com destruição: câmera lenta, explosões, corpo se desfazendo em brasas e a essência voltando ao selo (vaga para cutscene "fim_<chefe>").
+- Combo de 5 golpes (corte, ascendente, estocada, corte rápido, golpe final) com 3 animações novas do Ren; andar enquanto defende.
+- Botões ilustrados (PixelLab), direcional dourado, placa do poder com ícone, nome e "toque para trocar".
+- Falas do Baku reescritas (mais curtas e marciais). Fundo do refúgio refeito sem pessoas.
+- Pendente de decisão do dono: sprites da transformação (Forma Carmesim) — arte final de personagem, pede aprovação.
 
 ## v0.3 (16/11, tarde) — T-016, retorno do dono sobre a v0.2
 - Câmera mais próxima (zoom 1,0). Botão **DEFESA** com aparo. Caixas, plataformas, blocos, chãos, portais e o Grande Portão com arte do PixelLab; coletáveis e itens com ícones; fogo/vapor/acertos com efeitos do PixelLab (VFX).

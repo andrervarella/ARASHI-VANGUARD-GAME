@@ -46,7 +46,7 @@ const L := {
 		"events": [[40, "intro_torii"]],
 		"breakables": [],
 		"pickups": [[2850, 470, "cura"], [4350, 300, "ki"], [6500, 60, "cura"]],
-		"chefe": "baku", "arena": [6900.0, 8200.0],
+		"chefe": "baku", "arena": [7000.0, 8150.0],
 	},
 	"palacio": {
 		"nome": "Fase 2 — Palácio de Xui",
@@ -61,7 +61,7 @@ const L := {
 		"events": [[40, "intro_palacio"]],
 		"breakables": [[4000, 200, 300, "rachada", "segredo"]],
 		"pickups": [[3750, 480, "cura"], [5650, 340, "ki"], [6700, 60, "cura"]],
-		"chefe": "xui", "arena": [6900.0, 8200.0],
+		"chefe": "xui", "arena": [7050.0, 8150.0],
 	},
 	"vila": {
 		"nome": "Refúgio de Arashi",
@@ -104,23 +104,25 @@ const D := {
 		["ren", "Se ele ceder, o Portão inteiro cede. Que os céus me perdoem pelo que vou fazer."],
 	],
 	"baku_prologo": [
-		["baku", "Séculos de trevas... e quem rompe a minha jaula é um simples ferreiro."],
-		["ren", "Rompi-a para salvar o meu povo. Não para te libertar."],
-		["baku", "Tu abriste a jaula, ferreiro. Agora suporta o que dela saiu."],
+		["baku", "Mil anos sob a pedra. Mil anos de silêncio."],
+		["baku", "E quem me liberta... é um ferreiro."],
+		["ren", "Abri o Portão pelo meu povo. Não por ti."],
+		["baku", "Pelo povo ou por mim, o Portão está aberto. Leva a minha marca, ferreiro, para que jamais esqueças o que libertaste."],
 	],
 	"intro_torii": [
 		["ren", "Os soldados das Sete Casas caçam o demônio... ou caçam a mim."],
 		["ren", "Seja como for, ninguém mais pagará pelo portão que eu abri."],
 	],
 	"chefe_baku": [
-		["baku", "Voltaste para sangrar outra vez, ferreiro? A marca em teu rosto ainda arde?"],
-		["ren", "Arde. E me recorda, a cada passo, o que devo reparar."],
-		["baku", "Então vem! A Ira jamais se curva!"],
+		["baku", "Então voltaste. A marca ainda arde, não arde?"],
+		["ren", "Arde. E há de arder até que eu te acorrente de novo."],
+		["baku", "Acorrentar o General da Fúria? Vem, ferreiro. Mostra-me essa ira que pensas ter!"],
 	],
 	"fim_baku": [
-		["baku", "Essa marca... gravada nas engrenagens do selo... é marca de ferreiro..."],
+		["baku", "Impossível... a Ira... não se apaga..."],
+		["baku", "Essa marca nas engrenagens do selo... é marca de ferreiro. Igual à tua."],
 		["baku", "Pergunta ao velho... quem forjou a nossa prisão..."],
-		["ren", "Que queres dizer com isso, demônio?"],
+		["ren", "Fala, demônio! O que sabes do meu sangue?"],
 	],
 	"intro_vila": [
 		["tetsu", "Este é o Refúgio de Arashi. Aqui ninguém pergunta de onde vens, filho."],

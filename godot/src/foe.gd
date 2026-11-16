@@ -153,3 +153,64 @@ func shoot(pos: Vector2, vel: Vector2, opts := {}) -> Node:
 	s.level = level
 	level.add_child(s)
 	return s
+
+
+# Morte de chefe: câmera lenta, explosões pelo corpo, o selo reabsorve o demônio
+# (rastro de luz) e o corpo se desfaz em brasas. Vaga para cutscene futura: "fim_<chefe>".
+func boss_death_sequence(col: Color) -> void:
+	dead = true
+	remove_from_group("foes")
+	telegraph_t = 0.0
+	velocity = Vector2.ZERO
+	for s in get_tree().get_nodes_in_group("enemy_shot"):
+		s.queue_free()
+	Game.stop_music()
+	Game.sfx("boss_death", 0.0)
+	Game.flash(Color(1, 1, 1, 0.9), 0.5)
+	Engine.time_scale = 0.35
+	level.shake(18.0)
+	spr.pause()
+	var base := spr.position
+	var FS = load("res://src/fxsprite.gd")
+	for i in range(8):
+		spr.position = base + Vector2(randf_range(-6, 6), randf_range(-3, 3))
+		flash_t = 0.07 if i % 2 == 0 else 0.0
+		FS.play(level, "aparo" if i % 2 == 0 else "acerto", global_position + Vector2(randf_range(-w * 0.6, w * 0.6), randf_range(-h, -20)), {"scale_px": 2.6, "tint": col.lightened(0.3)})
+		Game.sfx("hit_big", -4.0)
+		await get_tree().create_timer(0.14, true, false, true).timeout
+	Engine.time_scale = 1.0
+	spr.position = base
+	FS.play(level, "choque", global_position, {"scale_px": 3.4, "tint": col.lightened(0.4)})
+	level.shake(22.0)
+	Game.sfx("impact", 0.0)
+	# o corpo se desfaz
+	var dm := ShaderMaterial.new()
+	dm.shader = load("res://src/dissolve.gdshader")
+	dm.set_shader_parameter("edge_color", col)
+	spr.material = dm
+	var embers := CPUParticles2D.new()
+	embers.amount = 70
+	embers.lifetime = 1.6
+	embers.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	embers.emission_rect_extents = Vector2(w * 0.6, h * 0.5)
+	embers.position = Vector2(0, -h * 0.5)
+	embers.direction = Vector2(0, -1)
+	embers.spread = 30
+	embers.gravity = Vector2(0, -120)
+	embers.initial_velocity_min = 40
+	embers.initial_velocity_max = 140
+	embers.scale_amount_min = 3
+	embers.scale_amount_max = 7
+	embers.color = col
+	embers.z_index = 21
+	add_child(embers)
+	var tw := create_tween()
+	tw.tween_method(func(v): dm.set_shader_parameter("progress", v), 0.0, 1.15, 2.2)
+	await get_tree().create_timer(0.9).timeout
+	# a essência volta para o selo
+	load("res://src/fx.gd").spawn(level, "streak", global_position + Vector2(0, -h * 0.6), {"r": -PI / 2.0, "col": col, "life": 1.4})
+	Game.sfx("chains", -2.0)
+	await tw.finished
+	embers.emitting = false
+	await get_tree().create_timer(0.8).timeout
+	defeated.emit()

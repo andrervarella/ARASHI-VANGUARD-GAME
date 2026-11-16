@@ -80,6 +80,23 @@ func _draw() -> void:
 			var font := Game.FONT_SERIF
 			draw_string_outline(font, Vector2(-80, 0), txt, HORIZONTAL_ALIGNMENT_CENTER, 160, 30, 8, Color(0, 0, 0, a))
 			draw_string(font, Vector2(-80, 0), txt, HORIZONTAL_ALIGNMENT_CENTER, 160, 30, Color(col.r, col.g, col.b, a))
+		"rise":
+			# corte ascendente: arco de baixo para cima
+			var pts2 := PackedVector2Array()
+			var n2 := 16
+			for i in range(n2 + 1):
+				var ang := lerpf(deg_to_rad(80.0), deg_to_rad(-80.0), float(i) / n2)
+				pts2.append(Vector2(cos(ang) * dir, sin(ang)) * r * (0.8 + 0.2 * k))
+			draw_polyline(pts2, Color(col.r, col.g, col.b, 0.8 * a), 16.0 * a + 2.0)
+			draw_polyline(pts2, Color(1, 1, 1, 0.9 * a), 3.0)
+		"thrust":
+			# estocada: lança de luz para a frente
+			var ln := r * (0.5 + 0.5 * minf(1.0, k * 3.0))
+			draw_line(Vector2.ZERO, Vector2(dir * ln, 0), Color(col.r, col.g, col.b, 0.5 * a), 18.0)
+			draw_line(Vector2.ZERO, Vector2(dir * ln, 0), Color(1, 1, 1, 0.95 * a), 4.0)
+			for j in range(3):
+				var yy := (j - 1) * 14.0
+				draw_line(Vector2(-dir * 20.0, yy), Vector2(dir * ln * 0.6, yy), Color(1, 1, 1, 0.35 * a), 2.0)
 		"streak":
 			# rastro de luz subindo ao céu (selos se rompendo)
 			var d := Vector2(cos(r), sin(r))

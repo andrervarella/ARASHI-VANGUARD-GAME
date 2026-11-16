@@ -162,17 +162,6 @@ func _ember_wave() -> void:
 	Game.sfx("power", -6.0)
 
 func die() -> void:
-	dead = true
-	remove_from_group("foes")
-	telegraph_t = 0.0
-	Game.sfx("boss_death", 0.0)
-	level.shake(16.0)
-	spr.play_anim("tired")
-	var tw := create_tween()
-	for i in range(6):
-		tw.tween_callback(func():
-			load("res://src/fxsprite.gd").play(level, "aparo", global_position + Vector2(randf_range(-60, 60), randf_range(-200, -40)), {"scale_px": 2.5})
-			Game.sfx("hit_big", -4.0))
-		tw.tween_interval(0.22)
-	tw.tween_property(spr, "modulate", Color(1, 0.2, 0.1, 0.0), 1.0)
-	tw.tween_callback(func(): defeated.emit())
+	if dead:
+		return
+	boss_death_sequence(Color(1.0, 0.35, 0.08))
