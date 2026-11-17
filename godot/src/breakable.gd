@@ -77,7 +77,7 @@ func _process(dt: float) -> void:
 func _draw() -> void:
 	var o := Vector2(randf_range(-3, 3), 0) if _shake > 0.0 else Vector2.ZERO
 	var r := Rect2(Vector2(0, -size.y) + o, size)
-	var tp := "res://assets/props/%s.png" % {"caixa": "caixa", "nevoa": "nevoa", "selo": "selo_carmesim"}.get(kind, "parede_rachada")
+	var tp := "res://assets/props/%s.png" % {"caixa": "caixa", "nevoa": "nevoa", "selo": "selo_carmesim", "jaula": "jaula"}.get(kind, "parede_rachada")
 	if _tex == null and ResourceLoader.exists(tp):
 		_tex = load(tp)
 	if _tex and kind in ["nevoa", "selo"]:
@@ -89,6 +89,11 @@ func _draw() -> void:
 		while y > r.position.y - th + 1.0:
 			draw_texture_rect(_tex, Rect2(Vector2(r.position.x - 6.0, y) + o, Vector2(tw, th)), false, Color(1, 1, 1, a))
 			y -= th * 0.92
+		return
+	if _tex and kind == "jaula":
+		var jh := r.size.y + 30.0
+		var jw := jh * float(_tex.get_width()) / float(_tex.get_height())
+		draw_texture_rect(_tex, Rect2(Vector2(r.get_center().x - jw / 2.0, r.end.y - jh + 2.0) + o, Vector2(jw, jh)), false)
 		return
 	if _tex:
 		draw_texture_rect(_tex, Rect2(r.position - Vector2(6, 8), r.size + Vector2(12, 12)), false)

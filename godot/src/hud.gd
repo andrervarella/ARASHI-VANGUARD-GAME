@@ -10,6 +10,9 @@ signal pause_requested
 signal power_cycle_requested
 
 var move := 0.0
+var walking := false
+var _lb_prev := false
+var _st_prev := false
 var jump_down := false
 var attack_down := false
 var power_down := false
@@ -60,6 +63,8 @@ func _ready() -> void:
 	_layout()
 	if OS.get_cmdline_user_args().has("--demo-stick"):
 		_demo_vec = Vector2(STICK_R * 0.8, STICK_R * 0.8)
+	if OS.get_cmdline_user_args().has("--demo-walk"):
+		_demo_vec = Vector2(STICK_R * 0.45, 0)
 
 func _layout() -> void:
 	var vs := get_viewport_rect().size
@@ -157,6 +162,35 @@ func _process(_dt: float) -> void:
 	var l := v.x < -dead
 	var r := v.x > dead
 	var dn := v.y > dead * 1.1
+	# andar x correr: polegar perto do centro = anda; empurrado até a borda = corre
+	var walk := absf(v.x) < STICK_R * 0.62
+	# controle (gamepad Bluetooth/USB): analógico e direcional
+	var pads := Input.get_connected_joypads()
+	var pad_walk := false
+	if not pads.is_empty():
+		var d := pads[0]
+		var ax := Input.get_joy_axis(d, JOY_AXIS_LEFT_X)
+		var ay := Input.get_joy_axis(d, JOY_AXIS_LEFT_Y)
+		if absf(ax) > 0.25:
+			if ax < 0.0: l = true
+			else: r = true
+			pad_walk = absf(ax) < 0.7
+		if ay > 0.55: dn = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_LEFT): l = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_RIGHT): r = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_DOWN): dn = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_A): j = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_X): a = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_Y): pw = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_B) or Input.is_joy_button_pressed(d, JOY_BUTTON_RIGHT_SHOULDER): gd = true
+		var lb := Input.is_joy_button_pressed(d, JOY_BUTTON_LEFT_SHOULDER)
+		if lb and not _lb_prev:
+			power_cycle_requested.emit()
+		_lb_prev = lb
+		var st := Input.is_joy_button_pressed(d, JOY_BUTTON_START)
+		if st and not _st_prev:
+			pause_requested.emit()
+		_st_prev = st
 	if Input.is_key_pressed(KEY_A) or Input.is_key_pressed(KEY_LEFT): l = true
 	if Input.is_key_pressed(KEY_D) or Input.is_key_pressed(KEY_RIGHT): r = true
 	if Input.is_key_pressed(KEY_S) or Input.is_key_pressed(KEY_DOWN): dn = true
@@ -181,6 +215,11 @@ func _process(_dt: float) -> void:
 		pw = fmod(_auto_t, 5.0) < 0.1
 		gd = fmod(_auto_t, 4.0) > 3.5
 	move = (1.0 if r else 0.0) - (1.0 if l else 0.0)
+	# andar: direcional de toque perto do centro, analógico leve ou Shift no teclado
+	var stick_used := (_stick_finger != -1 or _demo_vec != Vector2.ZERO) and (l or r)
+	if (stick_used and walk) or pad_walk or Input.is_key_pressed(KEY_SHIFT):
+		move *= 0.42
+	walking = absf(move) > 0.0 and absf(move) < 0.9
 	crouch_down = dn
 	jump_pressed = j and not _jump_prev
 	attack_pressed = a and not _attack_prev
@@ -293,7 +332,10 @@ func _draw() -> void:
 	var active := _stick_finger != -1 or _demo_vec != Vector2.ZERO
 	draw_circle(c + v + Vector2(0, 3), 27.0, Color(0, 0, 0, 0.35))
 	draw_circle(c + v, 26.0, Color(0.12, 0.08, 0.09, 0.95))
-	draw_circle(c + v, 20.0, Color(RED.r, RED.g, RED.b, 0.95 if active else 0.75))
+	var kc := Color(0.95, 0.62, 0.2) if walking else RED
+	draw_circle(c + v, 20.0, Color(kc.r, kc.g, kc.b, 0.95 if active else 0.75))
+	# marca da zona de corrida (empurre até aqui para correr)
+	draw_arc(c, STICK_R * 0.62, 0, TAU, 48, Color(1, 0.85, 0.5, 0.18), 1.5)
 	draw_circle(c + v + Vector2(-6, -6), 7.0, Color(1, 0.6, 0.6, 0.35))
 	draw_arc(c + v, 26.0, 0, TAU, 40, Color(0.86, 0.66, 0.25, 0.95), 3.0)
 	# --- botões ---

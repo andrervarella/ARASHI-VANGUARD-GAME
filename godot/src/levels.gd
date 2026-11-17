@@ -12,7 +12,8 @@ const GY := 900.0
 
 const L := {
 	"ferreiros": {
-		"tom_chao": Color(0.8, 0.68, 0.62), "nevoa_chao": Color(0.28, 0.09, 0.05),
+		"bg_chao": 0.896,
+		"nevoa_chao": Color(0.28, 0.09, 0.05),
 		"nome": "Prólogo — Cidade de Arashi",
 		"bg": "ferreiros", "musica": "fase", "amb": "amb_rain", "particulas": "brasas",
 		"chao": Color(0.16, 0.11, 0.10), "borda": Color(0.42, 0.26, 0.18),
@@ -36,7 +37,8 @@ const L := {
 		"pickups": [[2800, 60, "cura"], [3680, 380, "ki"], [5500, 60, "cura"]],
 	},
 	"torii": {
-		"tom_chao": Color(0.66, 0.55, 0.66), "nevoa_chao": Color(0.22, 0.05, 0.12),
+		"bg_chao": 0.857,
+		"nevoa_chao": Color(0.22, 0.05, 0.12),
 		"nome": "Fase 1 — Vale das Torii",
 		"bg": "torii", "musica": "fase", "amb": "amb_water", "particulas": "petalas",
 		"chao": Color(0.12, 0.10, 0.13), "borda": Color(0.36, 0.30, 0.34),
@@ -47,7 +49,7 @@ const L := {
 		"foes": [["guarda", 900], ["oni", 1500], ["oni", 2850, 380], ["guarda", 3000], ["oni", 3400], ["guarda", 4200], ["guarda", 4600], ["oni", 4400, 220], ["oni", 5700], ["guarda", 6000], ["oni", 6400]],
 		"prompts": [[150, "Fase 1 — Vale das Torii"]],
 		"events": [[40, "intro_torii"]],
-		"breakables": [[6250, 100, 520, "nevoa", "nevoa", 300]],
+		"breakables": [[6250, 100, 520, "nevoa", "nevoa", 300], [1640, 90, 120, "jaula", "jaula_1"], [2620, 90, 120, "jaula", "jaula_2"], [6680, 90, 120, "jaula", "jaula_3"]],
 		"pickups": [[2850, 470, "cura"], [4350, 300, "ki"], [6500, 60, "cura"], [6470, 300, "vida"]],
 		"altares": [5480.0],
 		# arranjos sorteados; "salto" = oni que ensina a pergunta de Baku
@@ -58,7 +60,8 @@ const L := {
 		"chefe": "baku", "arena": [7000.0, 8150.0],
 	},
 	"palacio": {
-		"tom_chao": Color(0.82, 0.75, 0.62), "nevoa_chao": Color(0.22, 0.13, 0.06),
+		"bg_chao": 0.812,
+		"nevoa_chao": Color(0.22, 0.13, 0.06),
 		"nome": "Fase 2 — Palácio de Xui",
 		"bg": "xui", "musica": "fase", "amb": "", "particulas": "incenso",
 		"chao": Color(0.10, 0.12, 0.10), "borda": Color(0.62, 0.50, 0.22),
@@ -69,7 +72,7 @@ const L := {
 		"foes": [["servo", 800], ["espirito", 1400, 360], ["servo", 1900], ["servo", 2900], ["espirito", 3500, 400], ["servo", 3900], ["espirito", 4500, 300], ["servo", 5300], ["servo", 5800], ["espirito", 6300, 320], ["servo", 6500]],
 		"prompts": [[150, "Fase 2 — Palácio de Xui"], [3950, "Uma parede rachada... só um golpe de fúria a derruba."]],
 		"events": [[40, "intro_palacio"]],
-		"breakables": [[4000, 200, 300, "rachada", "segredo"], [5970, 100, 520, "selo", "selo_carmesim", 300]],
+		"breakables": [[4000, 200, 300, "rachada", "segredo"], [5970, 100, 520, "selo", "selo_carmesim", 300], [2150, 90, 120, "jaula", "jaula_1"], [3550, 90, 120, "jaula", "jaula_2"], [6650, 90, 120, "jaula", "jaula_3"]],
 		"pickups": [[3750, 480, "cura"], [5650, 340, "ki"], [6700, 60, "cura"], [6220, 300, "vida"]],
 		"altares": [5050.0],
 		# arranjos sorteados; "arremesso" = servo que ensina a Bocarra de Jade antes de Xui
@@ -80,7 +83,8 @@ const L := {
 		"chefe": "xui", "arena": [7050.0, 8150.0],
 	},
 	"vila": {
-		"tom_chao": Color(0.7, 0.66, 0.72), "nevoa_chao": Color(0.12, 0.1, 0.15),
+		"bg_chao": 0.896,
+		"nevoa_chao": Color(0.12, 0.1, 0.15),
 		"nome": "Refúgio de Arashi",
 		"bg": "refugio", "musica": "vila", "amb": "amb_rain", "particulas": "chuva",
 		"chao": Color(0.13, 0.11, 0.12), "borda": Color(0.40, 0.31, 0.25),
@@ -232,6 +236,9 @@ const D := {
 	"segredo_selo": [
 		["ren", "O selo carmesim cedeu ao meu sangue. Que poder é este, que abre o que nem a fúria abria?"],
 	],
+	"tetsu_refugio": [
+		["tetsu", "Olha à tua volta, filho. Cada rosto aqui é uma noite que as Sete Casas não tiveram."],
+	],
 	"tetsu_lenda_1": [
 		["tetsu", "Dizem que a Lua Carmesim nasce quando o mundo derrama sangue demais numa só noite."],
 		["tetsu", "Naquela noite em Arashi, ela nasceu. E algo dela ficou em ti, filho."],
@@ -256,4 +263,24 @@ const D := {
 	"segredo": [
 		["ren", "Uma câmara oculta... e um fragmento de selo, ainda morno."],
 	],
+}
+
+# Prisioneiros libertados: a história contada jogando. Cada terra prende o povo do jeito do seu pecado.
+const RESGATE := {
+	"torii": {
+		"grito": "Os soldados das Sete Casas nos prenderam aqui para a Ira!",
+		"falas": [
+			"Íamos ser executados por gritar de fome diante dos soldados. Tu nos deste outra noite de vida.",
+			"Meu irmão ficou no Vale. Se o vires... diz-lhe que eu esperei.",
+			"A Ira deles era maior que a nossa culpa. Obrigado, ferreiro.",
+		],
+	},
+	"palacio": {
+		"grito": "Trancados na despensa... sentindo o cheiro do banquete!",
+		"falas": [
+			"Servíamos banquetes de olhos baixos. Nunca provamos uma migalha.",
+			"Ela comia enquanto nossos filhos choravam lá fora. Agora divido o pão com eles.",
+			"Guardei este bolinho de arroz do banquete... é para o teu cão.",
+		],
+	},
 }

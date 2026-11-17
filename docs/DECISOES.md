@@ -112,3 +112,10 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - **Textos no tom do mundo**; conversa longa só no refúgio, com lendas do Tetsu ao falar de novo com ele.
 - **Trios fixos de itens** por chefe (T-013 parcial).
 - **Fora do plano por ora**: fases procedurais, árvore de habilidades, muitos inimigos novos, dublagem, NG+.
+
+## DEC-023 — Direção de arte travada, escopo enxuto e história jogável (16/11/2026, 23h)
+- Dono aprovou os itens 1–3 da avaliação franca: **bíblia visual** (`docs/BIBLIA_VISUAL.md`), **escopo enxuto** e **história contada jogando**. Teste com 3 pessoas: **o dono não quer** (removido do plano).
+- **Escopo:** sete terras continuam, cada uma = **uma fase curta (5–8 min) + chefe**; **sem mapa grande conectado** (substitui o "Metroidvania compacto"). Revisitar terras libertadas para segredos continua.
+- **História jogando:** em cada terra há prisioneiros do pecado daquela terra para libertar (jaulas); os libertos aparecem no Refúgio e cada um tem uma fala. Menos texto no meio da ação.
+- **Controles:** andar ou correr pelo direcional (polegar perto do centro anda; na borda corre); suporte a **controle físico** (gamepad Bluetooth/USB) sem mudar o toque.
+- **Coerência:** Luke só aparece de lenço (sprite e retrato) depois que Ren o dá; olhos azuis.

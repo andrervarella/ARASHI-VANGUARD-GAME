@@ -260,6 +260,8 @@ func _build_world() -> void:
 	# hub
 	for n in D.get("npcs", []):
 		_add_npc(n[0], n[1])
+	if D.get("hub", false):
+		_spawn_refugees()
 	for d in D.get("portas", []):
 		_add_door(d)
 	if level_id == "ferreiros" and not Game.seen("luke_salvo"):
@@ -326,6 +328,30 @@ func _add_npc(who: String, x: float) -> void:
 		s.play_anim("idle")
 		s.set_facing(1)
 	_interactables.append({"rect": Rect2(x - 120, GY - 200, 240, 200), "prompt": "ATACAR: falar", "cb": _talk_tetsu, "pos": Vector2(x, GY - 190)})
+
+var _refugees: Array = []   # [x, textura, flip]
+func _spawn_refugees() -> void:
+	var R: Dictionary = load("res://src/levels.gd").RESGATE
+	var lst: Array = Game.data.get("resgatados", [])
+	var xs := [430.0, 560.0, 690.0, 1130.0, 1260.0, 1390.0, 3800.0, 3930.0, 4060.0]
+	var i := 0
+	for key in lst:
+		if i >= xs.size():
+			break
+		var parts := String(key).split(":")
+		var info: Dictionary = R.get(parts[0], {})
+		var falas: Array = info.get("falas", [])
+		var idx := int(parts[1].replace("jaula_", "")) - 1
+		var fala: String = falas[idx] if idx >= 0 and idx < falas.size() else "Obrigado, ferreiro."
+		var x: float = xs[i]
+		# no refúgio eles estão em paz: poses paradas (não correndo)
+		var tex := prop("refugiado_%d" % (1 + i % 4))
+		_refugees.append([x, tex, i % 3 == 0])
+		_interactables.append({"rect": Rect2(x - 70, GY - 170, 140, 170), "prompt": "ATACAR: ouvir", "cb": func(): banner(fala), "pos": Vector2(x, GY - 170)})
+		i += 1
+	if lst.size() > 0 and int(Game.data.get("refugio_visto", 0)) < lst.size():
+		Game.data["refugio_visto"] = lst.size()
+		call_deferred("banner", "O refúgio cresce: %d almas libertas." % lst.size())
 
 func _talk_tetsu() -> void:
 	var v: Array = Game.data["vencidos"]
@@ -420,7 +446,7 @@ func _draw_ground_tex(g: Array, t: Texture2D) -> void:
 	var x: float = g[0]
 	while x < g[1]:
 		var w := minf(tw, g[1] - x)
-		draw_texture_rect_region(t, Rect2(x, GY - 6.0, w, th), Rect2(fmod(x, tw) * 0.0, 0, w, th), D.get("tom_chao", Color.WHITE))
+		draw_texture_rect_region(t, Rect2(x, GY - 3.0, w, th), Rect2(fmod(x, tw) * 0.0, 0, w, th), D.get("tom_chao", Color.WHITE))
 		x += w
 	# bordas de penhasco nos dois lados do trecho
 	for side in [0, 1]:
@@ -490,6 +516,13 @@ func _draw() -> void:
 		draw_line(r.position + Vector2(8, 22), r.position + Vector2(8, 60), Color(0.45, 0.35, 0.25), 3.0)
 		draw_line(r.position + Vector2(r.size.x - 8, 22), r.position + Vector2(r.size.x - 8, 60), Color(0.45, 0.35, 0.25), 3.0)
 	_draw_actor_shadows()
+	for rf in _refugees:
+		var tx: Texture2D = rf[1]
+		if tx:
+			var hh := 135.0
+			var ww := tx.get_width() * 135.0 / float(tx.get_height())
+			_shadow(Vector2(rf[0], GY), ww * 0.8)
+			draw_texture_rect(tx, Rect2(rf[0] - ww / 2.0, GY - hh + 2.0, ww, hh), false)
 	for b in D["blocks"]:
 		_draw_block(Rect2(b[0], GY - b[1], b[2], b[3]), b[4])
 	var at := prop("altar")
@@ -560,7 +593,7 @@ func _draw_actor_shadows() -> void:
 func _draw_ground_fog(g: Array) -> void:
 	var c: Color = D.get("nevoa_chao", Color(0.18, 0.08, 0.14))
 	var top := Color(c.r, c.g, c.b, 0.0)
-	var mid := Color(c.r, c.g, c.b, 0.55)
+	var mid := Color(c.r, c.g, c.b, 0.3)
 	var pts := PackedVector2Array([Vector2(g[0], GY - 70.0), Vector2(g[1], GY - 70.0), Vector2(g[1], GY - 4.0), Vector2(g[0], GY - 4.0)])
 	draw_polygon(pts, PackedColorArray([top, top, mid, mid]))
 
@@ -712,12 +745,20 @@ func _update_bg() -> void:
 		return
 	var vs := get_viewport().get_visible_rect().size
 	var ts := _bg.texture.get_size()
+	var cx := cam.get_screen_center_position().x if cam else 0.0
+	var f := clampf(cx / maxf(1.0, float(D["largura"])), 0.0, 1.0)
+	if D.has("bg_chao"):
+		# o chão pintado no fundo fica exatamente na linha do chão jogável (mesmo ambiente)
+		var gy_screen: float = (get_viewport().get_canvas_transform() * Vector2(0, GY)).y
+		var fr: float = D["bg_chao"]
+		var s2 := maxf(vs.x * 1.12 / ts.x, (gy_screen + 4.0) / (ts.y * fr))
+		_bg.scale = Vector2(s2, s2)
+		_bg.position = Vector2(-(ts.x * s2 - vs.x) * f, gy_screen - ts.y * fr * s2)
+		return
 	var s := maxf(vs.y * 1.08 / ts.y, vs.x * 1.12 / ts.x)
 	_bg.scale = Vector2(s, s)
 	var w := ts.x * s
 	var hgt := ts.y * s
-	var cx := cam.get_screen_center_position().x if cam else 0.0
-	var f := clampf(cx / maxf(1.0, float(D["largura"])), 0.0, 1.0)
 	_bg.position = Vector2(-(w - vs.x) * f, vs.y - hgt + (hgt - vs.y) * 0.25)
 
 func _fell() -> void:
@@ -820,6 +861,48 @@ func _on_broken(id: String) -> void:
 			say("segredo_nevoa")
 		"selo_carmesim":
 			say("segredo_selo")
+		_:
+			if id.begins_with("jaula"):
+				_free_prisoner(id)
+
+# ---------------- prisioneiros: a história contada jogando ----------------
+func _free_prisoner(id: String) -> void:
+	var R: Dictionary = load("res://src/levels.gd").RESGATE.get(level_id, {})
+	var key := "%s:%s" % [level_id, id]
+	var lst: Array = Game.data.get("resgatados", [])
+	if not lst.has(key):
+		lst.append(key)
+	Game.data["resgatados"] = lst
+	Game.save()
+	var br_x := 0.0
+	for b in D["breakables"]:
+		if b[4] == id:
+			br_x = float(b[0]) + float(b[1]) / 2.0
+	Game.sfx("sino", -10.0, 0.05)
+	load("res://src/fx.gd").spawn(self, "ring", Vector2(br_x, GY - 70), {"col": Color(1, 0.85, 0.5), "r": 90.0, "life": 0.5})
+	# o liberto agradece e corre de volta pelo caminho seguro
+	var tex := prop("aldeao_%d" % (1 + randi() % 8))
+	if tex:
+		var spr := Sprite2D.new()
+		spr.texture = tex
+		spr.centered = false
+		var sc := 135.0 / float(tex.get_height())
+		spr.scale = Vector2(sc, sc)
+		spr.position = Vector2(br_x - tex.get_width() * sc * 0.5, GY - tex.get_height() * sc)
+		spr.flip_h = true
+		add_child(spr)
+		var tw := create_tween()
+		tw.tween_interval(1.2)
+		tw.tween_property(spr, "position:x", spr.position.x - 520.0, 1.8)
+		tw.parallel().tween_property(spr, "modulate:a", 0.0, 1.8)
+		tw.tween_callback(spr.queue_free)
+	var n := 0
+	for k in lst:
+		if String(k).begins_with(level_id + ":"):
+			n += 1
+	if R.has("grito"):
+		load("res://src/fx.gd").spawn(self, "text", Vector2(br_x, GY - 210), {"txt": "Obrigado, ferreiro!", "col": Color(1, 0.92, 0.75), "life": 1.4})
+	banner("Libertos nesta terra: %d/3 — eles esperarão no refúgio." % n)
 
 # ---------------- prólogo: cerca, o cão sem dono e o soldado ----------------
 func _setup_prologue() -> void:
@@ -999,17 +1082,25 @@ func _gate_sequence() -> void:
 	_baku_prologue()
 
 func _villagers_flee(gx: float) -> void:
-	var texs := [prop("aldeao_1"), prop("aldeao_2")]
-	for i in range(16):
-		var t: Texture2D = texs[i % 2]
+	# 8 aldeões diferentes (idosa, mãe com bebê, menino, aprendiz de ferreiro...), embaralhados
+	var texs: Array = []
+	for k in range(1, 9):
+		var tx := prop("aldeao_%d" % k)
+		if tx:
+			texs.append(tx)
+	texs.shuffle()
+	for i in range(22):
+		var t: Texture2D = texs[i % texs.size()]
 		if t == null:
 			continue
 		var v := Sprite2D.new()
 		v.texture = t
 		v.centered = false
 		v.offset = Vector2(-t.get_width() / 2.0, -t.get_height())
-		v.scale = Vector2.ONE * randf_range(1.35, 1.6)
-		v.position = Vector2(gx - 900.0 - i * 70.0 + randf_range(-30, 30), GY + 2.0)
+		# altura de gente (~135 px), o menino menor
+		var alvo := 100.0 if t == prop("aldeao_5") else randf_range(128.0, 142.0)
+		v.scale = Vector2.ONE * (alvo / float(t.get_height()))
+		v.position = Vector2(gx - 900.0 - i * 58.0 + randf_range(-30, 30), GY + 2.0)
 		v.z_index = -1 if i % 3 == 0 else 2
 		v.modulate = Color(0.85, 0.8, 0.8)
 		add_child(v)

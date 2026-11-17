@@ -659,6 +659,12 @@ func _animate(dt: float) -> void:
 		spr.play_anim("crouch")
 		spr.pause()
 		spr.frame = 1 if absf(velocity.x) < 20.0 else (int(Time.get_ticks_msec() / 200) % 2)
+	elif absf(velocity.x) > 40.0 and absf(velocity.x) < speed() * 0.6 and spr.has_anim("walk"):
+		spr.play_anim("walk", false, clampf(absf(velocity.x) / (speed() * 0.42), 0.7, 1.2))
+		step_t -= dt
+		if step_t <= 0.0:
+			step_t = 0.45
+			Game.sfx("step1" if randf() < 0.5 else "step2", -22.0, 0.12)
 	elif absf(velocity.x) > 40.0:
 		spr.play_anim("run", false, clampf(absf(velocity.x) / SPEED, 0.6, 1.3))
 		step_t -= dt

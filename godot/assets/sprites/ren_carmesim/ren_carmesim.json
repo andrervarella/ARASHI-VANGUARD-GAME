@@ -232,5 +232,27 @@
    220,
    220
   ]
+ },
+ "walk": {
+  "frames": [
+   "walk_00.png",
+   "walk_01.png",
+   "walk_02.png",
+   "walk_03.png",
+   "walk_04.png",
+   "walk_05.png",
+   "walk_06.png",
+   "walk_07.png"
+  ],
+  "fps": 9,
+  "loop": true,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
  }
 }

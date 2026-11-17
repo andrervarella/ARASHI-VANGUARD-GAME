@@ -46,3 +46,11 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | Arquivo | Origem |
 |---|---|
 | `props/caixa.png`, `props/pedra.png`, `props/altar.png` (lanterna de pedra) | PixelLab `create_image_pixen` (substituem as versões isométricas) |
+
+## Acréscimos v0.9 (16/11/2026)
+| Arquivo | Origem |
+|---|---|
+| `props/chao_*.png` | Recortes do piso dos próprios fundos (PixelLab) de cada fase, espelhados |
+| `props/jaula.png`, `props/aldeao_3..8.png`, `props/refugiado_1..4.png` | PixelLab `create_image_pixen` |
+| `sprites/ren/walk_*`, `sprites/ren_carmesim/walk_*` | PixelLab, animações dos personagens Ren `036acc6d` e `36f2ce1b` |
+| `portraits/luke_rua.jpg` | Recorte da expressão "Neutro" da ficha oficial do Luke (sem lenço) |

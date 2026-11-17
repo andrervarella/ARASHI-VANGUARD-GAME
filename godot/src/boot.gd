@@ -8,6 +8,8 @@ func _ready() -> void:
 		if a.has("--power"):
 			Game.data["poderes"] = ["furia", "jade", "carmesim"]
 			Game.data["equipado"] = a[a.find("--power") + 1]
+		if a.has("--resgatados"):
+			Game.data["resgatados"] = ["torii:jaula_1", "torii:jaula_2", "torii:jaula_3", "palacio:jaula_1", "palacio:jaula_2", "palacio:jaula_3"]
 		if a.has("--x"):
 			Game.data["cp"] = {"fase": a[i + 2], "x": float(a[a.find("--x") + 1])}
 		Game.goto.call_deferred(a[i + 1], a[i + 2])

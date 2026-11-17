@@ -25,7 +25,7 @@ Medidor de **Ruptura** carregado por combate preciso, defesa, esquivas e risco. 
 Guardar estado permanente por boss vencido; desenhar marcas de modo cumulativo nas artes/quadros. Isso vale também para retratos do HUD e cutscenes. Gerenciar via camadas de roupa/corpo quando tecnicamente viável, com combinações revisadas manualmente.
 
 ## Exploração
-Mapa 2D conectado; pontos de salvamento/descanso; paredes quebráveis, portas seladas, plataformas altas, alavancas, sinos e pontes. Poderes destravam atalhos e caminhos, como golpe de ruptura de Baku, reflexão/ilusão de Mei Shian, habilidade de mobilidade de Seiran. Pedir prova de travessia para cada poder para evitar recompensas cosméticas sem uso.
+**DEC-023:** sem mapa conectado; cada terra é uma fase curta e revisitável, com segredos que pedem poderes. (Texto original abaixo mantido como histórico.) Mapa 2D conectado; pontos de salvamento/descanso; paredes quebráveis, portas seladas, plataformas altas, alavancas, sinos e pontes. Poderes destravam atalhos e caminhos, como golpe de ruptura de Baku, reflexão/ilusão de Mei Shian, habilidade de mobilidade de Seiran. Pedir prova de travessia para cada poder para evitar recompensas cosméticas sem uso.
 
 ## Luke
 Mascote segue Ren ou aparece em seções seguras; fareja passagens e objetos, alerta sobre perigo, proporciona alívio cômico em pequenas animações, sem virar suporte de ataque dominante. Regras de IA simples e robustas são preferíveis a simulação complexa.

@@ -69,7 +69,11 @@ func _show() -> void:
 	if who == "luke" and Game.seen("luke_salvo"):
 		_name.text = "Luke"
 	_name.add_theme_color_override("font_color", COLORS.get(who, Color.WHITE))
-	var p := "res://assets/portraits/%s.jpg" % who
+	# Luke só aparece de lenço depois que Ren o dá a ele (cena da amizade)
+	var pw := who
+	if who == "luke" and not Game.seen("luke_salvo"):
+		pw = "luke_rua"
+	var p := "res://assets/portraits/%s.jpg" % pw
 	_portrait.texture = load(p) if ResourceLoader.exists(p) else null
 	_frame.visible = _portrait.texture != null
 	_text.text = l[1]

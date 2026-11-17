@@ -5,10 +5,18 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.8 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.9 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.9 (16/11, 23h) — bíblia visual, escopo enxuto e história jogável (DEC-023, T-021)
+- Chão de cada fase recortado do próprio fundo e alinhado com o piso pintado: personagens pisam no mesmo ambiente. Bíblia visual em `docs/BIBLIA_VISUAL.md`.
+- Prisioneiros do pecado de cada terra em jaulas (3 no Vale, 3 no Palácio); libertos fogem, agradecem e aparecem no Refúgio com fala própria.
+- 8 aldeões diferentes na fuga pelo portão; 4 refugiados em pose parada no Refúgio.
+- Andar ou correr pelo direcional (polegar perto do centro anda; na borda corre; Shift no teclado); suporte a controle físico.
+- Luke sem lenço no retrato até a cena do lenço (retrato da ficha oficial, olhos azuis); brilho azul no olho dos sprites do Luke.
+- Escopo: fases curtas por terra, sem mapa conectado. Teste com 3 pessoas retirado (decisão do dono).
 
 ## v0.8 (16/11, noite) — coesão de cenário e música no título
 - Pedido do dono: props desproporcionais e "flutuando", piso desconectado do fundo.
