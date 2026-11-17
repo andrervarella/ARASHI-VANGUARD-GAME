@@ -59,6 +59,12 @@ var carmesim_t := 0.0        # < 0 = sem limite (cena roteirizada)
 var _shape: RectangleShape2D
 var _cshape: CollisionShape2D
 var _aura: CPUParticles2D
+# contador de golpes (estilo KOF) e golpe carregado (segurar ATAQUE)
+var hit_count := 0
+var hit_count_t := 0.0
+var charge_t := 0.0
+var _charge_lvl := 0
+var _jade_fx: Node2D
 
 func _ready() -> void:
 	collision_layer = 2
@@ -205,6 +211,8 @@ func attack_rect() -> Rect2:
 	var x0 := 6.0 if facing > 0 else -6.0 - reach
 	match atk_kind:
 		"low": return Rect2(global_position + Vector2(x0, -84), Vector2(reach, 80))
+		"anti": return Rect2(global_position + Vector2(-30.0 if facing > 0 else -reach + 30.0, -300), Vector2(reach, 290))
+		"carga": return Rect2(global_position + Vector2(x0, -190), Vector2(reach, 185))
 		"air": return Rect2(global_position + Vector2(x0, -165), Vector2(reach, 160))
 	if combo == 2:
 		return Rect2(global_position + Vector2(x0, -210), Vector2(reach, 200))
@@ -218,6 +226,10 @@ func _inp(k: String):
 
 func _physics_process(dt: float) -> void:
 	invuln = maxf(0.0, invuln - dt)
+	if hit_count > 0:
+		hit_count_t -= dt
+		if hit_count_t <= 0.0:
+			hit_count = 0
 	combo_window = maxf(0.0, combo_window - dt)
 	drop_t = maxf(0.0, drop_t - dt)
 	set_collision_mask_value(3, drop_t <= 0.0)
@@ -327,8 +339,24 @@ func _physics_process(dt: float) -> void:
 			pass
 		elif state == "attack":
 			queued = true
+		elif _inp("up_down") and on_floor and not crouching:
+			_start_special("anti")
 		else:
 			_start_attack(on_floor)
+	# golpe carregado: depois do corte, continuar segurando ATAQUE acumula força (estilo Mega Man)
+	if _inp("attack_down") and state == "normal":
+		charge_t += dt
+		_charge_fx()
+	elif state == "normal" and not _inp("attack_down") and charge_t > 0.0:
+		if charge_t >= 0.45:
+			_start_special("carga")
+		charge_t = 0.0
+		_charge_lvl = 0
+		mat.set_shader_parameter("flash", 0.0)
+	elif state != "normal" and state != "attack" and charge_t > 0.0:
+		charge_t = 0.0
+		_charge_lvl = 0
+		mat.set_shader_parameter("flash", 0.0)
 	if _inp("power_pressed"):
 		_use_power()
 	if state == "attack":
@@ -343,7 +371,10 @@ func _physics_process(dt: float) -> void:
 		if atk_t >= atk_len:
 			state = "normal"
 			combo_window = 0.25
-			if queued and combo < COMBO.size():
+			if atk_kind in ["anti", "carga"]:
+				queued = false
+				combo = 0
+			elif queued and combo < COMBO.size():
 				queued = false
 				_start_attack(is_on_floor())
 			else:
@@ -352,7 +383,7 @@ func _physics_process(dt: float) -> void:
 		if dir != 0.0:
 			facing = 1 if dir > 0.0 else -1
 			spr.set_facing(facing)
-		var sp := speed() * (0.4 if crouching else 1.0)
+		var sp := speed() * (0.4 if crouching else (0.65 if charge_t > 0.2 else 1.0))
 		velocity.x = move_toward(velocity.x, dir * sp, 3400.0 * dt)
 	# pulo
 	if jump_buf > 0.0 and not crouching and state != "attack":
@@ -475,20 +506,105 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 			continue
 		if rect.intersects(f.hurt_rect()):
 			hit_done[f] = true
-			f.take_hit(dmg, facing, kind)
+			var k2 := kind
+			if kind == "katana" and atk_kind in ["low", "anti", "carga"]:
+				k2 = "rasteira" if atk_kind == "low" else atk_kind
+			f.take_hit(dmg, facing, k2)
+			hit_count += 1
+			hit_count_t = 1.2
 			gain_ki(3.0)
 			if combo == COMBO.size() and atk_kind == "stand":
 				gain_ki(10.0)
 			var c: Rect2 = f.hurt_rect()
 			load("res://src/fxsprite.gd").play(level, "acerto" if dmg < 3 else "aparo", Vector2(clampf(rect.get_center().x, c.position.x, c.end.x), rect.get_center().y), {"scale_px": 2.2 if dmg < 3 else 1.8})
-			level.hitstop(0.05 if dmg < 3 else 0.11)
-			level.shake(4.0 if dmg < 3 else 11.0)
+			# pausa de impacto que cresce com a sequência (peso de luta)
+			level.hitstop((0.065 + minf(hit_count, 6) * 0.006) if dmg < 3 else 0.13)
+			level.shake((4.0 + minf(hit_count, 6) * 0.6) if dmg < 3 else 12.0)
+			FX_dir_spark(Vector2(clampf(rect.get_center().x, c.position.x, c.end.x), rect.get_center().y), dmg)
 	for b in get_tree().get_nodes_in_group("breakable"):
 		if hit_done.has(b):
 			continue
 		if rect.intersects(b.get_rect()):
 			hit_done[b] = true
 			b.hit_by(kind)
+
+# faíscas que voam na direção do golpe (além do clarão do acerto)
+func FX_dir_spark(at: Vector2, dmg: int) -> void:
+	var sp := CPUParticles2D.new()
+	sp.one_shot = true
+	sp.emitting = true
+	sp.amount = 10 if dmg < 3 else 22
+	sp.lifetime = 0.28
+	sp.explosiveness = 1.0
+	sp.direction = Vector2(facing, -0.25)
+	sp.spread = 28.0
+	sp.initial_velocity_min = 380.0
+	sp.initial_velocity_max = 720.0 if dmg < 3 else 1000.0
+	sp.gravity = Vector2(0, 900)
+	sp.scale_amount_min = 3.0
+	sp.scale_amount_max = 6.0
+	sp.color = Color(1, 0.93, 0.7)
+	sp.global_position = at
+	sp.z_index = 22
+	level.add_child(sp)
+	get_tree().create_timer(0.6).timeout.connect(sp.queue_free)
+
+func _charge_fx() -> void:
+	var lvl := 2 if charge_t >= 1.1 else (1 if charge_t >= 0.45 else 0)
+	if lvl > _charge_lvl:
+		_charge_lvl = lvl
+		Game.sfx("sino", -8.0 if lvl == 1 else -3.0, 0.1)
+		var col := Color(1, 0.85, 0.4) if lvl == 1 else Color(1, 0.25, 0.15)
+		load("res://src/fx.gd").spawn(self, "ring", Vector2(0, -70), {"col": col, "r": 70.0 + 30.0 * lvl, "life": 0.3})
+	if charge_t > 0.2:
+		var pulse := 0.18 + 0.18 * sin(Time.get_ticks_msec() * (0.02 if _charge_lvl < 2 else 0.04))
+		mat.set_shader_parameter("flash_color", Color(1, 0.85, 0.45) if _charge_lvl < 2 else Color(1, 0.3, 0.2))
+		mat.set_shader_parameter("flash", pulse if _charge_lvl > 0 else pulse * 0.4)
+
+# golpes especiais: cima+ATAQUE (corte anti-aéreo) e o Corte da Tempestade (carregado)
+func _start_special(kind: String) -> void:
+	state = "attack"
+	atk_t = 0.0
+	hit_done = {}
+	combo = 0
+	queued = false
+	atk_kind = kind
+	var col: Color = Game.POWERS[Game.data["equipado"]]["cor"].lightened(0.25)
+	var FX = load("res://src/fx.gd")
+	if kind == "anti":
+		atk_dmg = 2 + dmg_bonus()
+		atk_len = 0.34
+		atk_from = 0.04
+		atk_to = 0.2
+		atk_reach = 150.0
+		atk_lunge = 0.0
+		velocity.y = -560.0
+		spr.play_anim("rising", true, 1.1)
+		Game.sfx("slash2", -3.0)
+		FX.spawn(self, "rise", Vector2(facing * 30.0, -130.0), {"dir": facing, "col": col, "r": 150.0, "life": 0.24})
+		return
+	var full := charge_t >= 1.1
+	atk_dmg = (4 if full else 2) + dmg_bonus()
+	atk_len = 0.46
+	atk_from = 0.1
+	atk_to = 0.28
+	atk_reach = 260.0 if full else 220.0
+	atk_lunge = 420.0 if full else 320.0
+	spr.play_anim("finisher", true, 1.35)
+	Game.sfx("slash3", 0.0)
+	Game.sfx("ren_effort", -4.0)
+	mat.set_shader_parameter("flash", 0.0)
+	level.shake(8.0 if full else 5.0)
+	FX.spawn(self, "slash", Vector2(facing * 70.0, -90.0), {"dir": facing, "col": Color(1, 0.85, 0.5) if not full else Color(1, 0.35, 0.2), "r": 200.0 if full else 170.0, "life": 0.32})
+	if full:
+		# Corte da Tempestade: a lâmina solta uma onda que viaja
+		var o = load("res://src/onda.gd").new()
+		o.level = level
+		o.dir = facing
+		o.dmg = 2 + dmg_bonus()
+		o.global_position = global_position + Vector2(facing * 60.0, -95.0)
+		level.add_child(o)
+		level.toast("Corte da Tempestade!")
 
 func _use_power() -> void:
 	var p: String = Game.data["equipado"]
@@ -521,6 +637,12 @@ func _use_power() -> void:
 		"jade":
 			jade_t = 1.8
 			jade_heals = 0
+			if _jade_fx and is_instance_valid(_jade_fx):
+				_jade_fx.queue_free()
+			_jade_fx = load("res://src/jade_fx.gd").new()
+			_jade_fx.facing = facing
+			add_child(_jade_fx)
+			level.shake(5.0)
 			load("res://src/fx.gd").spawn(self, "ring", Vector2(0, -70), {"col": Color(0.2, 0.9, 0.5), "r": 150.0, "life": 0.4})
 
 # chamado pelos projéteis inimigos
@@ -530,6 +652,9 @@ func absorbs(p: Vector2) -> bool:
 	if p.distance_to(global_position + Vector2(0, -70)) > 150.0:
 		return false
 	Game.sfx("absorb", -6.0)
+	if _jade_fx and is_instance_valid(_jade_fx):
+		_jade_fx.chomp()
+		_jade_fx.facing = facing
 	if jade_heals < 3 and hp < Game.hp_max():
 		jade_heals += 1
 		hp += 1
@@ -548,16 +673,14 @@ func _draw() -> void:
 			draw_circle(c, 7.0, Color(0.05, 0.25, 0.15, col.a))
 			draw_circle(c, 5.5, col)
 			draw_circle(c + Vector2(-2, -2), 1.8, Color(0.85, 1, 0.9, col.a))
-	if jade_t > 0.0:
-		var a := clampf(jade_t, 0.0, 0.6)
-		draw_circle(Vector2(0, -70), 150.0, Color(0.15, 0.85, 0.5, 0.12 * a / 0.6))
-		draw_arc(Vector2(0, -70), 150.0, 0, TAU, 64, Color(0.6, 1.0, 0.75, 0.7 * a / 0.6), 4.0)
 
 func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void:
 	if state == "roll" and not _dodged and not locked:
 		# esquiva no limite: o golpe passou pelo rolamento
 		_dodged = true
 		gain_ki(15.0)
+		if src and src.has_method("add_posture"):
+			src.add_posture(12.0)
 		Game.sfx("esquiva", -2.0)
 		level.hitstop(0.12)
 		load("res://src/fx.gd").spawn(level, "text", global_position + Vector2(0, -170), {"txt": "Esquiva perfeita!", "col": Color(0.85, 0.95, 1.0), "life": 0.7})
@@ -579,6 +702,8 @@ func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void
 			level.toast("Aparo perfeito!")
 			if src and src.has_method("parried"):
 				src.parried()
+			if src and src.has_method("add_posture"):
+				src.add_posture(34.0)
 			invuln = 0.25
 			return
 		var cost := 20.0 if heavy else 10.0

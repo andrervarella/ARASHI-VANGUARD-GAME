@@ -102,6 +102,9 @@ func _ready() -> void:
 	get_viewport().size_changed.connect(_layout_ui)
 	_layout_ui()
 	_build_vignette()
+	_build_foreground()
+	if D.get("memoria", false):
+		_build_memory_filter()
 	Game.music(D["musica"], -9.0)
 	Game.ambience(D.get("amb", ""), -20.0)
 	if D.has("chefe") and not Game.data["vencidos"].has(D["chefe"]):
@@ -121,6 +124,8 @@ func _build_bg() -> void:
 		p = "res://assets/bg/ferreiros.png"
 	_bg.texture = load(p)
 	_bg.centered = false
+	# fundo um pouco mais escuro que os personagens: eles saltam da tela (leitura)
+	_bg.modulate = Color(0.82, 0.8, 0.85)
 	_bg_layer.add_child(_bg)
 
 func _build_vignette() -> void:
@@ -245,6 +250,13 @@ func _build_world() -> void:
 	var k := 0
 	for f in foes:
 		k += 1
+		# a zona de emboscada começa vazia: os inimigos dela chegam juntos
+		var in_amb := false
+		for a in D.get("emboscadas", []):
+			if not liberta and float(f[1]) > a["x0"] and float(f[1]) < a["x1"]:
+				in_amb = true
+		if in_amb:
+			continue
 		# o mundo reage: sem o demônio, metade das tropas se dispersou
 		if liberta and k % 2 == 0:
 			continue
@@ -478,7 +490,7 @@ func _draw_pits() -> void:
 func _draw() -> void:
 	var top: Color = D["borda"]
 	var fill: Color = D["chao"]
-	var gt := prop("chao_" + level_id)
+	var gt := prop("chao_" + D.get("chao_de", level_id))
 	_draw_pits()
 	_draw_decor()
 	for g in D["ground"]:
@@ -552,6 +564,8 @@ func _draw() -> void:
 			draw_rect(Rect2(gx - 90, GY - 420, 180, 420), Color(1, 0.9, 0.7, 0.22 * glow))
 	if level_id == "ferreiros":
 		_draw_fence()
+	_draw_ghosts()
+	_draw_amb_walls()
 
 # fachadas, barracas e lanternas: plano do meio, um pouco mais escuras para não confundir com o caminho
 func _draw_decor() -> void:
@@ -725,10 +739,12 @@ func _process(dt: float) -> void:
 		cam.offset = Vector2(randf_range(-1, 1), randf_range(-1, 1)) * _shake
 	else:
 		cam.offset = Vector2.ZERO
+	_update_tension(dt)
 	if player == null or frozen or _dead:
 		_interact_lbl.visible = false
 		return
 	var px := player.global_position.x
+	_check_ambush(px)
 	if player.is_on_floor() and ground_at(px) < 5000.0:
 		_safe_x = px
 	if player.global_position.y > GY + 600.0:
@@ -853,10 +869,19 @@ func _event(id: String) -> void:
 			_cao_scene()
 		"portao":
 			_gate_sequence()
+		"memoria_1", "memoria_2", "memoria_3":
+			_whisper(id)
+		"memoria_porta":
+			_memory_gate()
 		"intro_vila":
 			if not Game.seen("intro_vila"):
 				Game.mark("intro_vila")
 				say(id)
+			elif Game.data["poderes"].has("carmesim") and not Game.seen("tetsu_carmesim"):
+				# a origem da Forma Carmesim, contada pelo mestre na volta ao Refúgio
+				Game.mark("tetsu_carmesim")
+				Game.save()
+				say("tetsu_carmesim")
 		_:
 			if id.begins_with("intro_"):
 				if Game.seen(id):
@@ -1417,6 +1442,7 @@ func _on_boss_defeated() -> void:
 	if player.carmesim:
 		await _carmesim_calm()
 	await say("fim_" + D["chefe"])
+	await _sussurro(D["chefe"])
 	Game.data["vencidos"].append(D["chefe"])
 	Game.data["cp"] = {}
 	Game.save()
@@ -1439,8 +1465,8 @@ func _on_player_died() -> void:
 	l.size = Vector2(vs.x, 70)
 	l.modulate.a = 0.0
 	_ui.add_child(l)
-	create_tween().tween_property(l, "modulate:a", 1.0, 0.5)
-	await get_tree().create_timer(1.7).timeout
+	create_tween().tween_property(l, "modulate:a", 1.0, 0.3)
+	await get_tree().create_timer(0.9).timeout
 	Game.goto("level", level_id)
 
 # ---------------- pausa e poderes ----------------
@@ -1510,3 +1536,213 @@ func _toggle_pause() -> void:
 	vb.reset_size()
 	vb.position = Vector2((vs.x - 420.0) / 2.0, vs.y * 0.16)
 	_pause = c
+
+
+# ================= v0.13 (DEC-026): profundidade, música que reage, emboscadas, sussurros, memória =================
+func _build_foreground() -> void:
+	var fg = load("res://src/foreground.gd").new()
+	fg.level = self
+	fg.GY = GY
+	fg.largura = float(D["largura"])
+	fg.theme = level_id if level_id in ["torii", "palacio", "vila"] else "ferreiros"
+	add_child(fg)
+
+func _exit_tree() -> void:
+	Game.music_tension(1.0)
+
+var _tension := 1.0
+var _tension_want := 1.0
+var _tension_scan := 0.0
+func _update_tension(dt: float) -> void:
+	_tension_scan -= dt
+	if _tension_scan <= 0.0 and player:
+		_tension_scan = 0.25
+		var want := 0.0
+		if D.get("hub", false) or D.get("memoria", false) or _arena_on or _amb_on:
+			want = 1.0
+		else:
+			for f in get_tree().get_nodes_in_group("foes"):
+				if f.get("dead"):
+					continue
+				var dv: Vector2 = f.global_position - player.global_position
+				if absf(dv.x) < 760.0 and absf(dv.y) < 520.0:
+					want = 1.0
+					break
+		_tension_want = want
+	# abre rápido quando o perigo chega; abafa devagar quando passa
+	_tension = move_toward(_tension, _tension_want, dt * (1.6 if _tension_want > _tension else 0.3))
+	Game.music_tension(_tension)
+
+# ---- emboscadas: pico de tensão no meio da fase (paredes de selo, ondas, depois respiro) ----
+var _amb_on := false
+var _amb_done := {}
+var _amb_cur: Dictionary
+var _amb_wave := 0
+var _amb_foes: Array = []
+var _amb_walls: Array = []
+var _amb_x := Vector2.ZERO
+
+func _check_ambush(px: float) -> void:
+	if _amb_on or (D.has("chefe") and Game.data["vencidos"].has(D["chefe"])):
+		return
+	for a in D.get("emboscadas", []):
+		if _amb_done.has(a["x"]):
+			continue
+		if px >= a["x"] and px < a["x1"]:
+			_start_ambush(a)
+			return
+
+func _start_ambush(a: Dictionary) -> void:
+	_amb_on = true
+	_amb_done[a["x"]] = true
+	_amb_cur = a
+	_amb_wave = 0
+	_amb_x = Vector2(a["x0"], a["x1"])
+	_amb_walls.append(_static_rect(a["x0"] - 100.0, GY - 3000.0, 100.0, 3000.0, 1))
+	_amb_walls.append(_static_rect(a["x1"], GY - 3000.0, 100.0, 3000.0, 1))
+	banner("EMBOSCADA!")
+	Game.sfx("impact", -2.0)
+	Game.sfx("chains", -6.0)
+	shake(8.0)
+	luke_alert()
+	await get_tree().create_timer(0.5).timeout
+	_next_wave()
+
+func _next_wave() -> void:
+	var ondas: Array = _amb_cur["ondas"]
+	if _amb_wave >= ondas.size():
+		_end_ambush()
+		return
+	_amb_foes = []
+	for f in ondas[_amb_wave]:
+		var y: float = GY - (float(f[2]) if f.size() > 2 else 0.0) - 2.0
+		var e = spawn_enemy(f[0], f[1], y, f[3] if f.size() > 3 else "")
+		e.defeated.connect(_on_amb_foe_dead)
+		_amb_foes.append(e)
+		load("res://src/fxsprite.gd").play(self, "choque", Vector2(f[1], y), {"scale_px": 1.6, "tint": Color(1, 0.3, 0.25)})
+	_amb_wave += 1
+
+func _on_amb_foe_dead() -> void:
+	await get_tree().process_frame
+	for e in _amb_foes:
+		if is_instance_valid(e) and not e.dead:
+			return
+	_amb_foes = []
+	await get_tree().create_timer(0.7).timeout
+	if _amb_on:
+		_next_wave()
+
+func _end_ambush() -> void:
+	for w in _amb_walls:
+		w.queue_free()
+	_amb_walls.clear()
+	_amb_on = false
+	Game.sfx("victory", -10.0)
+	toast("Respira. O caminho está livre.")
+	spawn_pickup("cura", player.global_position + Vector2(player.facing * 90.0, -60.0))
+	spawn_pickup("ki", player.global_position + Vector2(player.facing * 150.0, -60.0))
+
+func _draw_amb_walls() -> void:
+	if not _amb_on:
+		return
+	var a := 0.35 + 0.15 * sin(Time.get_ticks_msec() * 0.008)
+	for x in [_amb_x.x, _amb_x.y]:
+		draw_rect(Rect2(x - 10.0, GY - 900.0, 20.0, 900.0), Color(1, 0.2, 0.15, a))
+		draw_rect(Rect2(x - 3.0, GY - 900.0, 6.0, 900.0), Color(1, 0.8, 0.6, a + 0.2))
+		for k in range(6):
+			draw_circle(Vector2(x, GY - 120.0 - k * 140.0), 14.0, Color(1, 0.35, 0.2, a + 0.2))
+
+# ---- o vilão observa: sussurro do Shin-Oni depois de cada chefe (planta o final) ----
+func _sussurro(ch: String) -> void:
+	var key := "sussurro_" + ch
+	if not LV_D().has(key) or Game.seen(key):
+		return
+	Game.mark(key)
+	Game.save()
+	var cr := ColorRect.new()
+	cr.color = Color(0.22, 0.0, 0.03, 0.0)
+	cr.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui.add_child(cr)
+	var tw := create_tween()
+	tw.tween_property(cr, "color:a", 0.6, 0.9)
+	Game.sfx("evil_laugh", -12.0)
+	shake(5.0)
+	await tw.finished
+	await say(key)
+	var t2 := create_tween()
+	t2.tween_property(cr, "color:a", 0.0, 0.6)
+	await t2.finished
+	cr.queue_free()
+
+# ---- memória jogável: a noite do portão, depois do primeiro chefe (culpa real do Ren) ----
+func _build_memory_filter() -> void:
+	var l := CanvasLayer.new()
+	l.layer = 2
+	add_child(l)
+	var cr := ColorRect.new()
+	cr.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cr.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var m := ShaderMaterial.new()
+	m.shader = load("res://src/memoria.gdshader")
+	cr.material = m
+	l.add_child(cr)
+	# vultos do povo daquela noite, transparentes, apontando para o ferreiro
+	for i in range(9):
+		var x := 500.0 + i * 300.0 + randf_range(-40, 40)
+		_ghosts.append([x, prop("aldeao_%d" % (1 + i % 8)), i % 2 == 0])
+
+var _ghosts: Array = []
+func _draw_ghosts() -> void:
+	for g in _ghosts:
+		var t: Texture2D = g[1]
+		if t == null:
+			continue
+		var hh := 136.0
+		var ww := t.get_width() * hh / t.get_height()
+		var a := 0.22 + 0.08 * sin(Time.get_ticks_msec() * 0.002 + g[0])
+		var r := Rect2(g[0] - ww / 2.0, GY - hh, ww, hh)
+		if g[2]:
+			# espelhado: x -> 2*g0 - x
+			draw_set_transform(Vector2(g[0] * 2.0, 0), 0.0, Vector2(-1, 1))
+		draw_texture_rect(t, r, false, Color(0.75, 0.85, 1.0, a))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
+
+const _VOZES := {
+	"memoria_1": ["Foi ele! O ferreiro!", "Ele abriu o portão...", "Minha filha estava lá fora..."],
+	"memoria_2": ["Os selos se romperam por causa dele.", "Herói? Ele soltou os demônios!", "Ren... por quê?"],
+	"memoria_3": ["Salvaste-nos... e condenaste o mundo.", "As Casas mentem. Mas não mentem em tudo.", "Ouves a corrente rangendo, ferreiro?"],
+}
+func _whisper(id: String) -> void:
+	var vs: Array = _VOZES.get(id, [])
+	Game.sfx("chains", -14.0)
+	for i in vs.size():
+		var p := player.global_position + Vector2(randf_range(-260, 260), -230.0 - i * 46.0)
+		load("res://src/fx.gd").spawn(self, "text", p, {"txt": vs[i], "col": Color(0.85, 0.9, 1.0, 0.9), "life": 2.6})
+		await get_tree().create_timer(0.9).timeout
+
+func _memory_gate() -> void:
+	await say("memoria_porta")
+	var gx: float = D["portao_x"]
+	var done := {"v": false}
+	_interactables.append({"rect": Rect2(gx - 260, GY - 300, 300, 300), "prompt": "ATACAR: romper o eixo-mestre", "pos": Vector2(gx - 120, GY - 250), "cb": func():
+		if done["v"]:
+			return
+		done["v"] = true
+		_memory_break()})
+
+func _memory_break() -> void:
+	frozen = true
+	player.locked = true
+	player.pose("finisher")
+	Game.sfx("slash3", 0.0)
+	Game.sfx("chains", 0.0)
+	Game.sfx("impact", 0.0)
+	Game.flash(Color(1, 0.15, 0.1, 0.85), 0.6)
+	shake(20.0)
+	_gate_open = true
+	_gate_glow = 1.0
+	await get_tree().create_timer(1.0).timeout
+	Game.sfx("evil_laugh", -6.0)
+	await say("memoria_fim")
+	Game.advance("memoria")

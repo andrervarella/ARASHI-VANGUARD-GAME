@@ -20,6 +20,7 @@ var guard_down := false
 var guard_pressed := false
 var _guard_prev := false
 var crouch_down := false
+var up_down := false
 var jump_pressed := false
 var attack_pressed := false
 var power_pressed := false
@@ -49,6 +50,7 @@ var _q_prev := false
 var _esc_prev := false
 var _auto := OS.get_cmdline_user_args().has("--auto")
 var _auto_t := 0.0
+var _golpes := OS.get_cmdline_user_args().has("--demo-golpes")
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -162,6 +164,7 @@ func _process(_dt: float) -> void:
 	var l := v.x < -dead
 	var r := v.x > dead
 	var dn := v.y > dead * 1.1
+	var up := v.y < -dead * 1.4
 	# andar x correr: polegar perto do centro = anda; empurrado até a borda = corre
 	var walk := absf(v.x) < STICK_R * 0.62
 	# controle (gamepad Bluetooth/USB): analógico e direcional
@@ -176,6 +179,8 @@ func _process(_dt: float) -> void:
 			else: r = true
 			pad_walk = absf(ax) < 0.7
 		if ay > 0.55: dn = true
+		if ay < -0.55: up = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_UP): up = true
 		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_LEFT): l = true
 		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_RIGHT): r = true
 		if Input.is_joy_button_pressed(d, JOY_BUTTON_DPAD_DOWN): dn = true
@@ -214,6 +219,12 @@ func _process(_dt: float) -> void:
 		j = fmod(_auto_t, 1.7) < 0.35
 		pw = fmod(_auto_t, 5.0) < 0.1
 		gd = fmod(_auto_t, 4.0) > 3.5
+	if _golpes:
+		# teste: combo de toques, golpe carregado (segurar e soltar), cima+ATAQUE, repete
+		_auto_t += _dt
+		var tt := fmod(_auto_t, 5.0)
+		a = (tt > 0.3 and tt < 0.36) or (tt > 0.6 and tt < 0.66) or (tt > 0.9 and tt < 0.96) or (tt > 1.4 and tt < 2.9) or (tt > 3.6 and tt < 3.66)
+		up = tt > 3.5 and tt < 3.7
 	move = (1.0 if r else 0.0) - (1.0 if l else 0.0)
 	# andar: direcional de toque perto do centro, analógico leve ou Shift no teclado
 	var stick_used := (_stick_finger != -1 or _demo_vec != Vector2.ZERO) and (l or r)
@@ -221,6 +232,7 @@ func _process(_dt: float) -> void:
 		move *= 0.42
 	walking = absf(move) > 0.0 and absf(move) < 0.9
 	crouch_down = dn
+	up_down = up or Input.is_key_pressed(KEY_I)
 	jump_pressed = j and not _jump_prev
 	attack_pressed = a and not _attack_prev
 	power_pressed = pw and not _power_prev
@@ -310,6 +322,25 @@ func _draw() -> void:
 		draw_string_outline(font, bp + Vector2(0, -2), boss_name, HORIZONTAL_ALIGNMENT_CENTER, bw2, 16, 5, Color(0, 0, 0, 0.95))
 		draw_string(font, bp + Vector2(0, -2), boss_name, HORIZONTAL_ALIGNMENT_CENTER, bw2, 16, Color(1, 0.88, 0.7))
 		_bar(bp + Vector2(0, 6), Vector2(bw2, 12), float(boss.hp) / float(boss.hp_max), Color(0.7, 0.05, 0.1), Color(1, 0.5, 0.2))
+		# postura: enche com aparos e golpes seguidos; cheia = chefe atordoado
+		var pf: float = float(boss.get("posture")) / float(boss.get("posture_max"))
+		var brk: bool = float(boss.get("broken_t")) > 0.0
+		var pw2 := bw2 * 0.6
+		var pp := bp + Vector2((bw2 - pw2) / 2.0, 24)
+		_bar(pp, Vector2(pw2, 6), 1.0 if brk else pf, Color(1, 0.75, 0.2) if not brk else Color(1, 1, 0.8), Color(1, 0.95, 0.7))
+		draw_string_outline(font, pp + Vector2(0, 19), "POSTURA" if not brk else "QUEBRADA!", HORIZONTAL_ALIGNMENT_CENTER, pw2, 10, 4, Color(0, 0, 0, 0.9))
+		draw_string(font, pp + Vector2(0, 19), "POSTURA" if not brk else "QUEBRADA!", HORIZONTAL_ALIGNMENT_CENTER, pw2, 10, Color(1, 0.88, 0.55))
+	# --- contador de golpes (KOF) ---
+	if player and int(player.get("hit_count")) >= 2:
+		var hc: int = player.hit_count
+		var pop := 1.0 + clampf(player.hit_count_t - 1.05, 0.0, 0.15) * 3.0
+		var hp0 := Vector2(18, vs.y * 0.34)
+		var fs := int(34 * pop)
+		draw_string_outline(font, hp0, str(hc), HORIZONTAL_ALIGNMENT_LEFT, -1, fs, 7, Color(0, 0, 0, 0.95))
+		draw_string(font, hp0, str(hc), HORIZONTAL_ALIGNMENT_LEFT, -1, fs, Color(1, 0.85, 0.3) if hc < 5 else Color(1, 0.4, 0.2))
+		var tw := font.get_string_size(str(hc), HORIZONTAL_ALIGNMENT_LEFT, -1, fs).x
+		draw_string_outline(font, hp0 + Vector2(tw + 6, -4), "GOLPES", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, 5, Color(0, 0, 0, 0.95))
+		draw_string(font, hp0 + Vector2(tw + 6, -4), "GOLPES", HORIZONTAL_ALIGNMENT_LEFT, -1, 16, Color(1, 0.95, 0.85))
 	if not show_controls:
 		return
 	# --- direcional ---

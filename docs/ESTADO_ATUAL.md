@@ -5,10 +5,21 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.12 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.13 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.13 (17/11) — peso no golpe, leitura, golpes novos, postura, flow e história amarrada (DEC-026)
+- **Golpe:** pausa de impacto que cresce com a sequência, faíscas na direção do corte, corpo do inimigo tremendo, contador "N GOLPES" (estilo KOF).
+- **Golpes novos:** cima + ATAQUE = corte anti-aéreo (joga o inimigo para cima); agachado + ATAQUE = rasteira (derruba); **segurar ATAQUE** depois do corte = golpe carregado (nível 1 dourado; nível 2 vermelho = **Corte da Tempestade**, com onda que viaja).
+- **Postura do chefe:** barra dourada sob a vida; enche com golpes seguidos, aparos (muito) e esquivas perfeitas; cheia = chefe atordoado 2,4 s e dano +50%.
+- **Leitura:** contorno escuro e luz de recorte nos personagens; fundo 18% mais escuro; inimigos inclinam o corpo para trás no aviso do golpe.
+- **Profundidade:** primeiro plano em paralaxe por terra (postes com lanterna, bambus com corda sagrada, pilares com estandarte, pinheiros) e capim escuro na beira de baixo.
+- **Bocarra de Jade:** efeito novo (mandíbula de dragão de jade com presas douradas, escamas girando, vórtice sugando, 8 contas); morde quando absorve.
+- **Flow:** volta em ~1 s depois de cair; botão PULAR ▶▶ nos diálogos; música abafa quando está calmo e abre no combate; **emboscada** no meio do Vale e do Palácio (paredes de selo, 2 ondas, depois respiro com cura e Ruptura).
+- **História:** silhueta do Shin-Oni na abertura; sussurro dele depois de cada chefe (ainda "???"); **memória jogável** da noite do portão depois do primeiro chefe; Tetsu explica a origem da Forma Carmesim na volta ao Refúgio; Luke **fareja** paredes secretas; cenário conta o pecado (servos acorrentados no Palácio, santuário quebrado e armas partidas no Vale).
+- Correção: vencer o Xui primeiro não mostra mais o "fim da demo"; o fim só vem com os dois chefes.
 
 ## v0.12 (17/11) — combate estilo KOF: encostar não fere (DEC-025)
 - Fim do dano por contato em todos os inimigos e chefes. Só golpes, projéteis, ondas e pisões ferem.

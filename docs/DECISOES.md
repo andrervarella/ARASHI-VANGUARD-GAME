@@ -128,3 +128,10 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Pedido do dono: tocar ou chegar perto de chefe/inimigo não pode causar dano; combate parecido com The King of Fighters.
 - Decisão: `contact = 0` em todos; corpos se empurram (caixa de empurrão em `foe.gd::_push_bodies`), sem atravessar. Rolamento e pulo passam. Todo dano vem de golpe com aviso (corte, pisão, toque do espírito, projétil, onda).
 - Consequência: aproximar-se do chefe para punir no cansaço fica seguro; o risco é só ler o golpe.
+
+## DEC-026 — Rodada de melhorias aprovada pelo dono (17/11/2026)
+- O dono aprovou todas as sugestões (peso no golpe, leitura, comandos, golpes por direção, postura do chefe, flow, vilão cedo, culpa jogável, faro do Luke, pecado no cenário) e pediu: **golpe carregado segurando ATAQUE**, **explicação da transformação amarrada à história** e **efeito mais trabalhado da Bocarra de Jade**.
+- **Origem da Forma Carmesim (cânone):** a lâmina de Baku trazia o sacrifício de Arashi; o ritual parou no meio e essa vida roubada entrou em Ren pela ferida (por isso a marca é vermelha como a Lua Vermelha). Cada demônio derrotado deixa um resto na marca ("cinza na forja"). Obedece quando Ren luta com cabeça fria (aparo, esquiva = Ruptura) e o devora quando luta por ódio. "Recipiente" é o nome antigo de quem guarda pecados no corpo — prepara a revelação do Shin-Oni.
+- Shin-Oni aparece cedo (silhueta na abertura, sussurro após cada chefe) sem nome; reage ao pingente do Luke (gancho do final).
+- Imagens do Shin-Oni no jogo são recortes do pôster aprovado (AV-POSTER-002) até o dono mandar as artes dedicadas (lista enviada no chat).
+- Balanço inicial: carregado 2/4 de dano (+onda 2); postura máx. 140; aparo +34; dano na postura quebrada ×1,5 sem acumular com o cansaço.

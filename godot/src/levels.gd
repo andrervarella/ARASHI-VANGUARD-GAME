@@ -54,6 +54,9 @@ const L := {
 		"breakables": [[6250, 100, 520, "nevoa", "nevoa", 300], [2300, 110, 100, "caixa", "caixa_1"], [4700, 110, 100, "caixa", "caixa_2"], [1640, 90, 120, "jaula", "jaula_1"], [2620, 90, 120, "jaula", "jaula_2"], [6680, 90, 120, "jaula", "jaula_3"]],
 		"pickups": [[2850, 470, "cura"], [4350, 300, "ki"], [6500, 60, "cura"], [6470, 300, "vida"]],
 		"altares": [5480.0],
+		# ritmo: começo leve, emboscada no meio (pico), respiro com o altar, trecho final, chefe
+		"emboscadas": [{"x": 4300.0, "x0": 3920.0, "x1": 5180.0, "ondas": [[["guarda", 4950], ["oni", 4000]], [["oni", 4980, 0, "salto"], ["guarda", 3990]]]}],
+		"decor": [["santuario_quebrado", 1150, 190], ["espadas_quebradas", 3300, 120], ["santuario_quebrado", 5650, 190], ["espadas_quebradas", 6800, 120]],
 		# arranjos sorteados; "salto" = oni que ensina a pergunta de Baku
 		"arranjos": [
 			[["guarda", 900], ["oni", 1500, 0, "salto"], ["oni", 2850, 380], ["guarda", 3000], ["oni", 3400, 0, "salto"], ["guarda", 4200], ["guarda", 4600], ["oni", 4400, 220], ["oni", 5750, 0, "salto"], ["guarda", 6000], ["oni", 6400]],
@@ -78,12 +81,31 @@ const L := {
 		"breakables": [[4000, 200, 300, "rachada", "segredo"], [5970, 100, 520, "selo", "selo_carmesim", 300], [2150, 90, 120, "jaula", "jaula_1"], [3550, 90, 120, "jaula", "jaula_2"], [6650, 90, 120, "jaula", "jaula_3"]],
 		"pickups": [[3750, 480, "cura"], [5650, 340, "ki"], [6700, 60, "cura"], [6220, 300, "vida"]],
 		"altares": [5050.0],
+		"emboscadas": [{"x": 2900.0, "x0": 2600.0, "x1": 3480.0, "ondas": [[["servo", 3380], ["servo", 2680, 0, "arremesso"]], [["espirito", 3000, 300], ["servo", 3400]]]}],
+		# a Gula contada pelo cenário: servos famintos acorrentados ao lado do banquete
+		"decor": [["servo_acorrentado", 700, 110], ["servo_acorrentado", 1250, 110], ["servo_acorrentado", 4380, 110], ["servo_acorrentado", 6300, 110]],
 		# arranjos sorteados; "arremesso" = servo que ensina a Bocarra de Jade antes de Xui
 		"arranjos": [
 			[["servo", 800], ["espirito", 1400, 360], ["servo", 1900, 0, "arremesso"], ["servo", 2900], ["espirito", 3500, 400], ["servo", 3900, 0, "arremesso"], ["espirito", 4500, 300], ["servo", 5300], ["servo", 5800, 0, "arremesso"], ["espirito", 6300, 320], ["servo", 6500]],
 			[["servo", 800, 0, "arremesso"], ["espirito", 1400, 360], ["servo", 1900], ["servo", 2900, 0, "arremesso"], ["servo", 3250], ["espirito", 4500, 300], ["servo", 3900], ["servo", 5300, 0, "arremesso"], ["espirito", 5800, 330], ["servo", 6300], ["servo", 6550, 0, "arremesso"]],
 		],
 		"chefe": "xui", "arena": [7050.0, 8150.0],
+	},
+	"memoria": {
+		"bg_chao": 0.896,
+		"nevoa_chao": Color(0.30, 0.06, 0.05),
+		"nome": "Memória — a noite do portão",
+		"bg": "ferreiros", "chao_de": "ferreiros", "musica": "vila", "amb": "amb_rain", "particulas": "brasas",
+		"chao": Color(0.16, 0.11, 0.10), "borda": Color(0.42, 0.26, 0.18),
+		"largura": 3800.0, "inicio": 200.0, "luke_inicio": false, "memoria": true,
+		"ground": [[0, 3800]],
+		"plats": [], "blocks": [],
+		"decor": [["casa", 900, 560], ["barraca", 1700, 235], ["casa", 2500, 560], ["forja", 3000, 265]],
+		"foes": [],
+		"prompts": [[120, "Uma lembrança... siga em frente."]],
+		"events": [[650, "memoria_1"], [1500, "memoria_2"], [2350, "memoria_3"], [3050, "memoria_porta"]],
+		"portao_x": 3450.0,
+		"breakables": [], "pickups": [],
 	},
 	"vila": {
 		"bg_chao": 0.896,
@@ -219,6 +241,40 @@ const D := {
 	"fim_xui": [
 		["xui", "Ainda... tenho... fome..."],
 		["ren", "Agora sabes o que eles sentiram."],
+	],
+	# ---- v0.13: o vilão observa (Shin-Oni ainda sem nome) ----
+	"sussurro_baku": [
+		["shin", "Ouvi a Ira cair, ferreiro. Ouvi também o teu coração... bateu mais forte quando ela entrou na tua marca."],
+		["ren", "Quem está aí?! Mostra-te!"],
+		["shin", "Continua. Traz-me os sete, um por um. Cada pecado que derrubas fica contigo... como ficou comigo."],
+	],
+	"sussurro_xui": [
+		["shin", "A fome também é tua agora. Sentiste-a rasgar-te o peito, não sentiste?"],
+		["shin", "O vermelho dos teus olhos é o mesmo da minha lua. Já estás a ficar parecido comigo."],
+		["luke", "Grrr... Au! Au!"],
+		["shin", "...Esse cão. Esse pingente. Não pode ser."],
+	],
+	# ---- v0.13: a origem da Forma Carmesim (Tetsu explica no Refúgio) ----
+	"tetsu_carmesim": [
+		["tetsu", "Vi o vermelho nos teus olhos quando voltaste, Ren. Senta-te. É hora de saberes o que te marcou."],
+		["tetsu", "Naquela noite, a lâmina de Baku não trazia só a Ira. Trazia o sacrifício inteiro de Arashi: a vida que as Casas iam oferecer ao selo."],
+		["tetsu", "Abriste o portão e o ritual parou no meio. Aquela vida roubada ficou sem dono... e entrou em ti pela ferida. Por isso a marca arde. Por isso é vermelha como aquela lua."],
+		["tetsu", "E cada demônio que derrubas deixa um resto de si nessa marca, como cinza no fundo da forja. A Ira que já carregavas encontrou a fome de Xui... e o fogo pegou."],
+		["ren", "Então a Forma Carmesim... é a força do meu povo? Dos que quase morreram naquela praça?"],
+		["tetsu", "É. Por isso te obedece quando lutas com cabeça fria: o aparo certo, a esquiva no último instante. E te devora quando lutas por ódio."],
+		["tetsu", "Os antigos tinham um nome para quem guardava pecados no próprio corpo: recipiente. Nenhum terminou bem."],
+		["ren", "Então não serei recipiente. Serei ferreiro. Enquanto Luke estiver ao meu lado, eu volto."],
+	],
+	# ---- v0.13: memória jogável — a noite do portão ----
+	"memoria_porta": [
+		["ren", "(Outra vez este sonho.) O eixo-mestre... foi aqui. Meu pai o forjou para nunca ceder."],
+		["ren", "Eu sabia que, se o rompesse, as engrenagens dos selos girariam juntas. Sabia... e rompi assim mesmo."],
+	],
+	"memoria_fim": [
+		["ren", "O povo passou. E atrás dele, saindo das sombras, sete vozes riram ao mesmo tempo."],
+		["ren", "As Casas mentem sobre muita coisa. Mas não mentem sobre isto: fui eu que abri as jaulas."],
+		["luke", "Au! Au!"],
+		["ren", "...Luke. Estou acordado. Vamos. Cada demônio que eu soltei, eu mesmo vou buscar."],
 	],
 	"carmesim_desperta": [
 		["ren", "Meu sangue... queima. As cicatrizes da Ira estão se abrindo!"],

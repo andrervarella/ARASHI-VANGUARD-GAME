@@ -18,6 +18,7 @@ const S := {
 			{"img": "riqueza", "txt": "Quanto mais vidas ofereciam, mais ricos e temidos ficavam. E maior se tornava a sua fome."},
 			{"img": "dominio", "txt": "A energia roubada lhes deu algo ainda pior: domínio sobre as mentes. O povo obedecia de olhos baixos, sem saber por quê, como se a vontade lhe tivesse sido arrancada."},
 			{"img": "humildes", "txt": "Em noites sem lua, os humildes desapareciam. O povo chamava aquilo de lenda, contada à beira do fogo para assustar as crianças.\nNão era lenda."},
+			{"img": "shin_sombra", "txt": "E nas trevas, acima de todos, alguém observava. Alguém mais antigo que os selos... com as marcas deles gravadas no próprio peito."},
 			{"img": "aldeia", "txt": "Na cidade de Arashi, ao pé das montanhas, vivia Ren, ferreiro. Seu pai lançara as fundações da grande muralha e forjara as engrenagens dos portões."},
 			{"img": "lua_vermelha", "txt": "Até que, numa noite de Lua Vermelha, a ganância das Casas não conheceu limite: decidiram oferecer ao selo da Ira uma cidade inteira.", "video": "abertura"},
 			{"img": "portao_trancado", "txt": "Os portões foram fechados. Soldados arrastaram o povo para a praça, e em cada testa traçaram a marca do sacrifício."},

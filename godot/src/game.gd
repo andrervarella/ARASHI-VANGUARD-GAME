@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.12 · fases 1 e 2 · 17/11/2026"
+const VERSION := "v0.13 · fases 1 e 2 · 17/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -55,6 +55,15 @@ func _ready() -> void:
 		_sfx_players.append(p)
 	_music = AudioStreamPlayer.new()
 	add_child(_music)
+	# barramento da música com filtro: abafa quando está calmo, abre no combate (música que reage)
+	var bi := AudioServer.bus_count
+	AudioServer.add_bus(bi)
+	AudioServer.set_bus_name(bi, "Musica")
+	AudioServer.set_bus_send(bi, "Master")
+	var lp := AudioEffectLowPassFilter.new()
+	lp.cutoff_hz = 20000.0
+	AudioServer.add_bus_effect(bi, lp)
+	_music.bus = "Musica"
 	_amb = AudioStreamPlayer.new()
 	add_child(_amb)
 	new_game()
@@ -159,10 +168,18 @@ func advance(from: String) -> void:
 		"ferreiros": data["etapa"] = "cicatriz"; save(); goto("story", "cicatriz")
 		"cicatriz": data["etapa"] = "vila_chegada"; save(); goto("story", "vila_chegada")
 		"torii": goto("reward", "baku")
-		"reward_baku": data["etapa"] = "vila"; data["cp"] = {}; save(); goto("level", "vila")
+		"reward_baku", "reward_xui":
+			data["cp"] = {}
+			# a ordem das terras é livre: o fim da demo só depois dos dois chefes
+			if data["vencidos"].size() >= 2:
+				data["etapa"] = "dois_chefes"; save(); goto("story", "dois_chefes")
+			elif not seen("memoria"):
+				data["etapa"] = "memoria"; save(); goto("level", "memoria")
+			else:
+				data["etapa"] = "vila"; save(); goto("level", "vila")
+		"memoria": mark("memoria"); data["etapa"] = "vila"; data["cp"] = {}; save(); goto("level", "vila")
 		"vila_chegada": data["etapa"] = "vila"; save(); goto("level", "vila")
 		"palacio": goto("reward", "xui")
-		"reward_xui": data["etapa"] = "dois_chefes"; save(); goto("story", "dois_chefes")
 		"dois_chefes": data["etapa"] = "vila"; save(); goto("level", "vila")
 		_: goto("level", "vila")
 
@@ -331,6 +348,16 @@ func music_restart(name: String, vol_db := -8.0) -> void:
 	_music_name = ""
 	_music.stop()
 	music(name, vol_db)
+
+# 0 = calmo (abafado e mais baixo), 1 = combate (aberto)
+func music_tension(t: float) -> void:
+	var bi := AudioServer.get_bus_index("Musica")
+	if bi < 0:
+		return
+	var lp := AudioServer.get_bus_effect(bi, 0) as AudioEffectLowPassFilter
+	if lp:
+		lp.cutoff_hz = lerpf(1400.0, 20000.0, t * t)
+	AudioServer.set_bus_volume_db(bi, lerpf(-4.5, 0.0, t))
 
 func stop_music() -> void:
 	_music_name = ""

@@ -38,5 +38,11 @@ Objetos nunca são esticados: a arte é recortada sem sobra transparente e desen
 - Pixel art com contorno seletivo (selective outline); personagens com o mesmo nível de detalhe dos sprites do Ren.
 - Retratos de diálogo são pinturas oficiais; o Luke **sem lenço** até a cena do lenço (retrato tirado das expressões da ficha oficial, olhos azuis).
 
+## 5b. Leitura e profundidade (v0.13)
+- Personagens têm contorno escuro de ~1,5 px e luz de recorte quente por cima (shader); o fundo fica ~18% mais escuro que eles.
+- Primeiro plano: silhuetas finas e espaçadas (≥1.300 px), paralaxe 1,35×, nunca cobrindo o centro da luta por mais de um instante.
+- Tamanho do pixel: objetos novos são gerados perto do tamanho final (escala 1–1,5×). Os antigos ainda variam; padronizar quando houver lote de refação.
+- Cenário conta o pecado da terra (Gula: servos acorrentados ao lado do banquete; Ira: santuário quebrado, armas partidas).
+
 ## 6. Checklist de cada lote
 1. Vista lateral? 2. Escala da tabela? 3. Sem sobra transparente? 4. Sombra/apoio no chão? 5. Paleta da terra? 6. Combina com a história naquele momento (ex.: lenço do Luke)?

@@ -19,6 +19,12 @@ var knock_mult := 1.0
 var flash_t := 0.0
 var display_name := ""
 var is_boss := false
+# postura (chefes): enche com golpes seguidos e aparos; cheia = atordoado (DEC-026)
+var posture := 0.0
+var posture_max := 140.0
+var _posture_idle := 0.0
+var broken_t := 0.0
+var _jit_until := 0
 const GRAVITY := 2700.0
 
 func setup_sprite(set_name: String, first_anim: String) -> void:
@@ -68,12 +74,24 @@ func take_hit(dmg: int, dir: int, _kind: String) -> void:
 		load("res://src/fxsprite.gd").play(level, "aparo", global_position + Vector2(-dir * w * 0.4, -h * 0.55), {"scale_px": 1.4})
 		load("res://src/fx.gd").spawn(level, "text", global_position + Vector2(0, -h - 10), {"txt": "IMUNE", "col": Color(0.85, 0.85, 0.9), "life": 0.6})
 		return
-	var d := int(ceil(dmg * damage_mult()))
+	# postura quebrada: dano +50% (não acumula com o cansaço do chefe)
+	var d := int(ceil(dmg * maxf(damage_mult(), 1.5 if broken_t > 0.0 else 0.0)))
 	hp -= d
 	flash_t = 0.12
+	_jit_until = Time.get_ticks_msec() + 150
+	add_posture(4.0 + 3.0 * dmg + (10.0 if _kind == "rasteira" else 0.0))
+	if not is_boss:
+		match _kind:
+			"rasteira":
+				stun_t = maxf(stun_t, 0.6)
+				Game.sfx("land", -6.0)
+			"anti":
+				if uses_gravity:
+					velocity.y = -700.0
+					stun_t = maxf(stun_t, 0.5)
 	Game.sfx("hit1" if randf() < 0.5 else "hit2", -3.0)
 	load("res://src/fx.gd").spawn(level, "text", global_position + Vector2(randf_range(-20, 20), -h - 10), {"txt": str(d), "col": Color(1, 0.85, 0.5) if d < 3 else Color(1, 0.4, 0.2), "life": 0.6})
-	if knock_mult > 0.0:
+	if knock_mult > 0.0 and _kind != "anti":
 		velocity.x = dir * 320.0 * knock_mult
 		if uses_gravity and is_on_floor():
 			velocity.y = -200.0 * knock_mult
@@ -92,6 +110,41 @@ func parried() -> void:
 
 func on_hurt() -> void:
 	pass
+
+func add_posture(v: float) -> void:
+	if not is_boss or dead or broken_t > 0.0:
+		return
+	posture = minf(posture_max, posture + v)
+	_posture_idle = 0.0
+	if posture >= posture_max:
+		_break_posture()
+
+func _break_posture() -> void:
+	posture = 0.0
+	broken_t = 2.4
+	stun_t = 2.4
+	telegraph_t = 0.0
+	velocity.x = 0.0
+	Game.sfx("clash", 0.0)
+	Game.sfx("sino", -2.0)
+	level.hitstop(0.16)
+	level.shake(12.0)
+	var FX = load("res://src/fx.gd")
+	FX.spawn(level, "ring", global_position + Vector2(0, -h * 0.6), {"col": Color(1, 0.8, 0.3), "r": 150.0, "life": 0.5})
+	FX.spawn(level, "text", global_position + Vector2(0, -h - 30), {"txt": "POSTURA QUEBRADA!", "col": Color(1, 0.85, 0.35), "life": 1.2})
+	level.toast("Ataque agora: dano +50%!")
+
+func _process(_dt: float) -> void:
+	if spr == null:
+		return
+	# tremida do corpo no impacto (estilo luta) e postura que se recupera com o tempo
+	if Time.get_ticks_msec() < _jit_until and not dead:
+		spr.position.x = 3.0 if (Time.get_ticks_msec() / 30) % 2 == 0 else -3.0
+	elif spr.position.x != 0.0 and not dead:
+		spr.position.x = 0.0
+	# pose de aviso: o corpo inclina para trás enquanto prepara o golpe
+	var lean := -float(facing) * 0.14 if telegraph_t > 0.0 and not dead else 0.0
+	spr.skew = lerpf(spr.skew, lean, 0.25)
 
 func die() -> void:
 	dead = true
@@ -116,6 +169,12 @@ func _physics_process(dt: float) -> void:
 		return
 	if level == null or level.frozen:
 		return
+	if broken_t > 0.0:
+		broken_t -= dt
+	elif is_boss and posture > 0.0:
+		_posture_idle += dt
+		if _posture_idle > 1.6:
+			posture = maxf(0.0, posture - 14.0 * dt)
 	if stun_t > 0.0:
 		stun_t -= dt
 		telegraph_t = 0.0

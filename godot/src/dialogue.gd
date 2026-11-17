@@ -3,8 +3,8 @@ extends CanvasLayer
 
 signal finished
 
-const NAMES := {"ren": "Ren Arashi", "baku": "Baku", "xui": "Xui", "luke": "Cão", "tetsu": "Mestre Tetsu", "guarda": "Soldado das Sete Casas"}
-const COLORS := {"ren": Color(0.95, 0.3, 0.3), "baku": Color(1, 0.45, 0.2), "xui": Color(0.7, 0.85, 0.35), "luke": Color(0.95, 0.85, 0.6), "tetsu": Color(0.6, 0.75, 1.0), "guarda": Color(0.75, 0.75, 0.8)}
+const NAMES := {"ren": "Ren Arashi", "baku": "Baku", "xui": "Xui", "luke": "Cão", "tetsu": "Mestre Tetsu", "guarda": "Soldado das Sete Casas", "shin": "???"}
+const COLORS := {"ren": Color(0.95, 0.3, 0.3), "baku": Color(1, 0.45, 0.2), "xui": Color(0.7, 0.85, 0.35), "luke": Color(0.95, 0.85, 0.6), "tetsu": Color(0.6, 0.75, 1.0), "guarda": Color(0.75, 0.75, 0.8), "shin": Color(1, 0.2, 0.15)}
 
 var _lines: Array = []
 var _i := 0
@@ -42,8 +42,13 @@ func _ready() -> void:
 	var more := Game.label("▼", 14, Color(1, 0.85, 0.5, 0.8), false)
 	more.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 	vb.add_child(more)
+	# pular a conversa inteira (flow: quem já leu não precisa reler)
+	_skip = Game.label("PULAR  ▶▶", 16, Color(1, 0.9, 0.7, 0.9))
+	add_child(_skip)
 	visible = false
 	get_viewport().size_changed.connect(_layout)
+
+var _skip: Label
 
 func _layout() -> void:
 	var vs := get_viewport().get_visible_rect().size
@@ -54,6 +59,8 @@ func _layout() -> void:
 	_portrait.size = Vector2(ph - 8, ph - 8)
 	_panel.position = Vector2(vs.x * 0.06 + ph + 10.0, vs.y - 186.0)
 	_panel.size = Vector2(vs.x * 0.88 - ph - 10.0, 150)
+	_skip.reset_size()
+	_skip.position = Vector2(vs.x * 0.94 - _skip.size.x, vs.y - 186.0 - 34.0)
 
 func say(lines: Array) -> void:
 	_lines = lines
@@ -98,6 +105,13 @@ func _input(e: InputEvent) -> void:
 	if not tap:
 		return
 	get_viewport().set_input_as_handled()
+	var pos = e.get("position")
+	if pos != null and Rect2(_skip.position - Vector2(16, 12), _skip.size + Vector2(32, 24)).has_point(pos):
+		if _tw:
+			_tw.kill()
+		visible = false
+		finished.emit()
+		return
 	if _text.visible_ratio < 1.0:
 		if _tw:
 			_tw.kill()

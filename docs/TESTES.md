@@ -47,3 +47,8 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (EMULADO): Ren andando sem parar contra o Baku (Vale das Torii): todo dano registrado veio de `slash` ou da onda/pisão; encostado no Baku cansado, distância travou em ~59 px sem dano.
 - EXECUTADO (EMULADO): andando pelas fases 2 e 3, todo dano veio de `strike` ou projéteis. Espírito do palácio: acorda, avisa, acerta 1 vez e recua (capturas conferidas).
 - NÃO TESTADO: sensação no celular (empurrão, pisão), FPS.
+
+## 2026-11-17 — v0.13
+- EXECUTADO (EMULADO): todas as cenas (título, abertura, 4 fases, memória) rodam sem erro de script ou shader.
+- EXECUTADO (EMULADO): emboscada do Vale (paredes, ondas); Bocarra de Jade nova; servo acorrentado e santuário no lugar; memória do portão do começo ao fim (volta ao Refúgio); Baku com golpe carregado, contador e barra de postura (robô parado: Baku a ~30% em ~5 s trocando golpes; o robô também morre).
+- NÃO TESTADO: sensação no celular (segurar ATAQUE, cima+ATAQUE no direcional), filtro da música no navegador, desempenho com o primeiro plano.

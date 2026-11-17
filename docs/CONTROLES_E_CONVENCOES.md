@@ -34,3 +34,8 @@ Resolução-base 960×540, `stretch=canvas_items`, `aspect=expand` (a tela larga
 ## Atualização 16/11/2026 (v0.3)
 - Câmera com **zoom 1,0** (personagem ~29% da altura), pedido do dono ("visão mais próxima").
 - **DEFESA** (raio 34) à esquerda e acima de ATACAR, em arco com PODER: segurar = bloquear de frente (gasta 10 de poder; 20 contra ondas no chão); apertar no instante do golpe (0,2 s) = **aparo**: sem custo, +15 de poder, inimigo vacila (chefe fica ofegante). Sem poder suficiente: guarda quebra e o dano cai pela metade. Teclado: L/V.
+
+## Golpes (v0.13)
+- Toques em ATAQUE: combo de 5. **Cima + ATAQUE:** corte anti-aéreo. **Baixo + ATAQUE:** rasteira (derruba inimigos comuns).
+- **Segurar ATAQUE** depois de um corte: carrega (brilho dourado = nível 1; vermelho = nível 2). Soltar = golpe carregado; nível 2 solta a onda do Corte da Tempestade. Teclado: I = cima.
+- Diálogos: PULAR ▶▶ no canto pula a conversa.
