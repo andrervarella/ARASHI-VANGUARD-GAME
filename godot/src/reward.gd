@@ -4,7 +4,7 @@ extends CanvasLayer
 var boss := "baku"
 const POWER_OF := {"baku": "furia", "xui": "jade"}
 const ART := {"baku": "baku2", "xui": "xui"}
-const OUTFIT := {"furia": "A ira do demônio tinge as vestes de Ren com a cor da brasa.", "jade": "A fome do demônio tinge as vestes de Ren com o verde do jade."}
+const OUTFIT := {"furia": "Com este poder equipado, a mão de Ren arde em chamas e uma aura de brasas o envolve.", "jade": "Com este poder equipado, três contas de jade orbitam Ren e uma névoa verde o acompanha."}
 
 var _picked := false
 

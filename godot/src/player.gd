@@ -48,6 +48,9 @@ var step_t := 0.0
 var was_floor := true
 var drop_t := 0.0
 var guarding := false
+var _last_guard_tap := -10.0
+var roll_t := 0.0
+var roll_dir := 1
 var guard_t := 0.0
 var _shape: RectangleShape2D
 var _cshape: CollisionShape2D
@@ -90,14 +93,55 @@ func _ready() -> void:
 	hp = Game.hp_max()
 	apply_outfit()
 
+# Poder equipado NÃO muda a cor da roupa (pedido do dono): aparece como aura discreta
+# + um elemento: Fúria = mão em chamas; Jade = três contas de jade orbitando.
+var _hand_fire: CPUParticles2D
+var _orb_t := 0.0
+
 func apply_outfit() -> void:
 	var p: String = Game.data["equipado"]
 	var info: Dictionary = Game.POWERS[p]
-	mat.set_shader_parameter("accent", Vector3(info["cor"].r, info["cor"].g, info["cor"].b))
-	mat.set_shader_parameter("amount", 0.0 if p == "" else 1.0)
-	mat.set_shader_parameter("cloth", 0.0 if p == "" else 0.3)
+	mat.set_shader_parameter("amount", 0.0)
+	mat.set_shader_parameter("cloth", 0.0)
+	_aura.amount = 10
+	_aura.scale_amount_min = 2
+	_aura.scale_amount_max = 3
+	_aura.emission_rect_extents = Vector2(30, 70)
 	_aura.emitting = p != ""
-	_aura.color = Color(info["cor"].r, info["cor"].g, info["cor"].b, 0.7)
+	_aura.color = Color(info["cor"].r, info["cor"].g, info["cor"].b, 0.45)
+	if _hand_fire == null:
+		_hand_fire = CPUParticles2D.new()
+		_hand_fire.amount = 22
+		_hand_fire.lifetime = 0.45
+		_hand_fire.local_coords = false
+		_hand_fire.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
+		_hand_fire.emission_sphere_radius = 6.0
+		_hand_fire.direction = Vector2(0, -1)
+		_hand_fire.spread = 18
+		_hand_fire.gravity = Vector2(0, -260)
+		_hand_fire.initial_velocity_min = 20
+		_hand_fire.initial_velocity_max = 50
+		_hand_fire.scale_amount_min = 3
+		_hand_fire.scale_amount_max = 6
+		var g := Gradient.new()
+		g.set_color(0, Color(1, 0.95, 0.6, 1))
+		g.add_point(0.4, Color(1, 0.5, 0.1, 0.9))
+		g.set_color(g.get_point_count() - 1, Color(0.6, 0.05, 0.05, 0))
+		_hand_fire.color_ramp = g
+		_hand_fire.z_index = 1
+		add_child(_hand_fire)
+	_hand_fire.emitting = p == "furia"
+	queue_redraw()
+
+func _process(dt: float) -> void:
+	if _hand_fire and _hand_fire.emitting:
+		var hand := Vector2(facing * 26.0, -96.0)
+		if crouching:
+			hand.y = -60.0
+		_hand_fire.position = hand
+	if Game.data["equipado"] == "jade":
+		_orb_t += dt
+		queue_redraw()
 
 func dmg_bonus() -> int:
 	return 1 if Game.has_item("fio") else 0
@@ -163,6 +207,18 @@ func _physics_process(dt: float) -> void:
 				state = "normal"
 			_blink()
 			return
+		"roll":
+			roll_t -= dt
+			velocity.x = roll_dir * 640.0 * (0.4 + 0.6 * clampf(roll_t / 0.4, 0.0, 1.0))
+			velocity.y = minf(velocity.y + GRAVITY * dt, FALL_MAX)
+			move_and_slide()
+			spr.play_anim("roll" if spr.has_anim("roll") else "crouch")
+			if roll_t <= 0.0:
+				state = "normal"
+				_set_crouch(false)
+				if not _can_stand():
+					_set_crouch(true)
+			return
 		"dash":
 			dash_t -= dt
 			velocity = Vector2(facing * 1150.0, 0.0)
@@ -175,6 +231,14 @@ func _physics_process(dt: float) -> void:
 				velocity.x = facing * 300.0
 			return
 	var dir: float = _inp("move")
+	# esquiva: tocar DEFESA duas vezes rápido = rolamento
+	if _inp("guard_pressed") and is_on_floor() and state == "normal":
+		var now := Time.get_ticks_msec() / 1000.0
+		if now - _last_guard_tap < 0.32:
+			_start_roll(dir)
+			_last_guard_tap = -10.0
+			return
+		_last_guard_tap = now
 	# defesa: segurar DEFESA no chão
 	if _inp("guard_down") and is_on_floor() and state == "normal":
 		if not guarding:
@@ -256,6 +320,21 @@ func _physics_process(dt: float) -> void:
 	was_floor = is_on_floor()
 	_animate(dt)
 	_blink()
+
+func _start_roll(dir: float) -> void:
+	state = "roll"
+	roll_t = 0.4
+	guarding = false
+	spr.position.y = 0.0
+	roll_dir = int(signf(dir)) if dir != 0.0 else facing
+	if dir != 0.0:
+		facing = roll_dir
+		spr.set_facing(facing)
+	invuln = maxf(invuln, 0.42)
+	_set_crouch(true)
+	spr.play_anim("roll" if spr.has_anim("roll") else "crouch", true, 1.6)
+	Game.sfx("jump", -6.0, 0.15)
+	load("res://src/fxsprite.gd").play(level, "choque", global_position, {"scale_px": 0.9})
 
 func _jump() -> void:
 	velocity.y = JUMP_V
@@ -394,6 +473,16 @@ func absorbs(p: Vector2) -> bool:
 	return true
 
 func _draw() -> void:
+	if Game.data["equipado"] == "jade" and state != "dead":
+		# três contas de jade orbitando, discretas
+		for i in range(3):
+			var ang := _orb_t * 2.2 + i * TAU / 3.0
+			var c := Vector2(cos(ang) * 42.0, -82.0 + sin(ang) * 14.0)
+			var front := sin(ang) > 0.0
+			var col := Color(0.25, 0.85, 0.55, 0.95 if front else 0.45)
+			draw_circle(c, 7.0, Color(0.05, 0.25, 0.15, col.a))
+			draw_circle(c, 5.5, col)
+			draw_circle(c + Vector2(-2, -2), 1.8, Color(0.85, 1, 0.9, col.a))
 	if jade_t > 0.0:
 		var a := clampf(jade_t, 0.0, 0.6)
 		draw_circle(Vector2(0, -70), 150.0, Color(0.15, 0.85, 0.5, 0.12 * a / 0.6))
@@ -431,6 +520,8 @@ func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void
 		n = int(ceil(n / 2.0))
 		guarding = false
 	hp -= n
+	if level and level.get("no_death") and hp < 2:
+		hp = 2
 	hp_changed.emit()
 	Game.sfx("ren_hurt", -4.0)
 	Game.sfx("hit2", -6.0)
@@ -461,21 +552,23 @@ func heal(n: int) -> void:
 func _die() -> void:
 	hp = 0
 	state = "dead"
-	spr.play_anim("hurt")
+	# cai de costas no chão (animação própria, sem girar o sprite)
+	spr.play_anim("fall" if spr.has_anim("fall") else "hurt", true)
 	Game.sfx("ren_death", -2.0)
 	var tw := create_tween()
-	tw.tween_property(spr, "rotation", -1.4 * facing, 0.5)
-	tw.parallel().tween_property(spr, "position", Vector2(-facing * 30.0, 10.0), 0.5)
-	tw.tween_interval(0.8)
+	tw.tween_interval(1.3)
 	tw.tween_callback(func(): died.emit())
 
 func _blink() -> void:
 	if state == "dead":
 		spr.modulate.a = 1.0
 		return
-	spr.modulate.a = 0.35 if invuln > 0.0 and int(invuln * 16.0) % 2 == 0 else 1.0
+	spr.modulate.a = 0.35 if invuln > 0.0 and state != "roll" and int(invuln * 16.0) % 2 == 0 else 1.0
 
 func _animate(dt: float) -> void:
+	if state == "dead" or (posing and locked):
+		return
+	posing = false
 	if state == "attack":
 		if crouching:
 			spr.play_anim("crouch")
@@ -497,6 +590,8 @@ func _animate(dt: float) -> void:
 	else:
 		spr.play_anim("idle")
 
-# usado nas cenas roteirizadas
+# usado nas cenas roteirizadas: segura a pose até pose("idle")
+var posing := false
 func pose(an: String) -> void:
+	posing = an != "idle"
 	spr.play_anim(an, true)

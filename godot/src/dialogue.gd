@@ -3,8 +3,8 @@ extends CanvasLayer
 
 signal finished
 
-const NAMES := {"ren": "Ren Arashi", "baku": "Baku", "xui": "Xui", "luke": "Luke", "tetsu": "Mestre Tetsu"}
-const COLORS := {"ren": Color(0.95, 0.3, 0.3), "baku": Color(1, 0.45, 0.2), "xui": Color(0.7, 0.85, 0.35), "luke": Color(0.95, 0.85, 0.6), "tetsu": Color(0.6, 0.75, 1.0)}
+const NAMES := {"ren": "Ren Arashi", "baku": "Baku", "xui": "Xui", "luke": "Cão", "tetsu": "Mestre Tetsu", "guarda": "Soldado das Sete Casas"}
+const COLORS := {"ren": Color(0.95, 0.3, 0.3), "baku": Color(1, 0.45, 0.2), "xui": Color(0.7, 0.85, 0.35), "luke": Color(0.95, 0.85, 0.6), "tetsu": Color(0.6, 0.75, 1.0), "guarda": Color(0.75, 0.75, 0.8)}
 
 var _lines: Array = []
 var _i := 0
@@ -66,6 +66,8 @@ func _show() -> void:
 	var l: Array = _lines[_i]
 	var who: String = l[0]
 	_name.text = NAMES.get(who, who)
+	if who == "luke" and Game.seen("luke_salvo"):
+		_name.text = "Luke"
 	_name.add_theme_color_override("font_color", COLORS.get(who, Color.WHITE))
 	var p := "res://assets/portraits/%s.jpg" % who
 	_portrait.texture = load(p) if ResourceLoader.exists(p) else null

@@ -61,6 +61,12 @@ func damage_mult() -> float:
 func take_hit(dmg: int, dir: int, _kind: String) -> void:
 	if dead:
 		return
+	if damage_mult() <= 0.0:
+		# imune (Baku no prólogo): a lâmina ricocheteia
+		Game.sfx("clash", -4.0)
+		load("res://src/fxsprite.gd").play(level, "aparo", global_position + Vector2(-dir * w * 0.4, -h * 0.55), {"scale_px": 1.4})
+		load("res://src/fx.gd").spawn(level, "text", global_position + Vector2(0, -h - 10), {"txt": "IMUNE", "col": Color(0.85, 0.85, 0.9), "life": 0.6})
+		return
 	var d := int(ceil(dmg * damage_mult()))
 	hp -= d
 	flash_t = 0.12

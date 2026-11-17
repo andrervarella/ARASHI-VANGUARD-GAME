@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.4 · fases 1 e 2 · 16/11/2026"
+const VERSION := "v0.5 · fases 1 e 2 · 16/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -150,9 +150,9 @@ func advance(from: String) -> void:
 	match from:
 		"abertura": data["etapa"] = "ferreiros"; save(); goto("level", "ferreiros")
 		"ferreiros": data["etapa"] = "cicatriz"; save(); goto("story", "cicatriz")
-		"cicatriz": data["etapa"] = "torii"; save(); goto("level", "torii")
+		"cicatriz": data["etapa"] = "vila_chegada"; save(); goto("story", "vila_chegada")
 		"torii": goto("reward", "baku")
-		"reward_baku": data["etapa"] = "vila_chegada"; save(); goto("story", "vila_chegada")
+		"reward_baku": data["etapa"] = "vila"; data["cp"] = {}; save(); goto("level", "vila")
 		"vila_chegada": data["etapa"] = "vila"; save(); goto("level", "vila")
 		"palacio": goto("reward", "xui")
 		"reward_xui": data["etapa"] = "dois_chefes"; save(); goto("story", "dois_chefes")

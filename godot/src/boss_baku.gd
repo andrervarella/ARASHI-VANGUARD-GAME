@@ -11,6 +11,7 @@ var _hit_done := false
 var _land_x := 0.0
 var _jump_from := Vector2.ZERO
 var _cycle := 0
+var prologo := false
 
 func _ready() -> void:
 	hp = 36
@@ -35,6 +36,8 @@ func parried() -> void:
 		spr.play_anim("tired" if spr.has_anim("tired") else "idle")
 
 func damage_mult() -> float:
+	if prologo:
+		return 0.0
 	return 2.0 if state == "tired" else 1.0
 
 func on_hurt() -> void:

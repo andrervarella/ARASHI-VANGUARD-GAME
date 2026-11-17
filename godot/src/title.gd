@@ -3,14 +3,23 @@ extends CanvasLayer
 
 var _bg: TextureRect
 var _t := 0.0
-var _menu: VBoxContainer
+var _menu: HBoxContainer
 var _creditos: Control
 
 func _ready() -> void:
+	# fundo: a mesma arte ampliada e escurecida preenche as sobras da tela larga
+	var back := TextureRect.new()
+	back.texture = load("res://assets/ui/title.jpg")
+	back.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	back.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	back.set_anchors_preset(Control.PRESET_FULL_RECT)
+	back.modulate = Color(0.25, 0.2, 0.25)
+	add_child(back)
+	# a arte inteira, sem cortar nada
 	_bg = TextureRect.new()
 	_bg.texture = load("res://assets/ui/title.jpg")
 	_bg.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-	_bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_bg.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_bg.set_anchors_preset(Control.PRESET_FULL_RECT)
 	_bg.pivot_offset = Vector2(480, 270)
 	add_child(_bg)
@@ -39,14 +48,14 @@ func _ready() -> void:
 	pet.color = Color(0.85, 0.08, 0.15, 0.9)
 	add_child(pet)
 	# menu
-	_menu = VBoxContainer.new()
+	_menu = HBoxContainer.new()
 	_menu.add_theme_constant_override("separation", 10)
-	_menu.custom_minimum_size = Vector2(300, 0)
+	_menu.alignment = BoxContainer.ALIGNMENT_CENTER
 	add_child(_menu)
 	if Game.has_save():
-		_menu.add_child(Game.button("CONTINUAR", _on_continue))
-	_menu.add_child(Game.button("NOVO JOGO", _on_new))
-	_menu.add_child(Game.button("CRÉDITOS", _on_credits, 16))
+		_menu.add_child(Game.button("CONTINUAR", _on_continue, 18))
+	_menu.add_child(Game.button("NOVO JOGO", _on_new, 18))
+	_menu.add_child(Game.button("CRÉDITOS", _on_credits, 15))
 	var ver := Game.label(Game.VERSION, 13, Color(1, 1, 1, 0.55), false)
 	ver.position = Vector2(12, 8)
 	add_child(ver)
@@ -60,13 +69,12 @@ func _ready() -> void:
 func _layout() -> void:
 	var vs := get_viewport().get_visible_rect().size
 	_bg.pivot_offset = vs / 2.0
-	_menu.size = Vector2(300, 0)
 	_menu.reset_size()
-	_menu.position = Vector2(vs.x / 2.0 - 150.0, vs.y * 0.74)
+	_menu.position = Vector2((vs.x - _menu.size.x) / 2.0, vs.y - _menu.size.y - 18.0)
 
 func _process(dt: float) -> void:
 	_t += dt
-	_bg.scale = Vector2.ONE * (1.03 + 0.02 * sin(_t * 0.15))
+	_bg.scale = Vector2.ONE * (1.0 + 0.01 * sin(_t * 0.15))
 
 func _on_new() -> void:
 	Game.new_game()

@@ -6,6 +6,7 @@
 | 2026-11-15 | `88b1634` (v7) | Xvfb + OpenGL, 1166×540 | render com `--demo-stick` (baixo+direita): Ren andou agachado, direcional desenhado | PASSOU (EXECUTADO (EMULADO)) | quadro PNG conferido por inspeção visual |
 | 2026-11-15 | `88b1634` (v7) | Celular Android do dono, Chrome, tela cheia | dono jogou o link e aprovou a dinâmica (prints de v3 e v4 mostraram controles e câmera) | APROVADO PELO DONO | mensagens do chat; **toque multitoque não testado por IA** |
 | 2026-11-15 | — | — | FPS, tempo de carga (~43 MB de wasm), áudio | NÃO TESTADO | — |
+| 2026-11-16 | v0.5 (dev) | Xvfb + OpenGL, 1170×540 | 6 cenas 600 quadros sem erro; render do prólogo (cerca, cão, soldado, portão aberto, povo fugindo, luta com a Ira, queda, luz do pingente), título e poderes Fúria/Jade | PASSOU (EXECUTADO (EMULADO)) | PNGs conferidos por inspeção; **esquiva e toque não testados no aparelho** |
 | — | — | — | `npm test`/testes automáticos | NÃO EXISTEM ainda (T-007) | — |
 
 ## Smoke test (web)

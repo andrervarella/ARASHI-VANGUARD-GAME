@@ -59,7 +59,7 @@ func _ready() -> void:
 	var skip := Game.button("PULAR ▶▶", _finish, 15)
 	skip.position = Vector2(12, 12)
 	add_child(skip)
-	var hint := Game.label("toque para avançar", 13, Color(1, 1, 1, 0.45), false)
+	var hint := Game.label("", 16, Color(1, 0.92, 0.75), false)
 	hint.name = "hint"
 	add_child(hint)
 	get_viewport().size_changed.connect(_layout)
@@ -88,7 +88,7 @@ func _layout() -> void:
 	_center.position = Vector2(vs.x * 0.1, 0)
 	_center.size = Vector2(vs.x * 0.8, vs.y)
 	var h: Label = get_node("hint")
-	h.position = Vector2(vs.x - 170, vs.y - 40)
+	h.position = Vector2(vs.x - 230, vs.y - 44)
 	_img.pivot_offset = vs / 2.0
 	_img2.pivot_offset = vs / 2.0
 
@@ -122,8 +122,8 @@ func _next() -> void:
 	_img.scale = Vector2.ONE * 1.04
 	_img.position = Vector2(-18.0 * dir, 0)
 	var kb := create_tween().set_parallel(true)
-	kb.tween_property(_img, "scale", Vector2.ONE * 1.14, _dur + 1.0).set_trans(Tween.TRANS_SINE)
-	kb.tween_property(_img, "position", Vector2(18.0 * dir, -6.0), _dur + 1.0).set_trans(Tween.TRANS_SINE)
+	kb.tween_property(_img, "scale", Vector2.ONE * 1.14, 14.0).set_trans(Tween.TRANS_SINE)
+	kb.tween_property(_img, "position", Vector2(18.0 * dir, -6.0), 14.0).set_trans(Tween.TRANS_SINE)
 	var txt: String = s["txt"]
 	_subbg.visible = not dim
 	if dim:
@@ -141,7 +141,7 @@ func _type(l: Label, txt: String) -> void:
 	if _typing:
 		_typing.kill()
 	_typing = create_tween()
-	_typing.tween_property(l, "visible_ratio", 1.0, max(0.6, txt.length() / 38.0)).set_delay(0.35)
+	_typing.tween_property(l, "visible_ratio", 1.0, max(0.8, txt.length() / 30.0)).set_delay(0.4)
 
 func _play_video(s: Dictionary) -> void:
 	_video = VideoStreamPlayer.new()
@@ -161,8 +161,12 @@ func _play_video(s: Dictionary) -> void:
 
 func _process(dt: float) -> void:
 	_timer += dt
-	if _timer > _dur + 0.5 and not _busy:
-		_next()
+	# o texto só avança quando o jogador toca (quem quer ler tem tempo)
+	var h: Label = get_node("hint")
+	var l: Label = _center if _center.text != "" else _sub
+	var ready := l.visible_ratio >= 1.0 and _video == null
+	h.text = "▶ toque para continuar" if ready else ""
+	h.modulate.a = 0.55 + 0.45 * sin(_timer * 4.0) if ready else 0.0
 
 func _input(e: InputEvent) -> void:
 	var tap: bool = (e is InputEventScreenTouch and e.pressed) or (e is InputEventMouseButton and e.pressed and e.button_index == MOUSE_BUTTON_LEFT) or (e is InputEventKey and e.pressed and not e.echo and e.keycode in [KEY_SPACE, KEY_ENTER, KEY_J, KEY_X])

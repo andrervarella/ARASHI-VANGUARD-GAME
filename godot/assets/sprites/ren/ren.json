@@ -31,17 +31,19 @@
    "run_04.png",
    "run_05.png",
    "run_06.png",
-   "run_07.png"
+   "run_07.png",
+   "run_08.png",
+   "run_09.png"
   ],
-  "fps": 12,
+  "fps": 15,
   "loop": true,
   "anchor": [
-   116.3,
-   188
+   120.2,
+   183
   ],
   "size": [
-   224,
-   224
+   216,
+   216
   ]
  },
  "attack": {
@@ -186,6 +188,43 @@
    "finisher_04.png"
   ],
   "fps": 12,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "roll": {
+  "frames": [
+   "roll_00.png",
+   "roll_01.png",
+   "roll_02.png"
+  ],
+  "fps": 10,
+  "loop": false,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
+ },
+ "fall": {
+  "frames": [
+   "fall_00.png",
+   "fall_01.png",
+   "fall_02.png",
+   "fall_03.png",
+   "fall_04.png",
+   "fall_05.png"
+  ],
+  "fps": 10,
   "loop": false,
   "anchor": [
    107.7,

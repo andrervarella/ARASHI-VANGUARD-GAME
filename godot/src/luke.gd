@@ -6,13 +6,23 @@ var level: Node
 var spr: AnimatedSprite2D
 var _bark := 4.0
 var vx := 0.0
+var skin := "luke"
 
 func _ready() -> void:
 	spr = load("res://src/actor_sprite.gd").new()
-	spr.setup("luke")
+	var sk := skin if FileAccess.file_exists("res://assets/sprites/%s/%s.json" % [skin, skin]) else "luke"
+	spr.setup(sk)
 	add_child(spr)
 	spr.play_anim("idle")
 	z_index = 1
+
+func set_skin(sk: String) -> void:
+	skin = sk
+	if FileAccess.file_exists("res://assets/sprites/%s/%s.json" % [sk, sk]):
+		var f: int = spr.facing
+		spr.setup(sk)
+		spr.play_anim("idle", true)
+		spr.set_facing(f)
 
 func _physics_process(dt: float) -> void:
 	if target == null or level == null:

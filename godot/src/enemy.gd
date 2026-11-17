@@ -8,6 +8,7 @@ var t := 0.0
 var cd := 0.0
 var _hit_done := false
 var _bob := 0.0
+var hold := false
 
 func _ready() -> void:
 	home_x = position.x
@@ -35,6 +36,9 @@ func _anim_attack() -> String:
 	return "attack" if spr.has_anim("attack") else "walk"
 
 func ai(dt: float) -> void:
+	if hold:
+		velocity.x = 0.0
+		return
 	t += dt
 	cd -= dt
 	var p := player()

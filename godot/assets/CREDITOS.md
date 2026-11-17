@@ -25,3 +25,10 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 
 ## Acréscimos v0.4 (16/11/2026)
 - `ui/btn_*.png`, `ui/placa.png`: PixelLab `create_image_pixen`. `bg/refugio.png` refeito sem pessoas (PixelLab `create_image_pro`). `sprites/ren/{thrust,rising,finisher}_*`: animações do Ren `036acc6d`.
+
+## Acréscimos v0.5 (16/11/2026)
+| Arquivo | Origem |
+|---|---|
+| `props/portao_aberto.png`, `props/toldo.png`, `props/aldeao_1.png`, `props/aldeao_2.png` | PixelLab `create_image_pixen` |
+| `sprites/luke_rua/*` (Luke de rua, sem lenço, com pingente) | PixelLab, estado do personagem Luke |
+| `sprites/ren/run_*` (10 quadros), `roll_*`, `fall_*` | PixelLab, animações do personagem Ren |

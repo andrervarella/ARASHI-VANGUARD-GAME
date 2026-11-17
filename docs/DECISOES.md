@@ -90,3 +90,13 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 ## DEC-019 — Mundo das Sete Terras e linguagem épica (16/11/2026)
 - Pedido do dono após jogar a v0.2: a trama vale para o **mundo** (Sete Terras, sete selos), Ren mora numa **aldeia**; falas em linguagem épica, sem gíria. Resumo em `docs/13` (cabeçalho). Ren abre o Portão **jogando** (fim do tutorial), não só em cena.
 - Também pedidos e feitos: câmera mais próxima (zoom 1,0), **botão DEFESA** com aparo no instante exato, arte de objetos/coletáveis/ícones no PixelLab, fogo do Baku refeito com efeitos do PixelLab (VFX workbench).
+
+## DEC-020 — Prólogo reescrito e poderes como aura + elemento (16/11/2026)
+- Pedido do dono após jogar a v0.4. História de abertura: trevas, uma maldição cai sobre a terra; nascem demônios que encarnam os **sete pecados** do povo; os povos se unem e os prendem com **selos em sete regiões**; os governantes (a seita das **Sete Casas**) passam a usar a energia dos selos para enriquecer, sacrificando os humildes. Parecia lenda; não era.
+- Na cidade de Ren, a ganância fecha os portões para sacrificar a cidade inteira (população marcada). Ren, cujo pai fez a fundação da muralha e do portão, abre os portões por senso de justiça. A Ira (Baku) vem cobrar o sacrifício; Ren luta e é ferido (luta "impossível" jogável). A luz do **pingente do Luke** repele a Ira naquela noite. Depois o ancião (Tetsu) explica e a jornada começa.
+- Luke entra como **cão de rua sem lenço, com pingente** (que se conecta ao final). Ele late e avisa Ren; um soldado tenta sacrificar o cão; Ren o salva vencendo o soldado e, em cena comovente, dá o próprio lenço ao amigo.
+- Legendas avançam só por toque. Esquiva = dois toques em DEFESA (rolamento). Poderes **não mudam a cor da roupa**: aura discreta + elemento (Fúria = mão em chamas; Jade = contas de jade orbitando).
+
+## DEC-021 — Chefe final com novo visual (16/11/2026, direção do dono)
+- O demônio ruivo de chifres da ficha "BAKU — IRA (Wrathcleaver)" **não é o Baku**: passa a ser a base visual do **chefe final (Shin-Oni, Senhor dos Sete Pecados)**, acrescido de **máscara/capacete samurai** e aparência demoníaca. O Baku jogável continua o "General da Fúria" (samurai de máscara oni).
+- O pôster com todos os chefes deve ser editado: a figura da frente (parecida demais com o Baku) vira o novo chefe final. Arte final de personagem: precisa de aprovação do dono e do custo antes de gerar (T-019).

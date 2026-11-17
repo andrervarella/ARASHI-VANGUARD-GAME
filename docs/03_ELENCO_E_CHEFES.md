@@ -19,7 +19,7 @@
 | Ira | **Baku — O General da Fúria** | Guerreiro muito grande e brutal, armadura samurai desgastada, máscara oni, espada enorme, brasas vermelhas | **Arte individual preferida/aprovada como referência** |
 | Soberba | **Seiran — O Monarca da Soberba** | Soberano elegante, aristocrático, arrogante, presença fria e lâmina cerimonial; paleta e silhueta únicas | Conceito visual em revisão |
 
-**Chefe final adicional:** "Senhor dos Sete Pecados" (apelido de trabalho Shin-Oni). Armadura samurai/oni, máscara demoníaca, sete energias/pecados combinados. Não confundir com Ren; o boss final precisa ter silhueta própria. Versões visuais posteriores ainda requerem aprovação de detalhes.
+**Chefe final adicional:** "Senhor dos Sete Pecados" (apelido de trabalho Shin-Oni). Armadura samurai/oni, máscara demoníaca, sete energias/pecados combinados. Não confundir com Ren; o boss final precisa ter silhueta própria. Versões visuais posteriores ainda requerem aprovação de detalhes. **DEC-021 (16/11):** novo visual = demônio ruivo de chifres da ficha "BAKU — IRA (Wrathcleaver)" + máscara/capacete samurai; essa ficha deixa de ser o Baku.
 
 ### Nomes antigos que NÃO devem ser restaurados automaticamente
 - "Zhen Guo" foi a proposta inicial de Avareza antes de Kairen.

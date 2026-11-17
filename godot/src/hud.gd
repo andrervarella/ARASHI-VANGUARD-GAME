@@ -14,6 +14,8 @@ var jump_down := false
 var attack_down := false
 var power_down := false
 var guard_down := false
+var guard_pressed := false
+var _guard_prev := false
 var crouch_down := false
 var jump_pressed := false
 var attack_pressed := false
@@ -189,6 +191,8 @@ func _process(_dt: float) -> void:
 	jump_down = j
 	attack_down = a
 	power_down = pw
+	guard_pressed = gd and not _guard_prev
+	_guard_prev = gd
 	guard_down = gd
 	_sl = l
 	_sr = r

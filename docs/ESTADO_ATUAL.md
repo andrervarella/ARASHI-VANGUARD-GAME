@@ -5,10 +5,17 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.4 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.5 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.5 (16/11, noite) — T-019a, terceiro retorno do dono (DEC-020)
+- Abertura reescrita (maldição, sete pecados, selos em sete regiões, seita das Sete Casas, portões fechados para o sacrifício); legendas só avançam por toque.
+- Prólogo jogável novo: Ren foge da cerca dos marcados, Luke (cão de rua com pingente) late e guia, soldado agride o cão e Ren o salva; cena do lenço; Ren abre o portão (sprite do portão aberto) e o povo foge; luta impossível contra a Ira; a luz do pingente repele Baku.
+- Câmera mais próxima (zoom 1,2), tela-título inteira no celular, telhado flutuante virou toldo apoiado, esquiva com dois toques em DEFESA, queda do Ren deitada no chão, corrida com 10 quadros.
+- Poderes sem trocar a cor da roupa: aura discreta + mão em chamas (Fúria) / contas de jade (Jade).
+- Pendentes de aprovação do dono: Forma Carmesim (T-018) e pôster com o novo chefe final (T-019, DEC-021).
 
 ## v0.4 (16/11, noite) — T-017, segundo retorno do dono
 - Chão das fases corrigido (metade das emendas não aparecia e ficava um vão escuro "pisável"); buracos agora têm borda de penhasco, escuridão e névoa; caixas assentadas no chão.
