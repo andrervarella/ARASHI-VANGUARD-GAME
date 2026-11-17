@@ -1,6 +1,6 @@
 #!/bin/sh
 # Build do Vercel: copia o jogo para dist/ e baixa músicas e efeitos (biblioteca PixelLab do dono)
-# listados nas variáveis secretas MUSIC_URLS, MUSIC_URLS_2 e SFX_URLS ("nome|url;nome|url").
+# listados nas variáveis secretas MUSIC_URLS, MUSIC_URLS_2, MUSIC_URLS_3 e SFX_URLS ("nome|url;nome|url").
 # Os links não ficam no repositório.
 set -e
 mkdir -p dist/music dist/sfx
@@ -15,5 +15,6 @@ baixar() {
 }
 baixar "$MUSIC_URLS" music mp3
 baixar "$MUSIC_URLS_2" music mp3
+baixar "$MUSIC_URLS_3" music mp3
 baixar "$SFX_URLS" sfx wav
 ls -la dist dist/music dist/sfx
