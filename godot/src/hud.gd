@@ -218,6 +218,16 @@ func _draw() -> void:
 		var pcol: Color = Game.POWERS[Game.data["equipado"]]["cor"]
 		draw_arc(pc, 28, 0, TAU, 40, GOLD, 2.5)
 		draw_arc(pc, 31, 0, TAU, 40, pcol, 2.0)
+		# uma cicatriz-marca no anel do retrato por demônio vencido (progressão visível)
+		var scar_col := {"baku": Color(1.0, 0.38, 0.08), "xui": Color(0.3, 0.9, 0.5)}
+		var vi := 0
+		for vb in Game.data["vencidos"]:
+			var ang := deg_to_rad(40.0 + vi * 26.0)
+			var c0 := pc + Vector2(cos(ang), sin(ang)) * 24.0
+			var c1 := pc + Vector2(cos(ang), sin(ang)) * 36.0
+			draw_line(c0, c1, Color(0, 0, 0, 0.8), 5.0)
+			draw_line(c0, c1, scar_col.get(vb, Color(0.9, 0.1, 0.15)), 3.0)
+			vi += 1
 		var hpmax := float(Game.hp_max())
 		var bw := 210.0
 		_bar(Vector2(74, 18), Vector2(bw, 16), float(player.hp) / hpmax, Color(0.86, 0.12, 0.18), Color(1, 0.55, 0.45))

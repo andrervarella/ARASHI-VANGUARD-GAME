@@ -17,9 +17,11 @@ func _process(dt: float) -> void:
 	var p = level.player if level else null
 	if p and p.state != "dead" and p.hurt_rect().grow(20).has_point(global_position):
 		match kind:
-			"cura": p.heal(2); level.toast("+2 vida")
-			"ki": p.ki = minf(100.0, p.ki + 35.0); level.toast("+ poder")
+			"cura": p.heal(2); level.toast("+2 de vigor")
+			"ki": p.gain_ki(35.0); level.toast("+ Ruptura")
 			"vida":
+				Game.mark("frag_%s_%d" % [level.level_id, int(position.x)])
+				Game.save()
 				Game.data["vida_extra"] = int(Game.data.get("vida_extra", 0)) + 1
 				p.heal(99)
 				level.toast("Fragmento de selo: +1 de vida máxima!")

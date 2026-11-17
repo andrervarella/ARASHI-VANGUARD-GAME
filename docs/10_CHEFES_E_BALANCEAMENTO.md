@@ -76,6 +76,24 @@ Nunca é impossível: o efeito é no **tempo para vencer** e no **risco**, não 
 3. Teste jogado pelo dono em ao menos duas trilhas bem diferentes, sentindo "ficou mais fácil/difícil por causa da minha escolha".
 4. Ajuste dos números depois do teste. Registrar o resultado em `docs/TESTES.md`.
 
+### Trios implementados e primeira leitura de afinidade (v0.7, rascunho)
+Os trios agora são **fixos e exclusivos** por chefe (antes eram sorteados entre 6 itens). Cada trio cobre Força · Defesa · Técnica/Mobilidade.
+
+| Chefe | Força | Defesa | Técnica / Mobilidade |
+|---|---|---|---|
+| Baku | Fio Temperado (+1 dano) | Coração de Brasa (+3 vida) | Sandálias do Vento (+15% velocidade) |
+| Xui | Sino do Templo (Ruptura ×1,5) | Omamori Vermelho (revive 1×) | Pena de Corvo (pulo duplo) |
+
+Afinidade dos itens de Baku **contra Xui** (único chefe seguinte que já existe):
+
+| Item | Contra Xui | Por quê |
+|---|---|---|
+| Fio Temperado | +1 | A janela de punição (Xui ofegante) rende mais |
+| Coração de Brasa | +1 | Aguenta a chuva de comida da fase 2 |
+| Sandálias do Vento | 0 | Ajuda a fugir das ondas, mas a arena é curta |
+
+**Não validado.** A regra "cada item com afinidade positiva e negativa, soma perto de 0" só pode ser checada com 3 ou mais chefes jogáveis; a planilha completa (21 itens × 7 + final) continua pendente em T-013.
+
 ## 5. Ligação com os poderes automáticos (sugestão, aberta)
 
 Opcional, a decidir: o poder automático de um chefe também pode ser a "fraqueza leve" de outro (ao estilo Mega Man), com efeito pequeno, para dar ordem de exploração. **Não está decidido.** Se adotado, o efeito entra na planilha da seção 4 e respeita as mesmas faixas.

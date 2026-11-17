@@ -52,6 +52,8 @@ var _last_guard_tap := -10.0
 var roll_t := 0.0
 var roll_dir := 1
 var guard_t := 0.0
+var tired_t := 0.0
+var _dodged := false
 var carmesim := false
 var carmesim_t := 0.0        # < 0 = sem limite (cena roteirizada)
 var _shape: RectangleShape2D
@@ -144,7 +146,7 @@ func _process(dt: float) -> void:
 	if carmesim and carmesim_t > 0.0 and not locked:
 		carmesim_t -= dt
 		if carmesim_t <= 0.0:
-			set_carmesim(false)
+			set_carmesim(false, 0.0, true)
 	if _hand_fire and _hand_fire.emitting:
 		var hand := Vector2(facing * 26.0, -96.0)
 		if crouching:
@@ -154,6 +156,13 @@ func _process(dt: float) -> void:
 		_orb_t += dt
 		queue_redraw()
 
+# Ruptura (DEC-022): enche jogando bem — aparo, esquiva no limite, combo completo.
+# Quase nada sozinha; levar dano tira. O Sino do Templo acelera os ganhos.
+func gain_ki(v: float) -> void:
+	if v > 0.0 and Game.has_item("sino"):
+		v *= 1.5
+	ki = clampf(ki + v, 0.0, 100.0)
+
 func dmg_bonus() -> int:
 	return (1 if Game.has_item("fio") else 0) + (2 if carmesim else 0)
 
@@ -161,7 +170,7 @@ func speed() -> float:
 	return SPEED * (1.15 if Game.has_item("sandalia") else 1.0) * (1.2 if carmesim else 1.0)
 
 # ---------------- Forma Carmesim ----------------
-func set_carmesim(on: bool, dur := 12.0) -> void:
+func set_carmesim(on: bool, dur := 12.0, tire := false) -> void:
 	if on == carmesim:
 		if on:
 			carmesim_t = dur
@@ -175,6 +184,14 @@ func set_carmesim(on: bool, dur := 12.0) -> void:
 	if spr.animation == an:
 		spr.frame = mini(fr, spr.sprite_frames.get_frame_count(an) - 1)
 	spr.set_facing(facing)
+	if tire and not on and state in ["normal", "attack"]:
+		# o preço do sangue carmesim: Ren fica ofegante e exposto por um instante
+		state = "tired"
+		tired_t = 1.5
+		guarding = false
+		_set_crouch(false)
+		spr.play_anim("tired" if spr.has_anim("tired") else "crouch", true)
+		level.toast("O sangue carmesim cobra seu preço...")
 	Game.flash(Color(1, 0.1, 0.15, 0.7) if on else Color(1, 1, 1, 0.5), 0.35)
 	load("res://src/fx.gd").spawn(self, "ring", Vector2(0, -80), {"col": Color(1, 0.15, 0.2) if on else Color(1, 0.95, 0.8), "r": 130.0, "life": 0.5})
 	apply_outfit()
@@ -204,8 +221,8 @@ func _physics_process(dt: float) -> void:
 	combo_window = maxf(0.0, combo_window - dt)
 	drop_t = maxf(0.0, drop_t - dt)
 	set_collision_mask_value(3, drop_t <= 0.0)
-	var regen := 6.0 * (2.0 if Game.has_item("sino") else 1.0)
-	ki = minf(100.0, ki + regen * dt)
+	if not carmesim:
+		gain_ki(1.0 * dt)
 	if jade_t > 0.0:
 		jade_t -= dt
 		queue_redraw()
@@ -234,6 +251,15 @@ func _physics_process(dt: float) -> void:
 			move_and_slide()
 			spr.play_anim("hurt")
 			if hurt_t <= 0.0:
+				state = "normal"
+			_blink()
+			return
+		"tired":
+			tired_t -= dt
+			velocity.x = move_toward(velocity.x, 0.0, 2000.0 * dt)
+			velocity.y = minf(velocity.y + GRAVITY * dt, FALL_MAX)
+			move_and_slide()
+			if tired_t <= 0.0:
 				state = "normal"
 			_blink()
 			return
@@ -353,6 +379,7 @@ func _physics_process(dt: float) -> void:
 
 func _start_roll(dir: float) -> void:
 	state = "roll"
+	_dodged = false
 	roll_t = 0.4
 	guarding = false
 	spr.position.y = 0.0
@@ -449,7 +476,9 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 		if rect.intersects(f.hurt_rect()):
 			hit_done[f] = true
 			f.take_hit(dmg, facing, kind)
-			ki = minf(100.0, ki + 5.0)
+			gain_ki(3.0)
+			if combo == COMBO.size() and atk_kind == "stand":
+				gain_ki(10.0)
 			var c: Rect2 = f.hurt_rect()
 			load("res://src/fxsprite.gd").play(level, "acerto" if dmg < 3 else "aparo", Vector2(clampf(rect.get_center().x, c.position.x, c.end.x), rect.get_center().y), {"scale_px": 2.2 if dmg < 3 else 1.8})
 			level.hitstop(0.05 if dmg < 3 else 0.11)
@@ -463,16 +492,16 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 
 func _use_power() -> void:
 	var p: String = Game.data["equipado"]
-	if p == "" or state in ["dash", "hurt", "dead"]:
+	if p == "" or state in ["dash", "hurt", "dead", "tired"]:
 		if p == "":
-			level.toast("Nenhum poder equipado")
+			level.toast("Ainda não tens uma técnica de demônio em mãos.")
 		return
 	if p == "carmesim" and carmesim:
 		return
 	var cost: float = Game.POWERS[p]["custo"]
 	if ki < cost:
 		Game.sfx("ui_back", -6.0)
-		level.toast("Poder insuficiente")
+		level.toast("A Ruptura ainda não basta.")
 		return
 	ki -= cost
 	Game.sfx("power", -2.0)
@@ -505,7 +534,7 @@ func absorbs(p: Vector2) -> bool:
 		jade_heals += 1
 		hp += 1
 		hp_changed.emit()
-	ki = minf(100.0, ki + 8.0)
+	gain_ki(8.0)
 	return true
 
 func _draw() -> void:
@@ -525,6 +554,14 @@ func _draw() -> void:
 		draw_arc(Vector2(0, -70), 150.0, 0, TAU, 64, Color(0.6, 1.0, 0.75, 0.7 * a / 0.6), 4.0)
 
 func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void:
+	if state == "roll" and not _dodged and not locked:
+		# esquiva no limite: o golpe passou pelo rolamento
+		_dodged = true
+		gain_ki(15.0)
+		Game.sfx("esquiva", -2.0)
+		level.hitstop(0.12)
+		load("res://src/fx.gd").spawn(level, "text", global_position + Vector2(0, -170), {"txt": "Esquiva perfeita!", "col": Color(0.85, 0.95, 1.0), "life": 0.7})
+		return
 	if invuln > 0.0 or state == "dead" or locked:
 		return
 	if guarding and (src_x - global_position.x) * facing >= 0.0:
@@ -534,10 +571,12 @@ func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void
 			Game.sfx("clash", 0.0)
 			Game.sfx("hit_big", -6.0)
 			load("res://src/fxsprite.gd").play(level, "aparo", front, {"scale_px": 2.0})
-			ki = minf(100.0, ki + 15.0)
-			level.hitstop(0.09)
-			level.shake(5.0)
-			level.toast("Aparo!")
+			gain_ki(25.0)
+			Game.sfx("sino", -2.0, 0.02)
+			level.hitstop(0.14)
+			level.shake(6.0)
+			load("res://src/fx.gd").spawn(level, "ring", front, {"col": Color(1, 0.85, 0.35), "r": 90.0, "life": 0.35})
+			level.toast("Aparo perfeito!")
 			if src and src.has_method("parried"):
 				src.parried()
 			invuln = 0.25
@@ -556,6 +595,7 @@ func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void
 		n = int(ceil(n / 2.0))
 		guarding = false
 	hp -= n
+	gain_ki(-10.0)
 	if level and level.get("no_death") and hp < 2:
 		hp = 2
 	hp_changed.emit()

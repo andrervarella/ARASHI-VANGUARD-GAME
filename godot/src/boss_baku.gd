@@ -158,6 +158,8 @@ func _begin_slash() -> void:
 
 func _begin_leap() -> void:
 	state = "leap_wind"
+	if level.has_method("luke_alert"):
+		level.luke_alert()
 	t = 0.0
 
 func _ember_wave() -> void:

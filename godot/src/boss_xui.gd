@@ -71,6 +71,8 @@ func ai(dt: float) -> void:
 				else:
 					state = "slam_wind"
 					spr.play_anim("slam", true, 0.8)
+					if level.has_method("luke_alert"):
+						level.luke_alert()
 				if phase == 2 and _cycle % 4 == 0 and get_tree().get_nodes_in_group("foes").size() < 2:
 					level.spawn_enemy("espirito", global_position.x + randf_range(-300, 300), level.GY - 300.0)
 		"breath":

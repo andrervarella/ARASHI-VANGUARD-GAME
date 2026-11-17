@@ -40,13 +40,19 @@ const L := {
 		"chao": Color(0.12, 0.10, 0.13), "borda": Color(0.36, 0.30, 0.34),
 		"largura": 8200.0, "inicio": 200.0, "luke_inicio": true,
 		"ground": [[0, 1800], [2050, 3600], [3880, 5200], [5420, 8200]],
-		"plats": [[1840, 160, 170], [2400, 230, 260], [2800, 380, 260], [3620, 200, 220], [4300, 220, 300], [5240, 180, 160], [5900, 230, 280]],
+		"plats": [[1840, 160, 170], [2400, 230, 260], [2800, 380, 260], [3620, 200, 220], [4300, 220, 300], [5240, 180, 160], [5900, 230, 280], [6200, 300, 380]],
 		"blocks": [[1300, 120, 160, 120, "pedra"], [3200, 140, 180, 140, "pedra"], [6200, 110, 140, 110, "pedra"]],
 		"foes": [["guarda", 900], ["oni", 1500], ["oni", 2850, 380], ["guarda", 3000], ["oni", 3400], ["guarda", 4200], ["guarda", 4600], ["oni", 4400, 220], ["oni", 5700], ["guarda", 6000], ["oni", 6400]],
 		"prompts": [[150, "Fase 1 — Vale das Torii"]],
 		"events": [[40, "intro_torii"]],
-		"breakables": [],
-		"pickups": [[2850, 470, "cura"], [4350, 300, "ki"], [6500, 60, "cura"]],
+		"breakables": [[6250, 100, 520, "nevoa", "nevoa", 300]],
+		"pickups": [[2850, 470, "cura"], [4350, 300, "ki"], [6500, 60, "cura"], [6470, 300, "vida"]],
+		"altares": [5480.0],
+		# arranjos sorteados; "salto" = oni que ensina a pergunta de Baku
+		"arranjos": [
+			[["guarda", 900], ["oni", 1500, 0, "salto"], ["oni", 2850, 380], ["guarda", 3000], ["oni", 3400, 0, "salto"], ["guarda", 4200], ["guarda", 4600], ["oni", 4400, 220], ["oni", 5750, 0, "salto"], ["guarda", 6000], ["oni", 6400]],
+			[["oni", 900], ["guarda", 1500], ["oni", 2850, 380], ["oni", 3100, 0, "salto"], ["guarda", 3450], ["oni", 4200, 0, "salto"], ["guarda", 4650], ["oni", 4400, 220], ["guarda", 5750], ["oni", 6000, 0, "salto"], ["guarda", 6450]],
+		],
 		"chefe": "baku", "arena": [7000.0, 8150.0],
 	},
 	"palacio": {
@@ -55,13 +61,19 @@ const L := {
 		"chao": Color(0.10, 0.12, 0.10), "borda": Color(0.62, 0.50, 0.22),
 		"largura": 8200.0, "inicio": 200.0, "luke_inicio": true,
 		"ground": [[0, 2300], [2560, 4700], [4950, 8200]],
-		"plats": [[2330, 200, 200], [1500, 230, 280], [3300, 210, 240], [3700, 400, 240], [4720, 200, 200], [5600, 230, 300]],
+		"plats": [[2330, 200, 200], [1500, 230, 280], [3300, 210, 240], [3700, 400, 240], [4720, 200, 200], [5600, 230, 300], [5920, 300, 380]],
 		"blocks": [[900, 120, 200, 120, "mesa"], [4200, 130, 220, 130, "mesa"], [6100, 120, 200, 120, "mesa"]],
 		"foes": [["servo", 800], ["espirito", 1400, 360], ["servo", 1900], ["servo", 2900], ["espirito", 3500, 400], ["servo", 3900], ["espirito", 4500, 300], ["servo", 5300], ["servo", 5800], ["espirito", 6300, 320], ["servo", 6500]],
 		"prompts": [[150, "Fase 2 — Palácio de Xui"], [3950, "Uma parede rachada... só um golpe de fúria a derruba."]],
 		"events": [[40, "intro_palacio"]],
-		"breakables": [[4000, 200, 300, "rachada", "segredo"]],
-		"pickups": [[3750, 480, "cura"], [5650, 340, "ki"], [6700, 60, "cura"]],
+		"breakables": [[4000, 200, 300, "rachada", "segredo"], [5970, 100, 520, "selo", "selo_carmesim", 300]],
+		"pickups": [[3750, 480, "cura"], [5650, 340, "ki"], [6700, 60, "cura"], [6220, 300, "vida"]],
+		"altares": [5050.0],
+		# arranjos sorteados; "arremesso" = servo que ensina a Bocarra de Jade antes de Xui
+		"arranjos": [
+			[["servo", 800], ["espirito", 1400, 360], ["servo", 1900, 0, "arremesso"], ["servo", 2900], ["espirito", 3500, 400], ["servo", 3900, 0, "arremesso"], ["espirito", 4500, 300], ["servo", 5300], ["servo", 5800, 0, "arremesso"], ["espirito", 6300, 320], ["servo", 6500]],
+			[["servo", 800, 0, "arremesso"], ["espirito", 1400, 360], ["servo", 1900], ["servo", 2900, 0, "arremesso"], ["servo", 3250], ["espirito", 4500, 300], ["servo", 3900], ["servo", 5300, 0, "arremesso"], ["espirito", 5800, 330], ["servo", 6300], ["servo", 6550, 0, "arremesso"]],
+		],
 		"chefe": "xui", "arena": [7050.0, 8150.0],
 	},
 	"vila": {
@@ -165,11 +177,12 @@ const D := {
 		["ren", "O pingente de Luke... o que é ele, mestre?"],
 		["tetsu", "...Uma pergunta para outro dia. Guarda bem esse cão. Ele te escolheu antes que tu o escolhesses."],
 		["tetsu", "Antes de partires, lembra: segura DEFESA diante do golpe; no instante exato, o inimigo vacila. Toca DEFESA duas vezes para rolar."],
+		["tetsu", "Cada aparo perfeito e cada esquiva no limite alimentam a tua Ruptura, a força do espírito. É ela que desperta os poderes."],
 		["tetsu", "Vai. A torii do Vale das Torii já está aberta. E volta com vida."],
 	],
 	"tetsu_2": [
-		["tetsu", "Sentes isto? A ira de Baku agora corre em tua lâmina. Toca no nome do poder, no alto, para vesti-la; o botão PODER a desperta."],
-		["tetsu", "Cada poder que tomas muda um pouco quem és. Cuida do que vestes, filho."],
+		["tetsu", "Sentes isto? A ira de Baku agora corre em tua mão. Toca no nome do poder, no alto, para empunhá-la; o botão PODER a desperta quando a Ruptura bastar."],
+		["tetsu", "Cada poder que tomas deixa uma marca em ti. Cuida do que carregas, filho."],
 		["ren", "Mestre... Baku disse que a marca nas engrenagens do selo é marca de ferreiro. Igual à minha."],
 		["tetsu", "...Os selos foram forjados, filho. E todo aço tem um ferreiro. Hoje não. Primeiro, sobrevive."],
 		["tetsu", "O Palácio de Xui abriu as portas. Lá a Gula serve banquetes, enquanto o povo do lado de fora morre de fome."],
@@ -199,8 +212,33 @@ const D := {
 	"carmesim_desperta": [
 		["ren", "Meu sangue... queima. As cicatrizes da Ira estão se abrindo!"],
 		["xui", "Que fome é essa nos teus olhos, menino? Ela... se parece com a minha!"],
-		["ren", "Não... não agora! Algo vermelho como a lua daquela noite rasga-me por dentro..."],
-		["ren", "...Gula. Eu vou devorar-te por inteiro."],
+		["ren", "Algo vermelho como a lua daquela noite rasga-me por dentro... Gula, eu vou devorar-te por inteiro."],
+	],
+	"dica_baku": [
+		["tetsu", "(A voz do mestre, na memória) A Ira salta e desce com golpes pesados... e então respira."],
+		["tetsu", "Rola quando ele cair do alto. Fere-o enquanto ofega, filho. Não antes."],
+	],
+	"dica_xui": [
+		["tetsu", "(A voz do mestre, na memória) O vapor da Gula, a Bocarra de Jade o engole e te devolve o vigor."],
+		["tetsu", "Quando ela saltar com o ventre, pula a onda. Depois ela arqueja: é a tua hora."],
+	],
+	"segredo_nevoa": [
+		["ren", "A Bocarra de Jade engoliu a névoa... e atrás dela dormia um fragmento de selo esquecido."],
+	],
+	"segredo_selo": [
+		["ren", "O selo carmesim cedeu ao meu sangue. Que poder é este, que abre o que nem a fúria abria?"],
+	],
+	"tetsu_lenda_1": [
+		["tetsu", "Dizem que a Lua Carmesim nasce quando o mundo derrama sangue demais numa só noite."],
+		["tetsu", "Naquela noite em Arashi, ela nasceu. E algo dela ficou em ti, filho."],
+	],
+	"tetsu_lenda_2": [
+		["tetsu", "Os velhos falam de um senhor num trono de chifres, que um dia reuniu os sete pecados num só corpo."],
+		["tetsu", "Chamam-no Senhor dos Sete Pecados. Rezo para que seja só uma lenda... como dizíamos dos selos."],
+	],
+	"tetsu_lenda_3": [
+		["tetsu", "Já reparaste como os demônios evitam o cão? Nem a Ira ousou tocá-lo."],
+		["tetsu", "Há coisas que a lâmina não explica, filho. O afeto é uma delas."],
 	],
 	"carmesim_calma_1": [
 		["ren", "Ainda não basta... Preciso de mais. Mais sangue. Mais selos."],

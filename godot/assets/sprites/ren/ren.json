@@ -234,5 +234,21 @@
    216,
    216
   ]
+ },
+ "tired": {
+  "frames": [
+   "tired_00.png",
+   "tired_01.png"
+  ],
+  "fps": 3,
+  "loop": true,
+  "anchor": [
+   107.7,
+   184
+  ],
+  "size": [
+   216,
+   216
+  ]
  }
 }

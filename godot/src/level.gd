@@ -104,8 +104,11 @@ func _ready() -> void:
 	_build_vignette()
 	Game.music(D["musica"], -9.0)
 	Game.ambience(D.get("amb", ""), -20.0)
-	if D.has("chefe"):
+	if D.has("chefe") and not Game.data["vencidos"].has(D["chefe"]):
 		_spawn_boss()
+	elif D.has("chefe"):
+		arena_x0 = D["arena"][0]
+		arena_x1 = D["arena"][1]
 
 # ---------------- construção ----------------
 func _build_bg() -> void:
@@ -218,20 +221,42 @@ func _build_world() -> void:
 	_static_rect(-100.0, GY - 3000.0, 100.0, 4000.0, 1)
 	_static_rect(D["largura"], GY - 3000.0, 100.0, 4000.0, 1)
 	for b in D["breakables"]:
+		if Game.seen("quebrado_%s_%s" % [level_id, b[4]]):
+			continue
 		var br = load("res://src/breakable.gd").new()
 		br.kind = b[3]
 		br.id = b[4]
 		br.size = Vector2(b[1], b[2])
-		br.position = Vector2(b[0], GY)
+		br.position = Vector2(b[0], GY - (float(b[5]) if b.size() > 5 else 0.0))
 		br.level = self
 		br.broken.connect(_on_broken)
 		add_child(br)
 
-	for f in D["foes"]:
+	# arranjos feitos à mão, sorteados a cada visita (variação controlada; chefe nunca varia)
+	var foes: Array = D["foes"]
+	var arr: Array = D.get("arranjos", [])
+	if not arr.is_empty():
+		var ua := OS.get_cmdline_user_args()
+		var ix := randi() % arr.size()
+		if ua.has("--arranjo"):
+			ix = int(ua[ua.find("--arranjo") + 1]) % arr.size()
+		foes = arr[ix]
+	var liberta: bool = D.has("chefe") and Game.data["vencidos"].has(D["chefe"])
+	var k := 0
+	for f in foes:
+		k += 1
+		# o mundo reage: sem o demônio, metade das tropas se dispersou
+		if liberta and k % 2 == 0:
+			continue
 		var y: float = GY - (float(f[2]) if f.size() > 2 else 0.0) - 2.0
-		spawn_enemy(f[0], f[1], y)
+		var e = spawn_enemy(f[0], f[1], y, f[3] if f.size() > 3 else "")
+		if liberta:
+			e.hp = maxi(1, e.hp - 1)
+			e.hp_max = e.hp
 	for pk in D["pickups"]:
 		spawn_pickup(pk[2], Vector2(pk[0], GY - pk[1] - 50.0))
+	for a in D.get("altares", []):
+		_add_altar(a)
 	# hub
 	for n in D.get("npcs", []):
 		_add_npc(n[0], n[1])
@@ -242,15 +267,20 @@ func _build_world() -> void:
 
 var _luke_caged := Vector2.ZERO
 
-func spawn_enemy(kind: String, x: float, y: float) -> Node:
+func spawn_enemy(kind: String, x: float, y: float, variant := "") -> Node:
 	var e = load("res://src/enemy.gd").new()
 	e.kind = kind
+	e.variant = variant
 	e.level = self
 	e.position = Vector2(x, y)
 	add_child(e)
 	return e
 
 func spawn_pickup(kind: String, pos: Vector2) -> void:
+	if kind == "vida":
+		var key := "frag_%s_%d" % [level_id, int(pos.x)]
+		if Game.seen(key):
+			return
 	var p = load("res://src/pickup.gd").new()
 	p.kind = kind
 	p.level = self
@@ -308,6 +338,11 @@ func _talk_tetsu() -> void:
 		id = "tetsu_2" if not Game.seen("tetsu_2") else "tetsu_r2"
 	else:
 		id = "tetsu_r1"
+	# já ouviu o essencial? então o mestre conta uma lenda ("perguntar mais")
+	if Game.seen(id) and id != "tetsu_1":
+		var n := int(Game.data.get("lenda", 0))
+		Game.data["lenda"] = n + 1
+		id = "tetsu_lenda_%d" % (n % 3 + 1)
 	Game.mark(id)
 	Game.save()
 	say(id)
@@ -340,7 +375,13 @@ func _enter_door(d: Array) -> void:
 				toast("Fala primeiro com o mestre Tetsu.")
 			else:
 				toast("Este caminho ainda está selado. Derrota Baku primeiro.")
-		"vencido": toast("%s já foi derrotado." % d[3].split(" —")[0])
+		"vencido":
+			Game.sfx("ui_ok")
+			frozen = true
+			Game.data["cp"] = {}
+			Game.save()
+			toast("Revisitando %s..." % d[2])
+			Game.goto("level", d[1])
 		"aberto":
 			Game.sfx("ui_ok")
 			frozen = true
@@ -449,6 +490,10 @@ func _draw() -> void:
 		draw_line(r.position + Vector2(r.size.x - 8, 22), r.position + Vector2(r.size.x - 8, 60), Color(0.45, 0.35, 0.25), 3.0)
 	for b in D["blocks"]:
 		_draw_block(Rect2(b[0], GY - b[1], b[2], b[3]), b[4])
+	var at := prop("altar")
+	if at:
+		for x in _altares:
+			draw_texture_rect(at, Rect2(x - 96.0, GY - 182.0, 192.0, 192.0), false)
 	for d in _doors:
 		_draw_door(d)
 	if D.has("portao_x"):
@@ -595,6 +640,9 @@ func _process(dt: float) -> void:
 			return
 	if D.has("chefe") and boss and not _arena_on and px > arena_x0 + 260.0:
 		_start_arena()
+	elif D.has("chefe") and boss == null and not _arena_on and px > arena_x0 + 260.0:
+		_arena_on = true
+		_leave_free_land()
 	var it = _near_interactable()
 	_interact_lbl.visible = it != null
 	if it:
@@ -698,15 +746,23 @@ func _event(id: String) -> void:
 				Game.mark("intro_vila")
 				say(id)
 		_:
+			if id.begins_with("intro_"):
+				if Game.seen(id):
+					return
+				Game.mark(id)
 			say(id)
 
 func _on_broken(id: String) -> void:
+	Game.mark("quebrado_%s_%s" % [level_id, id])
+	Game.save()
 	match id:
 		"segredo":
 			spawn_pickup("vida", Vector2(4100, GY - 90))
-			if not Game.seen("segredo"):
-				Game.mark("segredo")
-				say("segredo")
+			say("segredo")
+		"nevoa":
+			say("segredo_nevoa")
+		"selo_carmesim":
+			say("segredo_selo")
 
 # ---------------- prólogo: cerca, o cão sem dono e o soldado ----------------
 func _setup_prologue() -> void:
@@ -1105,13 +1161,74 @@ func _start_arena() -> void:
 	var z := clampf(vs.x / (arena_x1 - arena_x0), 0.85, 1.2)
 	create_tween().tween_property(cam, "zoom", Vector2(z, z), 0.8)
 	_arena_walls.append(_static_rect(arena_x0 - 100.0, GY - 3000.0, 100.0, 3000.0, 1))
+	# respiro antes da tempestade: a música some, só o vento e as correntes
 	Game.stop_music()
 	Game.sfx("chains", -2.0)
 	hud.boss = boss
 	hud.boss_name = boss.display_name
-	await say("chefe_" + D["chefe"])
+	var ch: String = D["chefe"]
+	var mortes: Dictionary = Game.data.get("mortes", {})
+	var n_mortes := int(mortes.get(ch, 0))
+	if not Game.seen("chefe_" + ch):
+		frozen = true
+		player.locked = true
+		await get_tree().create_timer(1.4).timeout
+		Game.sfx("impact", 0.0)
+		Game.sfx("boss_effort", -2.0)
+		shake(10.0)
+		Game.mark("chefe_" + ch)
+		await say("chefe_" + ch)
+	else:
+		# recomeço rápido: sem repetir a conversa
+		banner(boss.display_name)
+		Game.sfx("impact", -2.0)
+		await get_tree().create_timer(0.7).timeout
+	if n_mortes >= 3 and n_mortes % 3 == 0 and LV_D().has("dica_" + ch):
+		await say("dica_" + ch)
 	Game.music("chefe", -7.0)
 	boss.start()
+
+func LV_D() -> Dictionary:
+	return load("res://src/levels.gd").D
+
+# terra já libertada: a arena está vazia; volta ao refúgio
+func _leave_free_land() -> void:
+	frozen = true
+	player.locked = true
+	banner("%s respira em paz... por ora." % D["nome"].split("— ")[-1])
+	Game.sfx("victory", -10.0)
+	await get_tree().create_timer(2.2).timeout
+	Game.data["cp"] = {}
+	Game.save()
+	Game.goto("level", "vila")
+
+# Luke late antes do golpe mais perigoso do chefe (sinal extra de leitura no celular)
+func luke_alert() -> void:
+	if luke == null or not is_instance_valid(luke):
+		return
+	Game.sfx("bark", -4.0)
+	load("res://src/fx.gd").spawn(self, "text", luke.position + Vector2(0, -95), {"txt": "!", "col": Color(1, 0.85, 0.3), "life": 0.6})
+
+# ---------------- altares de descanso ----------------
+var _altar_tex: Texture2D
+func _add_altar(x: float) -> void:
+	var done := {"v": false}
+	_interactables.append({"rect": Rect2(x - 120, GY - 220, 240, 220), "prompt": "ATACAR: descansar no altar", "cb": func(): _rest_at_altar(x, done), "pos": Vector2(x, GY - 210)})
+	_altares.append(x)
+
+var _altares: Array = []
+
+func _rest_at_altar(x: float, done: Dictionary) -> void:
+	Game.data["cp"] = {"fase": level_id, "x": x}
+	Game.save()
+	player.heal(99)
+	Game.sfx("sino", -6.0, 0.0)
+	load("res://src/fx.gd").spawn(self, "ring", Vector2(x, GY - 80), {"col": Color(1, 0.85, 0.5), "r": 120.0, "life": 0.6})
+	if not done["v"]:
+		done["v"] = true
+		banner("Altar de descanso — a jornada foi gravada.")
+	else:
+		toast("Vigor restaurado.")
 
 func _on_boss_defeated() -> void:
 	if _boss_done:
@@ -1136,6 +1253,11 @@ func _on_boss_defeated() -> void:
 func _on_player_died() -> void:
 	_dead = true
 	frozen = true
+	if _arena_on and D.has("chefe"):
+		var m: Dictionary = Game.data.get("mortes", {})
+		m[D["chefe"]] = int(m.get(D["chefe"], 0)) + 1
+		Game.data["mortes"] = m
+		Game.save()
 	Game.stop_music()
 	Game.sfx("loss", -4.0)
 	var l := Game.label("VOCÊ CAIU", 54, Color(0.95, 0.2, 0.25))
@@ -1145,8 +1267,8 @@ func _on_player_died() -> void:
 	l.size = Vector2(vs.x, 70)
 	l.modulate.a = 0.0
 	_ui.add_child(l)
-	create_tween().tween_property(l, "modulate:a", 1.0, 0.6)
-	await get_tree().create_timer(2.4).timeout
+	create_tween().tween_property(l, "modulate:a", 1.0, 0.5)
+	await get_tree().create_timer(1.7).timeout
 	Game.goto("level", level_id)
 
 # ---------------- pausa e poderes ----------------

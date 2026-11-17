@@ -41,8 +41,10 @@ A máscara do Shin-Oni quebra: embaixo, um homem com **a mesma cicatriz e as mes
 - Prancha geral antiga (com Zhen Guo/Tao'en): **desconsiderada**, salvo como referência do visual do Ren. Chefes devem ter silhuetas, cores e movimentos bem diferentes entre si.
 - Imagens enviadas pelo dono em 16/11 são as **oficiais atuais** e substituem as anteriores quando conflitarem.
 
-## Poder de chefe muda a roupa do Ren (estilo Mega Man)
-| Poder ganho | Visual no Ren (camada sobre a base + troca de paleta) |
+## Poder de chefe no Ren: aura discreta + elemento (DEC-020; substitui a troca de roupa)
+> A roupa do Ren **não muda mais de cor**. Cada poder aparece como aura discreta + um elemento/objeto (Fúria = mão em chamas; Jade = contas de jade orbitando). A tabela abaixo fica como **ideia de elemento** para os próximos poderes, não como roupa.
+
+| Poder ganho | Elemento sugerido (a aprovar por poder) |
 |---|---|
 | Baku: golpe que quebra paredes | ombreira oni, lâmina em brasa vermelha |
 | Xui: absorve projéteis | contas de jade, faixa vinho |

@@ -34,3 +34,10 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `sprites/ren/run_*` (10 quadros), `roll_*`, `fall_*` | PixelLab, animações do personagem Ren |
 | `sprites/ren_carmesim/*` (Forma Carmesim) | PixelLab, estado "Forma Carmesim" do personagem Ren (`36f2ce1b`), a partir da ficha AV-FIC-002 |
 | `icons/carmesim.png` | PixelLab `create_image_pixen` |
+
+## Acréscimos v0.7 (16/11/2026)
+| Arquivo | Origem |
+|---|---|
+| `props/altar.png`, `props/nevoa.png`, `props/selo_carmesim.png` | PixelLab `create_image_pixen` |
+| `sprites/ren/tired_*` (Ren ofegante) | PixelLab, animação do Ren `036acc6d` |
+| `sfx/sino.ogg`, `sfx/esquiva.ogg` | Sintetizados por código (Python/numpy), originais do projeto |

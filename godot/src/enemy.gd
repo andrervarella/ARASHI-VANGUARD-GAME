@@ -9,6 +9,7 @@ var cd := 0.0
 var _hit_done := false
 var _bob := 0.0
 var hold := false
+var variant := ""            # oni "salto": ensina a pergunta de Baku · servo "arremesso": ensina a Bocarra de Jade
 
 func _ready() -> void:
 	home_x = position.x
@@ -50,6 +51,12 @@ func ai(dt: float) -> void:
 	if state == "patrol" and near:
 		state = "chase"
 		Game.sfx("foe_alert", -14.0)
+	if variant == "salto":
+		_oni_salto(dt, dx, near)
+		return
+	if variant == "arremesso":
+		_servo_arremesso(dt, dx, near)
+		return
 	match kind:
 		"guarda": _guarda(dt, dx, near)
 		"oni": _oni(dt, dx, near)
@@ -195,3 +202,94 @@ func _espirito(dt: float, dx: float, dy: float) -> void:
 	if absf(dx) > 5.0:
 		facing = 1 if dx > 0 else -1
 		spr.set_facing(facing)
+
+
+# ---- variantes que ensinam o chefe da terra (DEC-022) ----
+# Oni saltador: prepara (sinal) → salta sobre Ren → impacto no chão → fica ofegante (dano dobrado).
+# Mesma pergunta de Baku: "você sabe esquivar e punir?"
+func damage_mult() -> float:
+	return 2.0 if state == "ofegante" else 1.0
+
+func _oni_salto(dt: float, dx: float, near: bool) -> void:
+	match state:
+		"patrol": _patrol(dt)
+		"chase":
+			if not near:
+				state = "patrol"
+				return
+			face_player()
+			_walk_to(signf(dx) * 120.0 if absf(dx) > 260.0 else 0.0, dt)
+			if cd <= 0.0 and is_on_floor() and absf(dx) < 520.0:
+				state = "windup"
+				t = 0.0
+				telegraph_t = 0.55
+				spr.play_anim(_anim_attack(), true, 0.0)
+				spr.pause()
+		"windup":
+			velocity.x = 0.0
+			telegraph_t -= dt
+			spr.position.y = 4.0
+			if t >= 0.55:
+				spr.position.y = 0.0
+				state = "salto"
+				t = 0.0
+				var p := player()
+				var tx: float = clampf(p.global_position.x - global_position.x, -420.0, 420.0)
+				velocity = Vector2(tx / 0.62, -950.0)
+				Game.sfx("jump", -8.0)
+				spr.play_anim(_anim_attack(), true, 0.8)
+		"salto":
+			if t > 0.15 and is_on_floor():
+				state = "ofegante"
+				t = 0.0
+				velocity.x = 0.0
+				Game.sfx("slam", -6.0)
+				level.shake(5.0)
+				load("res://src/fxsprite.gd").play(level, "choque", global_position, {"scale_px": 1.3})
+				var pl := player()
+				if pl and pl.is_on_floor() and absf(pl.global_position.x - global_position.x) < 170.0:
+					pl.take_damage(2, global_position.x, self)
+				spr.play_anim("walk")
+				spr.pause()
+		"ofegante":
+			velocity.x = 0.0
+			spr.position.y = absf(sin(t * 9.0)) * 2.0
+			if t > 1.1:
+				spr.position.y = 0.0
+				state = "chase"
+				cd = randf_range(1.6, 2.4)
+
+# Servo arremessador: mantém distância e atira restos do banquete em arco.
+# Ensina a Bocarra de Jade (engole projéteis) antes de Xui.
+func _servo_arremesso(dt: float, dx: float, near: bool) -> void:
+	match state:
+		"patrol": _patrol(dt)
+		"chase":
+			if not near:
+				state = "patrol"
+				return
+			var want := 0.0
+			if absf(dx) > 480.0:
+				want = signf(dx) * 120.0
+			elif absf(dx) < 260.0:
+				want = -signf(dx) * 100.0
+			_walk_to(want, dt)
+			face_player()
+			if cd <= 0.0:
+				state = "windup"
+				t = 0.0
+				telegraph_t = 0.45
+				spr.play_anim(_anim_attack(), true, 0.7)
+		"windup":
+			velocity.x = 0.0
+			telegraph_t -= dt
+			if t >= 0.45:
+				var p := player()
+				var tgt: Vector2 = p.global_position + Vector2(0, -60)
+				var src := global_position + Vector2(facing * 30.0, -110)
+				var tt := 0.9
+				var v := Vector2((tgt.x - src.x) / tt, (tgt.y - src.y - 0.5 * 1200.0 * tt * tt) / tt)
+				shoot(src, v, {"grav": 1200.0, "kind": "food", "radius": 15.0, "dmg": 1, "col": [Color(0.8, 0.2, 0.2), Color(0.9, 0.6, 0.1), Color(0.5, 0.75, 0.2)].pick_random()})
+				Game.sfx("slash1", -12.0)
+				state = "chase"
+				cd = randf_range(2.0, 2.8)

@@ -5,10 +5,18 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.6 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.7 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.7 (16/11, noite) — plano de game design (DEC-022, T-020)
+- Ruptura (barra enche jogando bem), esquiva perfeita, aparo com sino, cansaço após a Forma Carmesim.
+- Oni saltador e servo arremessador ensinam os chefes; 2 arranjos de inimigos sorteados por fase.
+- Silêncio e impacto antes do chefe; recomeço rápido; conselho após 3 derrotas; Luke late antes do golpe perigoso.
+- Altares de descanso; revisitar terras libertadas; segredos da névoa (Jade) e do selo carmesim (Forma Carmesim).
+- Textos no tom do mundo; lendas do Tetsu; marcas de chefes vencidos no anel do retrato.
+- Trios fixos de itens por chefe. Pôster oficial com o chefe final salvo (AV-POSTER-002).
 
 ## v0.6 (16/11, noite) — Forma Carmesim (T-018, aprovada pelo dono)
 - Sprites da Forma Carmesim (cabelo prateado longo, marcas e olhos vermelhos, colete aberto) gerados como estado do mesmo Ren no PixelLab (`36f2ce1b`), 13 animações.

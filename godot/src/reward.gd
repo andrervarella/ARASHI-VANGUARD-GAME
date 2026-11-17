@@ -1,5 +1,5 @@
 extends CanvasLayer
-# Tela de vitória: poder do chefe (troca a roupa do Ren) + escolha de 1 entre 3 itens.
+# Tela de vitória: poder do chefe (aura + elemento, DEC-020) + escolha de 1 entre os 3 itens do chefe.
 
 var boss := "baku"
 const POWER_OF := {"baku": "furia", "xui": "jade"}
@@ -56,11 +56,12 @@ func _ready() -> void:
 	hb.add_theme_constant_override("separation", 12)
 	hb.alignment = BoxContainer.ALIGNMENT_CENTER
 	root.add_child(hb)
-	var pool := []
-	for k in Game.ITEMS:
-		if not Game.has_item(k):
-			pool.append(k)
-	pool.shuffle()
+	# trio fixo e exclusivo de cada chefe (docs/04 e docs/10, T-013): um eixo de estilo por item
+	var pool: Array = Game.TRIOS.get(boss, []).duplicate()
+	if pool.is_empty():
+		for k in Game.ITEMS:
+			if not Game.has_item(k):
+				pool.append(k)
 	for i in range(mini(3, pool.size())):
 		var k: String = pool[i]
 		var it: Dictionary = Game.ITEMS[k]

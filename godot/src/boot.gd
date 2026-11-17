@@ -11,6 +11,8 @@ func _ready() -> void:
 		if a.has("--x"):
 			Game.data["cp"] = {"fase": a[i + 2], "x": float(a[a.find("--x") + 1])}
 		Game.goto.call_deferred(a[i + 1], a[i + 2])
+		if a.has("--testcarmesim"):
+			_test_carmesim()
 		if a.has("--halfboss"):
 			_half_boss_later()
 		if a.has("--killboss"):
@@ -30,3 +32,9 @@ func _kill_boss_later(t := 4.0) -> void:
 	for f in get_tree().get_nodes_in_group("foes"):
 		if f.get("is_boss"):
 			f.take_hit(999, 1, "teste")
+
+# teste: Forma Carmesim curta (2 s) para ver o cansaço ao terminar
+func _test_carmesim() -> void:
+	await get_tree().create_timer(2.5).timeout
+	for p in get_tree().get_nodes_in_group("player"):
+		p.set_carmesim(true, 2.0)

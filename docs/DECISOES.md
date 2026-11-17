@@ -101,3 +101,14 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - O demônio ruivo de chifres da ficha "BAKU — IRA (Wrathcleaver)" **não é o Baku**: passa a ser a base visual do **chefe final (Shin-Oni, Senhor dos Sete Pecados)**, (ver revisão abaixo: sem máscara). O Baku jogável continua o "General da Fúria" (samurai de máscara oni).
 - O pôster com todos os chefes deve ser editado: a figura da frente (parecida demais com o Baku) vira o novo chefe final. Arte final de personagem: precisa de aprovação do dono e do custo antes de gerar (T-019).
 - **Revisão (16/11, 22h22):** o dono reprovou a versão com máscara/capacete. O chefe final usa o demônio ruivo da ficha **como ele é, sem máscara e sem capacete** (rosto demoníaco à mostra, chifres, juba vermelha, machado).
+
+## DEC-022 — Plano de game design aprovado (16/11/2026, 22h39)
+- O dono aprovou executar o plano da análise "6 conceitos" (doc artefato *ARASHI VANGUARD — Análise de Game Design*).
+- **Ruptura** substitui o ki que enchia sozinho; **cansaço** de 1,5 s ao fim da Forma Carmesim; aparo perfeito com sino e pausa no impacto; esquiva perfeita.
+- **Fases que ensinam o chefe**: oni saltador no Vale das Torii (pergunta de Baku), servo arremessador no Palácio (ensina a Bocarra de Jade). Arranjos de inimigos feitos à mão e sorteados (2 por fase); chefes nunca variam.
+- **Ritmo**: silêncio e impacto antes do chefe na 1ª vez; recomeço rápido sem repetir a conversa; altares de descanso no meio das fases (gravam o ponto e restauram o vigor).
+- **Ajuda opcional**: após 3 derrotas no mesmo chefe, lembrança de um conselho do Tetsu; Luke late antes do golpe mais perigoso.
+- **Revisitar terras libertadas**: metade das tropas, mais fracas; segredos que pedem poderes (névoa → Jade; selo carmesim → Forma Carmesim), cada um com um fragmento de selo (+1 vida máxima), uma vez só.
+- **Textos no tom do mundo**; conversa longa só no refúgio, com lendas do Tetsu ao falar de novo com ele.
+- **Trios fixos de itens** por chefe (T-013 parcial).
+- **Fora do plano por ora**: fases procedurais, árvore de habilidades, muitos inimigos novos, dublagem, NG+.

@@ -19,6 +19,8 @@ Sugestão de interface: tela pós-chefe com poder recebido, três cartas de rel�
 ## Transformação
 Medidor de **Ruptura** carregado por combate preciso, defesa, esquivas e risco. Vida baixa pode acelerar carga, mas nunca deve ser a única condição. Quando ativada, Ren ganha físico mais forte, cabelo muito mais longo e outra cor, marcas luminosas e novas animações de ataque. Duração limitada, custo de energia, vulnerabilidade estratégica ao terminar. Versão inicial pode ser involuntária; depois, controlável. Nome visual "Vínculo do Dragão" foi usado em conceito e ainda precisa de confirmação como termo canônico.
 
+**Implementado na v0.7 (DEC-022):** a barra do HUD **é a Ruptura**. Enche quase nada sozinha (1/s) e cresce com jogo preciso: aparo perfeito +25, esquiva no limite +15, combo completo +10, cada acerto +3, projétil engolido pela Jade +8; levar dano tira 10. Sino do Templo: ganhos ×1,5. A **Forma Carmesim** (nome canônico da transformação) desperta sozinha na metade da luta com Xui e depois vira poder: Ruptura cheia, 12 s, e Ren fica **ofegante 1,5 s** ao terminar (sem poderes, vulnerável).
+
 ## Cicatrizes
 Guardar estado permanente por boss vencido; desenhar marcas de modo cumulativo nas artes/quadros. Isso vale também para retratos do HUD e cutscenes. Gerenciar via camadas de roupa/corpo quando tecnicamente viável, com combinações revisadas manualmente.
 

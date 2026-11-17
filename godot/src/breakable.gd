@@ -25,6 +25,23 @@ func get_rect() -> Rect2:
 	return Rect2(global_position + Vector2(0, -size.y), size)
 
 func hit_by(k: String) -> void:
+	if kind == "nevoa":
+		_shake = 0.2
+		Game.sfx("absorb", -10.0)
+		if level:
+			level.toast("Névoa envenenada... só algo que a engula a dissiparia.")
+		return
+	if kind == "selo":
+		if level and level.player and level.player.carmesim:
+			hp = 0
+			Game.sfx("sino", -4.0)
+			_break()
+			return
+		Game.sfx("clash", -6.0)
+		_shake = 0.2
+		if level:
+			level.toast("Um selo tingido pela Lua Carmesim. Só um sangue igual o rompe.")
+		return
 	if kind == "rachada" and k != "furia":
 		Game.sfx("clash", -6.0)
 		_shake = 0.2
@@ -35,23 +52,44 @@ func hit_by(k: String) -> void:
 	_shake = 0.2
 	Game.sfx("hit1", -6.0)
 	if hp <= 0:
-		Game.sfx("break", -2.0)
-		for i in range(5):
-			load("res://src/fx.gd").spawn(level, "dust", get_rect().get_center() + Vector2(randf_range(-40, 40), randf_range(-40, 40)), {"r": 70.0, "life": 0.5})
-		remove_from_group("breakable")
-		broken.emit(id)
-		queue_free()
+		_break()
+
+func _break() -> void:
+	Game.sfx("break", -2.0)
+	for i in range(5):
+		load("res://src/fx.gd").spawn(level, "dust", get_rect().get_center() + Vector2(randf_range(-40, 40), randf_range(-40, 40)), {"r": 70.0, "life": 0.5})
+	remove_from_group("breakable")
+	broken.emit(id)
+	queue_free()
 
 func _process(dt: float) -> void:
 	_shake = maxf(0.0, _shake - dt)
+	# a Bocarra de Jade engole a névoa quando Ren chega perto
+	if kind == "nevoa" and level and level.player and is_in_group("breakable"):
+		var p = level.player
+		if p.jade_t > 0.0 and p.global_position.distance_to(get_rect().get_center()) < 280.0:
+			Game.sfx("absorb", 0.0)
+			p.gain_ki(10.0)
+			_break()
+			return
 	queue_redraw()
 
 func _draw() -> void:
 	var o := Vector2(randf_range(-3, 3), 0) if _shake > 0.0 else Vector2.ZERO
 	var r := Rect2(Vector2(0, -size.y) + o, size)
-	var tp := "res://assets/props/%s.png" % ("caixa" if kind == "caixa" else "parede_rachada")
+	var tp := "res://assets/props/%s.png" % {"caixa": "caixa", "nevoa": "nevoa", "selo": "selo_carmesim"}.get(kind, "parede_rachada")
 	if _tex == null and ResourceLoader.exists(tp):
 		_tex = load(tp)
+	if _tex and kind in ["nevoa", "selo"]:
+		# barreira alta: a arte é empilhada na vertical, sem esticar
+		var tw := r.size.x + 12.0
+		var th := tw * float(_tex.get_height()) / float(_tex.get_width())
+		var y := r.end.y - th
+		var a := 0.75 + 0.25 * sin(Time.get_ticks_msec() * 0.004) if kind == "nevoa" else 1.0
+		while y > r.position.y - th + 1.0:
+			draw_texture_rect(_tex, Rect2(Vector2(r.position.x - 6.0, y) + o, Vector2(tw, th)), false, Color(1, 1, 1, a))
+			y -= th * 0.92
+		return
 	if _tex:
 		draw_texture_rect(_tex, Rect2(r.position - Vector2(6, 8), r.size + Vector2(12, 12)), false)
 		if kind == "rachada":

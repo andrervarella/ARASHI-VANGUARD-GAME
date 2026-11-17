@@ -123,3 +123,8 @@ Nenhum link do Google Drive foi publicado aqui. O `MANIFESTO_FICHAS_CLAUDE_2026-
 
 ## Runtime das fases 1 e 2 (16/11/2026, T-015)
 Origem, IDs do PixelLab e licenças: `godot/assets/CREDITOS.md`. Pastas: `godot/assets/{sprites,bg,story,portraits,ui,sfx,fonts}`. Status: **em teste** (dono ainda não aprovou no celular). Fundos PixelLab: ferreiros, torii, vila, xui (688×384). Músicas: biblioteca PixelLab do dono (AV - Titulo, AV - Fase, AV - Chefe, AV - Vila; take 1), fora do repositório (DEC-018).
+
+## Pôster oficial dos chefes com o chefe final (16/11/2026, T-019, DEC-021)
+| ID | Arquivo no GitHub | Status | Tamanho | Origem |
+|---|---|---|---|---|
+| AV-POSTER-002 | `assets/referencias-aprovadas/chefes/AV-POSTER-002_chefes_chefe_final_v3.png` | APROVADO PELO DONO (versão 3 de 4) | 1280×1920, SHA-256 `a68cfcb509ac…` | Fenaky Muse Image, edição do pôster AV-FIC-015 com a ficha do demônio ruivo como referência; sem máscara (revisão do dono). Asset Fenaky `3719b69f-773f-40de-b5f4-ed6aa20fc8ce` |

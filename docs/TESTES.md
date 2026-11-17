@@ -8,6 +8,7 @@
 | 2026-11-15 | — | — | FPS, tempo de carga (~43 MB de wasm), áudio | NÃO TESTADO | — |
 | 2026-11-16 | v0.5 (dev) | Xvfb + OpenGL, 1170×540 | 6 cenas 600 quadros sem erro; render do prólogo (cerca, cão, soldado, portão aberto, povo fugindo, luta com a Ira, queda, luz do pingente), título e poderes Fúria/Jade | PASSOU (EXECUTADO (EMULADO)) | PNGs conferidos por inspeção; **esquiva e toque não testados no aparelho** |
 | 2026-11-16 | v0.6 (dev) | Xvfb + OpenGL, 1170×540 | luta do Xui com `--halfboss --killboss`: despertar da Forma Carmesim, luta transformado, calma pelo Luke, poder liberado; sem erros de script | PASSOU (EXECUTADO (EMULADO)) | PNGs conferidos; diálogos pulados (`--nodlg`) |
+| 2026-11-16 | v0.7 (dev) | Godot headless + Xvfb 1170×540 | 8 cenas sem erro de script; renders: oni saltador (salta e cai com onda), cansaço ao fim da Forma Carmesim, altar, barreiras de névoa/selo | PASSOU (EXECUTADO (EMULADO)) | PNGs conferidos; **toque, ritmo e dificuldade não testados no aparelho** |
 | — | — | — | `npm test`/testes automáticos | NÃO EXISTEM ainda (T-007) | — |
 
 ## Smoke test (web)
