@@ -9,6 +9,7 @@ var _press: Label
 var _started := false
 
 func _ready() -> void:
+	Game.preload_remote_sfx()
 	# fundo: a mesma arte ampliada e escurecida preenche as sobras da tela larga
 	var back := TextureRect.new()
 	back.texture = load("res://assets/ui/title.jpg")

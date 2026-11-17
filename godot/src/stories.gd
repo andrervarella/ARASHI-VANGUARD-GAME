@@ -6,16 +6,18 @@ extends RefCounted
 
 const S := {
 	"abertura": {
-		"musica": "titulo",
+		"musica": "abertura",
 		"quadros": [
 			{"img": "mapa", "txt": "Houve um tempo em que as trevas cobriram as Sete Terras.", "texto_tela": true},
 			{"img": "ritual", "txt": "Do coração corrompido dos homens nasceu uma maldição. E da maldição nasceram demônios.", "texto_tela": true},
 			{"img": "demonios", "txt": "Eram sete. Cada um trazia na carne um pecado do povo:\nIra, Gula, Preguiça, Avareza, Inveja, Luxúria e Soberba.", "texto_tela": true},
 			{"img": "mapa", "txt": "Então os povos se uniram. Sacerdotes ergueram torii e cordas sagradas, ferreiros forjaram correntes de aço consagrado..."},
 			{"img": "mapa", "txt": "...e sete selos aprisionaram os sete demônios, cada um numa região do mundo. Por gerações, houve paz."},
-			{"img": "ritual", "txt": "Mas o poder dos selos despertou outra fome. Os senhores das Sete Casas descobriram que a força aprisionada podia ser bebida."},
-			{"img": "ritual", "txt": "E descobriram que os selos aceitavam oferendas. Em templos escondidos, em noites sem lua, os humildes começaram a desaparecer."},
-			{"img": "pobres", "txt": "O povo chamava aquilo de lenda, contada à beira do fogo para assustar as crianças.\nNão era lenda."},
+			{"img": "ritual", "txt": "Mas o poder dos selos despertou outra fome. Os mais ricos, os senhores que governavam as Sete Casas, formaram uma seita secreta."},
+			{"img": "ritual", "txt": "Descobriram que, sacrificando vidas diante dos selos, bebiam a energia vital dos sacrificados: juventude, sorte, sucesso... poder."},
+			{"img": "riqueza", "txt": "Quanto mais vidas ofereciam, mais ricos e temidos ficavam. E maior se tornava a sua fome."},
+			{"img": "dominio", "txt": "A energia roubada lhes deu algo ainda pior: domínio sobre as mentes. O povo obedecia de olhos baixos, sem saber por quê, como se a vontade lhe tivesse sido arrancada."},
+			{"img": "pobres", "txt": "Em noites sem lua, os humildes desapareciam. O povo chamava aquilo de lenda, contada à beira do fogo para assustar as crianças.\nNão era lenda."},
 			{"img": "aldeia", "txt": "Na cidade de Arashi, ao pé das montanhas, vivia Ren, ferreiro. Seu pai lançara as fundações da grande muralha e forjara as engrenagens dos portões."},
 			{"img": "lua_vermelha", "txt": "Até que, numa noite de Lua Vermelha, a ganância das Casas não conheceu limite: decidiram oferecer ao selo da Ira uma cidade inteira.", "video": "abertura"},
 			{"img": "portao_trancado", "txt": "Os portões foram fechados. Soldados arrastaram o povo para a praça, e em cada testa traçaram a marca do sacrifício."},

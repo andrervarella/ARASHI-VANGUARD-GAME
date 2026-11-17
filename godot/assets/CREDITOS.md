@@ -54,3 +54,10 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `props/jaula.png`, `props/aldeao_3..8.png`, `props/refugiado_1..4.png` | PixelLab `create_image_pixen` |
 | `sprites/ren/walk_*`, `sprites/ren_carmesim/walk_*` | PixelLab, animações dos personagens Ren `036acc6d` e `36f2ce1b` |
 | `portraits/luke_rua.jpg` | Recorte da expressão "Neutro" da ficha oficial do Luke (sem lenço) |
+
+## Acréscimos v0.10 (17/11/2026)
+| Arquivo | Origem |
+|---|---|
+| `story/riqueza.png`, `story/dominio.png` | PixelLab `create_image_pro` (estilo da imagem `ritual`) |
+| `props/casa.png`, `barraca.png`, `carroca.png`, `forja.png`, `barris.png`, `cerca.png` | PixelLab `create_image_pixen` |
+| Música "abertura" e efeitos "ganido"/"choro" | Biblioteca PixelLab do dono, baixados no build (não ficam no repositório) |

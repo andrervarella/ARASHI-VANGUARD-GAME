@@ -20,7 +20,9 @@ const L := {
 		"largura": 6600.0, "inicio": 260.0, "luke_inicio": false,
 		"ground": [[0, 3420], [3640, 6600]],
 		"plats": [[3240, 190, 300], [3560, 320, 240], [4900, 200, 260]],
-		"blocks": [[960, 110, 120, 110, "caixas"], [1560, 300, 360, 188, "viga"], [5300, 150, 140, 150, "caixas"]],
+		"blocks": [[1560, 300, 360, 188, "viga"]],
+		# a cidade de Arashi: fachadas, barracas e lanternas atrás do caminho (só cenário)
+		"decor": [["casa", 760, 320], ["barris", 1240, 105], ["barraca", 2150, 170], ["cerca", 2900, 85], ["carroca", 3250, 115], ["casa", 3950, 320], ["forja", 4420, 210], ["barris", 4860, 105], ["barraca", 5120, 170], ["barraca", 5560, 170], ["cerca", 5800, 85]],
 		"foes": [["oni", 3150], ["guarda", 3950], ["oni", 4980, 200], ["guarda", 4600]],
 		"prompts": [
 			[140, "Deslize o direcional  ◀ ▶  para andar"],
@@ -33,7 +35,7 @@ const L := {
 		],
 		"events": [[40, "intro_ferreiros"], [2150, "cao"], [5800, "portao"]],
 		"portao_x": 6250.0,
-		"breakables": [],
+		"breakables": [[900, 120, 110, "caixa", "caixa_1"], [3080, 120, 110, "caixa", "caixa_2"], [5250, 140, 150, "caixa", "caixa_3"]],
 		"pickups": [[2800, 60, "cura"], [3680, 380, "ki"], [5500, 60, "cura"]],
 	},
 	"torii": {
@@ -49,7 +51,7 @@ const L := {
 		"foes": [["guarda", 900], ["oni", 1500], ["oni", 2850, 380], ["guarda", 3000], ["oni", 3400], ["guarda", 4200], ["guarda", 4600], ["oni", 4400, 220], ["oni", 5700], ["guarda", 6000], ["oni", 6400]],
 		"prompts": [[150, "Fase 1 — Vale das Torii"]],
 		"events": [[40, "intro_torii"]],
-		"breakables": [[6250, 100, 520, "nevoa", "nevoa", 300], [1640, 90, 120, "jaula", "jaula_1"], [2620, 90, 120, "jaula", "jaula_2"], [6680, 90, 120, "jaula", "jaula_3"]],
+		"breakables": [[6250, 100, 520, "nevoa", "nevoa", 300], [2300, 110, 100, "caixa", "caixa_1"], [4700, 110, 100, "caixa", "caixa_2"], [1640, 90, 120, "jaula", "jaula_1"], [2620, 90, 120, "jaula", "jaula_2"], [6680, 90, 120, "jaula", "jaula_3"]],
 		"pickups": [[2850, 470, "cura"], [4350, 300, "ki"], [6500, 60, "cura"], [6470, 300, "vida"]],
 		"altares": [5480.0],
 		# arranjos sorteados; "salto" = oni que ensina a pergunta de Baku
@@ -120,8 +122,8 @@ const D := {
 		["ren", "Meu pai ergueu a muralha desta cidade. Se alguém sabe abrir aqueles portões por dentro, sou eu."],
 	],
 	"cao": [
-		["guarda", "Até os vira-latas vão para o selo esta noite. Quieto, sarnento!"],
-		["luke", "Ai! Ai!"],
+		["guarda", "Gente ou cachorro, tanto faz! O selo não escolhe a carne. Esta noite até os vira-latas sangram por ele. Quieto, sarnento!"],
+		["luke", "Caim! Caim!... (o cãozinho chora, encolhido no chão)"],
 		["ren", "Solta o animal, soldado."],
 		["guarda", "Um marcado fora da praça? Melhor ainda. O selo não se importa se a oferenda chega inteira."],
 	],

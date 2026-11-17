@@ -95,6 +95,14 @@ func _draw() -> void:
 		var jw := jh * float(_tex.get_width()) / float(_tex.get_height())
 		draw_texture_rect(_tex, Rect2(Vector2(r.get_center().x - jw / 2.0, r.end.y - jh + 2.0) + o, Vector2(jw, jh)), false)
 		return
+	if _tex and kind == "caixa":
+		# pilhas de caixas vistas de frente, sem esticar
+		var asp := float(_tex.get_width()) / float(_tex.get_height())
+		var n := maxi(1, int(round(r.size.x / (r.size.y * asp))))
+		var cw := r.size.x / n
+		for i in range(n):
+			draw_texture_rect(_tex, Rect2(Vector2(r.position.x + i * cw, r.position.y + 2.0) + o, Vector2(cw, r.size.y + 2.0)), false)
+		return
 	if _tex:
 		draw_texture_rect(_tex, Rect2(r.position - Vector2(6, 8), r.size + Vector2(12, 12)), false)
 		if kind == "rachada":

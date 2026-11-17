@@ -119,3 +119,7 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - **História jogando:** em cada terra há prisioneiros do pecado daquela terra para libertar (jaulas); os libertos aparecem no Refúgio e cada um tem uma fala. Menos texto no meio da ação.
 - **Controles:** andar ou correr pelo direcional (polegar perto do centro anda; na borda corre); suporte a **controle físico** (gamepad Bluetooth/USB) sem mudar o toque.
 - **Coerência:** Luke só aparece de lenço (sprite e retrato) depois que Ren o dá; olhos azuis.
+
+## DEC-024 — Abertura da seita e efeitos pelo build (17/11/2026)
+- A seita das Sete Casas é formada pelos **mais ricos e pelos líderes**; os sacrifícios dão **energia vital** (juventude, sorte, sucesso, poder) e **domínio psicológico** sobre o povo.
+- Efeitos sonoros da biblioteca PixelLab seguem o caminho das músicas (DEC-018): links em variável secreta do Vercel (`SFX_URLS`), baixados no build para `sfx/*.wav` e carregados em tempo real; sem link no repositório.

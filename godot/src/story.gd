@@ -19,7 +19,7 @@ var _subbg: TextureRect
 func _ready() -> void:
 	var st: Dictionary = load("res://src/stories.gd").S.get(story_id, {})
 	_slides = st.get("quadros", [])
-	Game.music(st.get("musica", "titulo"), -10.0)
+	Game.music(st.get("musica", "titulo"), -6.0 if st.get("musica", "") == "abertura" else -10.0)
 	var bg := ColorRect.new()
 	bg.color = Color.BLACK
 	bg.set_anchors_preset(Control.PRESET_FULL_RECT)

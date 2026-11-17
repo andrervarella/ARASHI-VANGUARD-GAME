@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.9 · fases 1 e 2 · 16/11/2026"
+const VERSION := "v0.10 · fases 1 e 2 · 17/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -227,6 +227,47 @@ func sfx(name: String, vol_db := 0.0, pitch_var := 0.06) -> void:
 			p.play()
 			return
 
+# Efeitos que vêm da biblioteca PixelLab pelo build (dist/sfx/*.wav), como as músicas (DEC-018)
+var _sfx_remote := {}
+var _sfx_loading := {}
+func sfx_remote(name: String, vol_db := 0.0, fallback := "") -> void:
+	var s: AudioStream = _sfx_remote.get(name)
+	if s == null:
+		_fetch_sfx(name)
+		if fallback != "":
+			sfx(fallback, vol_db, 0.0)
+		return
+	for p in _sfx_players:
+		if not p.playing:
+			p.stream = s
+			p.volume_db = vol_db
+			p.pitch_scale = 1.0
+			p.play()
+			return
+
+func _fetch_sfx(name: String) -> void:
+	if _sfx_loading.has(name) or not OS.has_feature("web"):
+		return
+	_sfx_loading[name] = true
+	var req := HTTPRequest.new()
+	add_child(req)
+	var base := ""
+	var loc = JavaScriptBridge.eval("window.location.href.replace(/[^/]*$/, '')", true)
+	if typeof(loc) == TYPE_STRING:
+		base = loc
+	req.request_completed.connect(func(result, code, _h, body: PackedByteArray):
+		req.queue_free()
+		if result != HTTPRequest.RESULT_SUCCESS or code != 200 or body.size() < 1000:
+			return
+		var w := AudioStreamWAV.load_from_buffer(body)
+		if w:
+			_sfx_remote[name] = w)
+	req.request(base + "sfx/%s.wav" % name)
+
+func preload_remote_sfx() -> void:
+	for n in ["ganido", "choro"]:
+		_fetch_sfx(n)
+
 var _music_cache := {}
 var _music_loading := {}
 
@@ -273,6 +314,10 @@ func _fetch_music(name: String, vol_db: float) -> void:
 		req.queue_free()
 		_music_loading.erase(name)
 		if result != HTTPRequest.RESULT_SUCCESS or code != 200 or body.size() < 1000:
+			# música nova ainda não publicada: usa a do título no lugar
+			if name != "titulo" and _music_name == name:
+				_music_name = ""
+				music("titulo", vol_db)
 			return
 		var mp := AudioStreamMP3.new()
 		mp.data = body

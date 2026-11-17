@@ -5,10 +5,16 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.9 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.10 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.10 (17/11) — abertura explicada, música épica, Luke ganindo, caixas quebráveis, cidade mais viva
+- Abertura: a seita dos mais ricos, a energia vital roubada (juventude, sorte, sucesso, poder) e o domínio sobre as mentes; 2 imagens novas (`riqueza`, `dominio`).
+- Música épica nova na abertura (PixelLab), baixada no build como as outras (variável secreta `MUSIC_URLS_2`).
+- Cena do cão: o soldado diz que gente ou cachorro tanto faz para o selo; Luke só gane e chora (efeitos PixelLab via `SFX_URLS`).
+- Caixas quebráveis (podem soltar vigor ou Ruptura); cidade de Arashi com casas, barracas, forja, barris, carroça e cercas no plano do meio.
 
 ## v0.9 (16/11, 23h) — bíblia visual, escopo enxuto e história jogável (DEC-023, T-021)
 - Chão de cada fase recortado do próprio fundo e alinhado com o piso pintado: personagens pisam no mesmo ambiente. Bíblia visual em `docs/BIBLIA_VISUAL.md`.

@@ -480,6 +480,7 @@ func _draw() -> void:
 	var fill: Color = D["chao"]
 	var gt := prop("chao_" + level_id)
 	_draw_pits()
+	_draw_decor()
 	for g in D["ground"]:
 		var r := Rect2(g[0], GY, g[1] - g[0], 800.0)
 		draw_rect(r, fill)
@@ -551,6 +552,18 @@ func _draw() -> void:
 			draw_rect(Rect2(gx - 90, GY - 420, 180, 420), Color(1, 0.9, 0.7, 0.22 * glow))
 	if level_id == "ferreiros":
 		_draw_fence()
+
+# fachadas, barracas e lanternas: plano do meio, um pouco mais escuras para não confundir com o caminho
+func _draw_decor() -> void:
+	for d in D.get("decor", []):
+		var t := prop(d[0])
+		if t == null:
+			continue
+		var h := float(d[2])
+		var w := h * float(t.get_width()) / float(t.get_height())
+		var x := float(d[1])
+		_shadow(Vector2(x, GY), w * 0.8)
+		draw_texture_rect(t, Rect2(x - w / 2.0, GY - h + 4.0, w, h), false, Color(0.78, 0.74, 0.78))
 
 func _shadow(c: Vector2, w: float) -> void:
 	var pts := PackedVector2Array()
@@ -864,6 +877,10 @@ func _on_broken(id: String) -> void:
 		_:
 			if id.begins_with("jaula"):
 				_free_prisoner(id)
+			elif id.begins_with("caixa"):
+				for b in D["breakables"]:
+					if b[4] == id and randf() < 0.55:
+						spawn_pickup(["cura", "ki", "cura"][randi() % 3], Vector2(float(b[0]) + float(b[1]) / 2.0, GY - 60.0))
 
 # ---------------- prisioneiros: a história contada jogando ----------------
 func _free_prisoner(id: String) -> void:
@@ -982,11 +999,12 @@ func _cao_scene() -> void:
 	luke.position.x = 2440.0
 	luke.spr.set_facing(1)
 	# o soldado maltrata o cão
-	for k in range(2):
+	for k in range(3):
 		_cao_guard.spr.play_anim("attack", true, 1.2)
 		await get_tree().create_timer(0.35).timeout
 		Game.sfx("hit1", -4.0)
-		Game.sfx("bark", 2.0, 0.0)
+		# Luke não reage: ele gane e chora como um filhote
+		Game.sfx_remote("ganido", 2.0, "bark")
 		load("res://src/fxsprite.gd").play(self, "acerto", luke.position + Vector2(10, -40), {"scale_px": 1.6})
 		var tw := create_tween()
 		tw.tween_property(luke, "position:x", luke.position.x - 40.0, 0.15)
@@ -994,7 +1012,10 @@ func _cao_scene() -> void:
 		await get_tree().create_timer(0.35).timeout
 		luke.spr.modulate = Color.WHITE
 	_cao_guard.spr.play_anim("walk")
+	luke.spr.modulate = Color(0.85, 0.85, 0.9)
+	Game.sfx_remote("choro", 0.0, "")
 	await say("cao")
+	luke.spr.modulate = Color.WHITE
 	_cao_guard.set("hold", false)
 	_cao_guard.connect("defeated", _amizade)
 	banner("Derrote o soldado!")
