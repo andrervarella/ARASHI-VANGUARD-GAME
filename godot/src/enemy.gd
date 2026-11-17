@@ -8,6 +8,7 @@ var t := 0.0
 var cd := 0.0
 var _hit_done := false
 var _bob := 0.0
+var _toque_hit := false
 var hold := false
 var variant := ""            # oni "salto": ensina a pergunta de Baku · servo "arremesso": ensina a Bocarra de Jade
 
@@ -15,16 +16,16 @@ func _ready() -> void:
 	home_x = position.x
 	match kind:
 		"guarda":
-			hp = 4; w = 54; h = 140; contact = 1
+			hp = 4; w = 54; h = 140
 			setup_sprite("guarda", "walk")
 		"oni":
-			hp = 3; w = 50; h = 112; contact = 1
+			hp = 3; w = 50; h = 112
 			setup_sprite("oni", "walk")
 		"servo":
-			hp = 5; w = 56; h = 128; contact = 1
+			hp = 5; w = 56; h = 128
 			setup_sprite("servo", "walk")
 		"espirito":
-			hp = 2; w = 50; h = 110; contact = 1
+			hp = 2; w = 50; h = 110
 			uses_gravity = false
 			knock_mult = 0.6
 			setup_sprite("espirito", "float")
@@ -47,7 +48,7 @@ func ai(dt: float) -> void:
 		return
 	var dx: float = p.global_position.x - global_position.x
 	var dy: float = p.global_position.y - global_position.y
-	var near := absf(dx) < 620.0 and absf(dy) < 260.0
+	var near := absf(dx) < 620.0 and absf(dy) < (520.0 if kind == "espirito" else 260.0)
 	if state == "patrol" and near:
 		state = "chase"
 		Game.sfx("foe_alert", -14.0)
@@ -196,12 +197,42 @@ func _espirito(dt: float, dx: float, dy: float) -> void:
 		position.y = position.y + sin(_bob * 2.0) * 0.6
 		return
 	var target := Vector2(dx, dy - 70.0)
-	var v := target.normalized() * 120.0 if target.length() > 10.0 else Vector2.ZERO
-	velocity = velocity.move_toward(v, 300.0 * dt)
-	velocity.y += sin(_bob * 3.0) * 40.0 * dt * 10.0
-	if absf(dx) > 5.0:
+	if absf(dx) > 5.0 and state != "toque":
 		facing = 1 if dx > 0 else -1
 		spr.set_facing(facing)
+	match state:
+		"toque_wind":
+			# aviso: para e brilha antes do toque gelado (KOF: só o golpe fere)
+			telegraph_t = 1.0
+			velocity = velocity.move_toward(Vector2.ZERO, 600.0 * dt)
+			if t > 0.45:
+				telegraph_t = 0.0
+				state = "toque"
+				_toque_hit = false
+				t = 0.0
+				velocity = target.normalized() * 420.0
+				Game.sfx("slash2", -12.0)
+		"toque":
+			if not _toque_hit:
+				var pl := player()
+				var r := Rect2(global_position + Vector2(-34, -90), Vector2(68, 80))
+				if pl and r.intersects(pl.hurt_rect()):
+					_toque_hit = true
+					pl.take_damage(1, global_position.x, self)
+			if t > 0.28:
+				state = "chase"
+				t = 0.0
+				cd = 1.5
+				velocity = -velocity.normalized() * 160.0
+		_:
+			var v := target.normalized() * 120.0 if target.length() > 10.0 else Vector2.ZERO
+			if cd > 0.6:
+				v = -target.normalized() * 60.0
+			velocity = velocity.move_toward(v, 300.0 * dt)
+			velocity.y += sin(_bob * 3.0) * 40.0 * dt * 10.0
+			if cd <= 0.0 and target.length() < 130.0:
+				state = "toque_wind"
+				t = 0.0
 
 
 # ---- variantes que ensinam o chefe da terra (DEC-022) ----

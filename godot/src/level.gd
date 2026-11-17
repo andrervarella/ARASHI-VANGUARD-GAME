@@ -1348,6 +1348,8 @@ func _start_arena() -> void:
 		shake(10.0)
 		Game.mark("chefe_" + ch)
 		await say("chefe_" + ch)
+		frozen = false
+		player.locked = false
 	else:
 		# recomeço rápido: sem repetir a conversa
 		banner(boss.display_name)

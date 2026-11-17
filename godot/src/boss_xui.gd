@@ -16,7 +16,7 @@ func _ready() -> void:
 	hp_max = 44
 	w = 130
 	h = 190
-	contact = 1
+	push_share = 0.8
 	knock_mult = 0.0
 	is_boss = true
 	display_name = "XUI — O Falso Paraíso"
@@ -113,6 +113,7 @@ func ai(dt: float) -> void:
 				spr.play()
 				Game.sfx("slam", 2.0)
 				level.shake(16.0)
+				hit_player(Rect2(global_position + Vector2(-w * 0.5 - 30.0, -h * 0.55), Vector2(w + 60.0, h * 0.55)), 2)
 				for d in [-1, 1]:
 					shoot(global_position + Vector2(d * 80.0, 0), Vector2(d * 480.0, 0), {"kind": "wave", "ground_wave": true, "radius": 28.0, "dmg": 2, "life": 1.6, "col": Color(0.55, 1.0, 0.65), "absorbable": false})
 				load("res://src/fxsprite.gd").play(level, "choque", global_position, {"scale_px": 3.0, "tint": Color(0.7, 1, 0.75)})

@@ -123,3 +123,8 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 ## DEC-024 — Abertura da seita e efeitos pelo build (17/11/2026)
 - A seita das Sete Casas é formada pelos **mais ricos e pelos líderes**; os sacrifícios dão **energia vital** (juventude, sorte, sucesso, poder) e **domínio psicológico** sobre o povo.
 - Efeitos sonoros da biblioteca PixelLab seguem o caminho das músicas (DEC-018): links em variável secreta do Vercel (`SFX_URLS`), baixados no build para `sfx/*.wav` e carregados em tempo real; sem link no repositório.
+
+## DEC-025 — Contato estilo KOF: encostar não fere (17/11/2026)
+- Pedido do dono: tocar ou chegar perto de chefe/inimigo não pode causar dano; combate parecido com The King of Fighters.
+- Decisão: `contact = 0` em todos; corpos se empurram (caixa de empurrão em `foe.gd::_push_bodies`), sem atravessar. Rolamento e pulo passam. Todo dano vem de golpe com aviso (corte, pisão, toque do espírito, projétil, onda).
+- Consequência: aproximar-se do chefe para punir no cansaço fica seguro; o risco é só ler o golpe.

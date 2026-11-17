@@ -42,3 +42,8 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (EMULADO): render 1170×540 da morte do Baku e do Xui (explosões, dissolução, rastro ao selo), buraco do Vale das Torii, refúgio com fundo novo, combo no prólogo.
 - Causa provável da duplicação relatada: duas trocas de cena ao mesmo tempo (ex.: morrer enquanto o chefe morre). Corrigido com trava em `Game.goto` e limpeza do grupo "cena". Não reproduzido pela IA; precisa confirmação do dono.
 - NÃO TESTADO: toque real, FPS, áudio no navegador.
+
+## 2026-11-17 — v0.12 contato KOF
+- EXECUTADO (EMULADO): Ren andando sem parar contra o Baku (Vale das Torii): todo dano registrado veio de `slash` ou da onda/pisão; encostado no Baku cansado, distância travou em ~59 px sem dano.
+- EXECUTADO (EMULADO): andando pelas fases 2 e 3, todo dano veio de `strike` ou projéteis. Espírito do palácio: acorda, avisa, acerta 1 vez e recua (capturas conferidas).
+- NÃO TESTADO: sensação no celular (empurrão, pisão), FPS.

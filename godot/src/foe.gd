@@ -10,7 +10,8 @@ var hp := 3
 var hp_max := 3
 var dead := false
 var facing := -1
-var contact := 1
+var contact := 0            # KOF (DEC-025): encostar não fere; só golpes ferem
+var push_share := 0.5       # quanto do empurrão o jogador sofre (chefes são mais pesados)
 var w := 60.0
 var h := 130.0
 var uses_gravity := true
@@ -125,14 +126,38 @@ func _physics_process(dt: float) -> void:
 		spr.pause()
 		if stun_t <= 0.0:
 			spr.play()
+		_push_bodies()
 		return
 	ai(dt)
 	if uses_gravity:
 		velocity.y = minf(velocity.y + GRAVITY * dt, 1500.0)
 	move_and_slide()
+	_push_bodies()
+
+# Caixas de empurrão (estilo KOF): corpos não se atravessam, mas encostar não causa dano.
+# O rolamento passa por baixo do inimigo; pulos passam por cima.
+func _push_bodies() -> void:
 	var p := player()
-	if p and contact > 0 and hurt_rect().grow(-8).intersects(p.hurt_rect()):
-		p.take_damage(contact, global_position.x, self)
+	if p == null or dead or not uses_gravity:
+		return
+	if p.state in ["roll", "dead"] or p.locked:
+		return
+	if absf(global_position.y - p.global_position.y) > 60.0:
+		return
+	var dx: float = p.global_position.x - global_position.x
+	var ov: float = (w * 0.5 + p.W * 0.5 - 8.0) - absf(dx)
+	if ov <= 0.0:
+		return
+	var dir: float = signf(dx) if absf(dx) > 1.0 else float(-p.facing)
+	var mp: float = ov * push_share
+	var motion := Vector2(dir * mp, 0.0)
+	if p.test_move(p.global_transform.translated(Vector2(0, -2)), motion):
+		mp = 0.0
+	else:
+		p.global_position.x += dir * mp
+	var mf: float = ov - mp
+	if mf > 0.0 and not test_move(global_transform.translated(Vector2(0, -2)), Vector2(-dir * mf, 0.0)):
+		global_position.x -= dir * mf
 
 var telegraph_t := 0.0
 func _telegraph() -> float:

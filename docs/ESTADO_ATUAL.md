@@ -5,10 +5,17 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.11 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.12 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.12 (17/11) — combate estilo KOF: encostar não fere (DEC-025)
+- Fim do dano por contato em todos os inimigos e chefes. Só golpes, projéteis, ondas e pisões ferem.
+- Caixas de empurrão: Ren e inimigos não se atravessam; andando contra o inimigo, os corpos se empurram (chefes são mais pesados). Rolamento passa por baixo; pulo passa por cima.
+- Baku e Xui: cair em cima de Ren virou um golpe ("pisão") com o mesmo aviso do salto.
+- Espírito (palácio) antes só feria por contato e quase nunca acordava; agora acorda, brilha em aviso e dá um "toque gelado" (1 de dano), depois recua.
+- "Esquiva perfeita" agora só vale contra golpes de verdade (antes atravessar o inimigo rolando contava).
 
 ## v0.11 (17/11) — proporção real em todos os assets
 - Casas (~560 px), barracas e forja (~235–265), torii do Refúgio (~360, portas mais espaçadas), mesas do palácio na altura real; tabela na bíblia visual.

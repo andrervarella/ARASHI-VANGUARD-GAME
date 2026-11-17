@@ -18,7 +18,7 @@ func _ready() -> void:
 	hp_max = 36
 	w = 96
 	h = 220
-	contact = 1
+	push_share = 0.8
 	knock_mult = 0.0
 	is_boss = true
 	display_name = "BAKU — General da Fúria"
@@ -134,6 +134,8 @@ func ai(dt: float) -> void:
 				spr.play_anim("land", true)
 				Game.sfx("slam", 0.0)
 				level.shake(14.0)
+				# pisão: cair em cima de Ren é um golpe (com aviso no preparo), não "contato"
+				hit_player(Rect2(global_position + Vector2(-w * 0.5 - 20.0, -h * 0.55), Vector2(w + 40.0, h * 0.55)), 2)
 				for d in [-1, 1]:
 					shoot(global_position + Vector2(d * 60.0, 0), Vector2(d * 520.0, 0), {"kind": "wave", "ground_wave": true, "radius": 26.0, "dmg": 2, "life": 1.4, "col": Color(1, 1, 1), "absorbable": false})
 				load("res://src/fxsprite.gd").play(level, "choque", global_position, {"scale_px": 2.6})
