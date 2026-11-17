@@ -1,0 +1,24 @@
+{
+ "float": {
+  "frames": [
+   "float_00.png",
+   "float_01.png",
+   "float_02.png",
+   "float_03.png",
+   "float_04.png",
+   "float_05.png",
+   "float_06.png",
+   "float_07.png"
+  ],
+  "fps": 9,
+  "loop": true,
+  "anchor": [
+   76.6,
+   142
+  ],
+  "size": [
+   168,
+   168
+  ]
+ }
+}

@@ -19,11 +19,13 @@ Sugestão de interface: tela pós-chefe com poder recebido, três cartas de rel�
 ## Transformação
 Medidor de **Ruptura** carregado por combate preciso, defesa, esquivas e risco. Vida baixa pode acelerar carga, mas nunca deve ser a única condição. Quando ativada, Ren ganha físico mais forte, cabelo muito mais longo e outra cor, marcas luminosas e novas animações de ataque. Duração limitada, custo de energia, vulnerabilidade estratégica ao terminar. Versão inicial pode ser involuntária; depois, controlável. Nome visual "Vínculo do Dragão" foi usado em conceito e ainda precisa de confirmação como termo canônico.
 
+**Implementado na v0.7 (DEC-022):** a barra do HUD **é a Ruptura**. Enche quase nada sozinha (1/s) e cresce com jogo preciso: aparo perfeito +25, esquiva no limite +15, combo completo +10, cada acerto +3, projétil engolido pela Jade +8; levar dano tira 10. Sino do Templo: ganhos ×1,5. A **Forma Carmesim** (nome canônico da transformação) desperta sozinha na metade da luta com Xui e depois vira poder: Ruptura cheia, 12 s, e Ren fica **ofegante 1,5 s** ao terminar (sem poderes, vulnerável).
+
 ## Cicatrizes
 Guardar estado permanente por boss vencido; desenhar marcas de modo cumulativo nas artes/quadros. Isso vale também para retratos do HUD e cutscenes. Gerenciar via camadas de roupa/corpo quando tecnicamente viável, com combinações revisadas manualmente.
 
 ## Exploração
-Mapa 2D conectado; pontos de salvamento/descanso; paredes quebráveis, portas seladas, plataformas altas, alavancas, sinos e pontes. Poderes destravam atalhos e caminhos, como golpe de ruptura de Baku, reflexão/ilusão de Mei Shian, habilidade de mobilidade de Seiran. Pedir prova de travessia para cada poder para evitar recompensas cosméticas sem uso.
+**DEC-023:** sem mapa conectado; cada terra é uma fase curta e revisitável, com segredos que pedem poderes. (Texto original abaixo mantido como histórico.) Mapa 2D conectado; pontos de salvamento/descanso; paredes quebráveis, portas seladas, plataformas altas, alavancas, sinos e pontes. Poderes destravam atalhos e caminhos, como golpe de ruptura de Baku, reflexão/ilusão de Mei Shian, habilidade de mobilidade de Seiran. Pedir prova de travessia para cada poder para evitar recompensas cosméticas sem uso.
 
 ## Luke
 Mascote segue Ren ou aparece em seções seguras; fareja passagens e objetos, alerta sobre perigo, proporciona alívio cômico em pequenas animações, sem virar suporte de ataque dominante. Regras de IA simples e robustas são preferíveis a simulação complexa.
@@ -39,3 +41,10 @@ Salvar progresso das fases, poderes automáticos, cicatrizes, escolhas únicas p
 
 ## Primeiro protótipo
 Um pequeno trecho do distrito/forja, movimentação, Luke simples, dois tipos de inimigo, mini-chefe, habilidade/power-up, tela de 3 recompensas com persistência e 1 sala secreta que exija técnica. Só depois ampliar.
+
+## Atualização 15/11/2026 — controles de toque aprovados
+O jogo é jogado no celular (paisagem). Controles de toque **aprovados** e a mecânica de **agachar/andar agachado** estão em `docs/CONTROLES_E_CONVENCOES.md`. Pedidos do dono ainda a especificar: **botão de magia/poder** (ligado à Ruptura e às habilidades de chefes) e **combos** do Ren (T-008 em `docs/TAREFAS.md`).
+
+
+
+**Atualização 15/11/2026 (chefes e itens):** a escolha de itens muda a dificuldade de cada chefe e não há combinação melhor; chefes têm padrão fixo estilo Mega Man. Ver `docs/10_CHEFES_E_BALANCEAMENTO.md` e DEC-013.

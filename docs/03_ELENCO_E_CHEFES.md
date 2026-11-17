@@ -19,7 +19,7 @@
 | Ira | **Baku — O General da Fúria** | Guerreiro muito grande e brutal, armadura samurai desgastada, máscara oni, espada enorme, brasas vermelhas | **Arte individual preferida/aprovada como referência** |
 | Soberba | **Seiran — O Monarca da Soberba** | Soberano elegante, aristocrático, arrogante, presença fria e lâmina cerimonial; paleta e silhueta únicas | Conceito visual em revisão |
 
-**Chefe final adicional:** "Senhor dos Sete Pecados" (apelido de trabalho Shin-Oni). Armadura samurai/oni, máscara demoníaca, sete energias/pecados combinados. Não confundir com Ren; o boss final precisa ter silhueta própria. Versões visuais posteriores ainda requerem aprovação de detalhes.
+**Chefe final adicional:** "Senhor dos Sete Pecados" (apelido de trabalho Shin-Oni). Armadura samurai/oni, máscara demoníaca, sete energias/pecados combinados. Não confundir com Ren; o boss final precisa ter silhueta própria. Versões visuais posteriores ainda requerem aprovação de detalhes. **DEC-021 (16/11):** novo visual = demônio ruivo de chifres da ficha "BAKU — IRA (Wrathcleaver)" sem máscara e sem capacete (revisão do dono, 16/11 22h22); essa ficha deixa de ser o Baku.
 
 ### Nomes antigos que NÃO devem ser restaurados automaticamente
 - "Zhen Guo" foi a proposta inicial de Avareza antes de Kairen.
@@ -38,8 +38,22 @@
 
 **Importante:** poderes e os três itens exatos por chefe ainda precisam de revisão de balanceamento e da lógica de exploração. Não criar sprites finais de recompensas com nomes visuais inconsistentes.
 
+
+## Novas fichas de referência — 16/11/2026
+
+Foram salvas no Drive fichas de Ren (2 formas), Luke, Kairen, Xui, Baku, Wu, Mei Shian (corpo+poses), Shuyin (visual+poses), Seiran (corpo), Shin-Oni (físico+combate) e pôster dos chefes, IDs `AV-FIC-001` a `AV-FIC-015`. **Fichas não são sprites de runtime**. As referências oficiais originais dos personagens continuam prioritárias. A ficha de poses independente do Seiran permanece pendente; o Claude pode derivar as animações usando o original canônico. Veja `docs/12_HANDOFF_FICHAS_PIXELLAB_2026-11-16.md`.
+
+As fichas de Mei Shian e Shuyin não substituem automaticamente os nomes, poderes, recompensas ou aprovações do GDD. Inimigos comuns podem ser concebidos pelo Claude por briefing escrito (região, função de combate e estilo), sem ficha visual individual. Sua coerência com história/jogabilidade deve ser testada.
+
 ## Regra visual por personagem
 Paleta própria, leitura de silhueta, acessórios próprios, comportamento e movimento característicos. **NÃO inserir o mesmo halo circular atrás de todos**. Artistas e agentes devem consultar ilustração individual aprovada, não miniaturas genéricas de painéis coletivos.
 
 ## Hierarquia dos arquivos (quando disponíveis)
 \`assets/referencias-aprovadas/chefes/Kairen.png\`, \`Xui.png\`, \`Wu.png\`, \`Baku.png\` devem receber as artes individuais preferidas preservadas integralmente. Anexar novas poses em diretório separado, sem sobrescrever essas referências.
+
+## Padrão de ataque e balanceamento (adicionado em 15/11/2026)
+Cada chefe tem ciclo de ataque fixo e identidade mecânica própria, e os itens escolhidos mudam a facilidade de cada luta sem existir combinação melhor. Regras e rascunhos em `docs/10_CHEFES_E_BALANCEAMENTO.md` (DEC-013).
+
+
+## Atualização 16/11 (DEC-016)
+Chefe final: **Shin-Oni** (nome) · "Senhor dos Sete Pecados" (título). Mei Shian: **verde-esmeralda**. Imagens de 16/11 são as oficiais atuais. Detalhes em `docs/13_HISTORIA_CONSOLIDADA.md`.

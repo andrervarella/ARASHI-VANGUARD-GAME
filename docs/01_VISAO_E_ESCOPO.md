@@ -8,7 +8,7 @@ Um trabalhador sem privilégios, que aprendeu a lutar com disciplina, resgata su
 **Frase dramática:** "O lugar onde você nasceu não precisa determinar até onde pode chegar."
 
 ## Gênero e público
-Ação/plataforma 2D para público adolescente mais velho/adulto, Metroidvania compacto e combate técnico expressivo. Clima sério, com companheirismo e humor pontual de Luke, sem infantilizar.
+Ação/plataforma 2D para público adolescente mais velho/adulto, com **fases curtas por terra (5–8 min) + chefe** e combate técnico expressivo (DEC-023: sem mapa grande conectado). Clima sério, com companheirismo e humor pontual de Luke, sem infantilizar.
 
 ## Inspirações funcionais — não copiar
 - Castlevania: Symphony of the Night: exploração interconectada, equipamentos, segredos, backtracking.

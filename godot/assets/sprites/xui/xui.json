@@ -1,0 +1,69 @@
+{
+ "idle": {
+  "frames": [
+   "idle_00.png",
+   "idle_01.png",
+   "idle_02.png",
+   "idle_03.png",
+   "idle_04.png",
+   "idle_05.png",
+   "idle_06.png",
+   "idle_07.png",
+   "idle_08.png"
+  ],
+  "fps": 7,
+  "loop": true,
+  "anchor": [
+   126.1,
+   229
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "breath": {
+  "frames": [
+   "breath_00.png",
+   "breath_01.png",
+   "breath_02.png",
+   "breath_03.png",
+   "breath_04.png",
+   "breath_05.png",
+   "breath_06.png",
+   "breath_07.png"
+  ],
+  "fps": 8,
+  "loop": false,
+  "anchor": [
+   126.1,
+   229
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "slam": {
+  "frames": [
+   "slam_00.png",
+   "slam_01.png",
+   "slam_02.png",
+   "slam_03.png",
+   "slam_04.png",
+   "slam_05.png",
+   "slam_06.png",
+   "slam_07.png"
+  ],
+  "fps": 9,
+  "loop": false,
+  "anchor": [
+   126.1,
+   229
+  ],
+  "size": [
+   256,
+   256
+  ]
+ }
+}

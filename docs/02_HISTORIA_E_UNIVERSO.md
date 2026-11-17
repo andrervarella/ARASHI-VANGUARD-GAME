@@ -14,7 +14,7 @@ Sete famílias afirmam proteger artefatos que selam entidades demoníacas, inspi
 As sete famílias aprenderam a extrair energia dos selos e prolongar a riqueza e o domínio de suas cidades. Rituais passam a consumir energia vital dos moradores mais pobres. Não apresentar essa mitologia inventada como história real.
 
 ## A noite da ruptura
-Um ritual falha no distrito de Ren. Os governantes fecham os portões para conter o perigo, aceitando sacrificar os trabalhadores. Ren conhece as engrenagens do portão por sua experiência de forja. Decide romper o mecanismo para permitir a fuga. Salva moradores, incluindo um cãozinho que passa a chamar **Luke**. A intervenção rompe parte de um selo. Ren enfrenta uma entidade, é derrotado, improvisa usando a estrutura do selo e consegue sobreviver. Adquire uma marca/cicatriz profunda no peito. As famílias o acusam de provocar a catástrofe e ele vira fugitivo.
+Um ritual falha no distrito de Ren. Os governantes fecham os portões para conter o perigo, aceitando sacrificar os trabalhadores. Ren conhece as engrenagens do portão por sua experiência de forja. Decide romper o mecanismo para permitir a fuga. Salva moradores, incluindo um cãozinho que passa a chamar **Luke**. A intervenção rompe parte de um selo. Ren enfrenta uma entidade, é derrotado, improvisa usando a estrutura do selo e consegue sobreviver. Adquire uma marca/cicatriz profunda no peito. As famílias o acusam de provocar a catástrofe e ele vira fugitivo. A acusação é uma **meia-verdade** (ver "Ajustes narrativos aprovados").
 
 Essa sequência pode compor a primeira fase/tutoriais. Não fazer Ren vencer um demônio superpoderoso somente por força bruta no prólogo.
 
@@ -37,3 +37,19 @@ Ren é reservado, forte, barbado e por vezes orgulhoso, mas tem compaixão. Sua 
 - Sete selos/pecados e sete famílias; chefe final distinto dos sete.
 - As cicatrizes e transformação são consequências reais do uso de poder.
 - Os sete pecados vêm da tradição cristã, mitos orientais são inspirações narrativas distintas; a união entre ambos é ficção do jogo.
+
+## Ajustes narrativos aprovados (15/11/2026)
+Aprovados pelo proprietário em conversa. Reforçam o gancho e amarram o ofício de forja do Ren ao final, sem mudar as regras narrativas fixas. Detalhes marcados como "a definir" continuam em aberto.
+
+1. **Culpa real.** Abrir o portão salvou pessoas, mas foi o que rompeu o selo. A acusação das famílias é meia-verdade: Ren carrega essa dúvida durante o jogo e ela alimenta o orgulho e a impulsividade que cobram preço.
+2. **O selo reconhece a mão do ferreiro.** Cada selo traz marcas de ofício (martelo, fole, cunha, tempera etc.). Ren as reconhece desde a primeira fase: o selo foi feito por gente como ele. É a pista da revelação, plantada cedo.
+3. **Final com a forja.** Além de recusar o trono ou virar recipiente, Ren pode **reforjar o selo** junto com os aliados comuns. O tema (preparação, lealdade, responsabilidade) vira ação. Os finais exatos continuam candidatos.
+4. **Um aliado por mundo, descendente de um artesão original.** Cada aliado dá uma pista e depois ajuda no final. Nomes, ofícios e distritos: a definir.
+5. **Luke como mistério leve.** Luke farejou o perigo antes da ruptura e as entidades não o atacam. Isso rende pistas de exploração sem tirar o humor. A causa fica em aberto; não explicar de forma pesada.
+6. **Escolha final jogável.** Aceitar ou recusar os poderes acumulados deve ser mecânica (o jogador pode abrir mão de habilidades), não só diálogo. Regras e balanceamento: a definir.
+
+Continuam valendo: Ren é homem comum sem destino de sangue, sem origem nobre/eleito predestinado, e o chefe final é distinto dos sete.
+
+
+## História consolidada (16/11/2026)
+Trama completa aprovada em `docs/13_HISTORIA_CONSOLIDADA.md` (DEC-016). Ela fecha: o que é o portão, ordem das fases, aliado Tetsu, revelação do Shin-Oni e os dois finais.

@@ -1,0 +1,141 @@
+{
+ "idle": {
+  "frames": [
+   "idle_00.png",
+   "idle_01.png",
+   "idle_02.png",
+   "idle_03.png",
+   "idle_04.png",
+   "idle_05.png",
+   "idle_06.png",
+   "idle_07.png",
+   "idle_08.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   125.1,
+   242
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "walk": {
+  "frames": [
+   "walk_00.png",
+   "walk_01.png",
+   "walk_02.png",
+   "walk_03.png",
+   "walk_04.png",
+   "walk_05.png",
+   "walk_06.png",
+   "walk_07.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   125.1,
+   242
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "slash": {
+  "frames": [
+   "slash_00.png",
+   "slash_01.png",
+   "slash_02.png",
+   "slash_03.png",
+   "slash_04.png",
+   "slash_05.png",
+   "slash_06.png",
+   "slash_07.png"
+  ],
+  "fps": 10,
+  "loop": false,
+  "anchor": [
+   125.1,
+   242
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "tired": {
+  "frames": [
+   "tired_00.png",
+   "tired_01.png",
+   "tired_02.png",
+   "tired_03.png",
+   "tired_04.png",
+   "tired_05.png",
+   "tired_06.png",
+   "tired_07.png",
+   "tired_08.png"
+  ],
+  "fps": 6,
+  "loop": true,
+  "anchor": [
+   125.1,
+   242
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "leap_wind": {
+  "frames": [
+   "leap_wind_00.png"
+  ],
+  "fps": 6,
+  "loop": false,
+  "anchor": [
+   123.0,
+   242
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "leap_air": {
+  "frames": [
+   "leap_air_00.png",
+   "leap_air_01.png",
+   "leap_air_02.png",
+   "leap_air_03.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   115.4,
+   169
+  ],
+  "size": [
+   256,
+   256
+  ]
+ },
+ "land": {
+  "frames": [
+   "land_00.png",
+   "land_01.png"
+  ],
+  "fps": 6,
+  "loop": false,
+  "anchor": [
+   105.0,
+   242
+  ],
+  "size": [
+   256,
+   256
+  ]
+ }
+}

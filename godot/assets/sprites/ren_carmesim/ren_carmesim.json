@@ -1,0 +1,258 @@
+{
+ "idle": {
+  "frames": [
+   "idle_00.png",
+   "idle_01.png",
+   "idle_02.png",
+   "idle_03.png",
+   "idle_04.png",
+   "idle_05.png",
+   "idle_06.png",
+   "idle_07.png",
+   "idle_08.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "run": {
+  "frames": [
+   "run_00.png",
+   "run_01.png",
+   "run_02.png",
+   "run_03.png",
+   "run_04.png",
+   "run_05.png",
+   "run_06.png",
+   "run_07.png",
+   "run_08.png",
+   "run_09.png"
+  ],
+  "fps": 15,
+  "loop": true,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "attack": {
+  "frames": [
+   "attack_00.png",
+   "attack_01.png",
+   "attack_02.png",
+   "attack_03.png",
+   "attack_04.png"
+  ],
+  "fps": 16,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "rising": {
+  "frames": [
+   "rising_00.png",
+   "rising_01.png",
+   "rising_02.png"
+  ],
+  "fps": 14,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "thrust": {
+  "frames": [
+   "thrust_00.png",
+   "thrust_01.png",
+   "thrust_02.png",
+   "thrust_03.png"
+  ],
+  "fps": 14,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "finisher": {
+  "frames": [
+   "finisher_00.png",
+   "finisher_01.png",
+   "finisher_02.png",
+   "finisher_03.png",
+   "finisher_04.png"
+  ],
+  "fps": 12,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "jump_up": {
+  "frames": [
+   "jump_up_00.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "jump_down": {
+  "frames": [
+   "jump_down_00.png"
+  ],
+  "fps": 8,
+  "loop": true,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "hurt": {
+  "frames": [
+   "hurt_00.png",
+   "hurt_01.png"
+  ],
+  "fps": 10,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "fall": {
+  "frames": [
+   "fall_00.png",
+   "fall_01.png"
+  ],
+  "fps": 10,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "guard": {
+  "frames": [
+   "guard_00.png",
+   "guard_01.png",
+   "guard_02.png"
+  ],
+  "fps": 12,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "crouch": {
+  "frames": [
+   "crouch_00.png",
+   "crouch_01.png"
+  ],
+  "fps": 8,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "roll": {
+  "frames": [
+   "roll_00.png",
+   "roll_01.png",
+   "roll_02.png",
+   "roll_03.png",
+   "roll_04.png"
+  ],
+  "fps": 14,
+  "loop": false,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ },
+ "walk": {
+  "frames": [
+   "walk_00.png",
+   "walk_01.png",
+   "walk_02.png",
+   "walk_03.png",
+   "walk_04.png",
+   "walk_05.png",
+   "walk_06.png",
+   "walk_07.png"
+  ],
+  "fps": 9,
+  "loop": true,
+  "anchor": [
+   105.1,
+   186
+  ],
+  "size": [
+   220,
+   220
+  ]
+ }
+}
