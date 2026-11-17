@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.15 · fases 1 e 2 · 17/11/2026"
+const VERSION := "v0.16 · fases 1 e 2 · 17/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -156,7 +156,8 @@ func goto(kind: String, arg = null) -> void:
 # Para onde ir depois de cada etapa (roteiro das fases 1 e 2).
 func advance(from: String) -> void:
 	match from:
-		"abertura": data["etapa"] = "ferreiros"; save(); goto("level", "ferreiros")
+		"abertura": data["etapa"] = "masmorra"; save(); goto("level", "masmorra")
+		"masmorra": mark("masmorra_fuga"); data["etapa"] = "ferreiros"; data["cp"] = {}; save(); goto("level", "ferreiros")
 		"ferreiros": data["etapa"] = "cicatriz"; save(); goto("story", "cicatriz")
 		"cicatriz": data["etapa"] = "vila_chegada"; save(); goto("story", "vila_chegada")
 		"torii": goto("reward", "baku")
@@ -327,7 +328,7 @@ func _fetch_music(name: String, vol_db: float) -> void:
 			if name != "titulo" and _music_name == name:
 				_music_name = ""
 				# música própria da fase ainda não publicada: cai na música geral de fase
-				music("fase" if name.begins_with("fase_") or name == "memoria" else "titulo", vol_db)
+				music("fase" if name.begins_with("fase_") or name == "memoria" else ("chefe" if name.begins_with("chefe_") else "titulo"), vol_db)
 			return
 		var mp := AudioStreamMP3.new()
 		mp.data = body

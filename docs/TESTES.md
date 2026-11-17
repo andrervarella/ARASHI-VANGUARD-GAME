@@ -62,3 +62,7 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (EMULADO): curativo do Luke pelo atalho `--testcurativo` (gotas, Ren ajoelhado, lenço aparece depois do nó); todas as fases sem erro de script.
 - EXECUTADO (Chrome, versão web): áudio com sinal (ver resultado no commit).
 - NÃO TESTADO: as músicas novas tocando no site (baixadas só no build da Vercel); não ouvi as músicas (sem áudio aqui); sensação dos chutes no celular.
+
+## 2026-11-17 — v0.16
+- EXECUTADO (EMULADO): masmorra do começo ao fim (cela, chaves, porta, saída); duelo antes do Baku (resultado "cedo demais" com o robô); todas as fases sem erro.
+- NÃO TESTADO: acertar o duelo no toque real; golpe com retrato na web (usa Engine.time_scale); Luke ao resgate em luta real.

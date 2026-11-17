@@ -91,6 +91,21 @@ const L := {
 		],
 		"chefe": "xui", "arena": [7050.0, 8150.0],
 	},
+	"masmorra": {
+		"bg_chao": 0.865,
+		"nevoa_chao": Color(0.12, 0.06, 0.05),
+		"nome": "Prólogo — Masmorra das Sete Casas",
+		"bg": "masmorra", "chao_de": "ferreiros", "musica": "memoria", "amb": "amb_rain", "particulas": "brasas",
+		"chao": Color(0.13, 0.1, 0.1), "borda": Color(0.32, 0.24, 0.2),
+		"largura": 2700.0, "inicio": 260.0, "luke_inicio": false,
+		"ground": [[0, 2700]],
+		"plats": [], "blocks": [],
+		"decor": [["barris", 1500, 150], ["barris", 2050, 150]],
+		"foes": [],
+		"prompts": [],
+		"events": [[40, "intro_masmorra"], [2480, "saida_masmorra"]],
+		"breakables": [], "pickups": [],
+	},
 	"memoria": {
 		"bg_chao": 0.896,
 		"nevoa_chao": Color(0.30, 0.06, 0.05),
@@ -137,6 +152,20 @@ const L := {
 
 # Diálogos: [quem, fala]. Retratos: ren, baku, xui, luke, tetsu. Linguagem épica (DEC-019).
 const D := {
+	"intro_masmorra": [
+		["ren", "As masmorras das Sete Casas... Trancam aqui os marcados até a hora do sacrifício."],
+		["ren", "A marca na testa de cada um de nós. Venderam Arashi inteira ao selo da Ira."],
+		["luke", "Au! Au! Au!"],
+		["ren", "Esse cão de novo. Late para mim desde que me jogaram aqui... como se quisesse me mostrar alguma coisa."],
+	],
+	"masmorra_chave": [
+		["ren", "As chaves do carcereiro! Pequeno... tu és mais esperto que todos os guardas desta fortaleza."],
+		["ren", "Meu pai ergueu a muralha desta cidade. Se alguém sabe abrir aqueles portões por dentro, sou eu. Vamos!"],
+	],
+	"intro_ferreiros_2": [
+		["ren", "Ar livre... e a cidade inteira em chamas. Pequeno, mostra o caminho!"],
+		["luke", "Au! Au!"],
+	],
 	"intro_ferreiros": [
 		["ren", "A marca do sacrifício... na testa de cada um de nós. As Sete Casas venderam Arashi inteira ao selo da Ira."],
 		["luke", "Au! Au! Au!"],

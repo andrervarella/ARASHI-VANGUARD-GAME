@@ -142,3 +142,8 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Aldeões: recorte em pixel das fichas do dono → personagem v3 no PixelLab com referência (frente) + perfil importado → andar v3. Recortes em `assets/referencias-aprovadas/aldeoes/pixel/` (públicos, servem de link para o PixelLab).
 - Música que reage: só volume (o filtro silenciava a web).
 - Cutscenes em vídeo (Higgsfield): **pendente**, anotar para transformação e entrada/derrota de chefes (T-023).
+
+## DEC-028 — Masmorra no lugar do cercado; mecânicas para vídeo curto (17/11/2026)
+- Dono pediu que a prisão do Ren fosse uma cela de verdade em outro cenário (masmorra), com o cão salvando-o; e aprovou Duelo do Ferreiro, golpe com retrato, Luke ao resgate, lista de golpes e música por chefe.
+- Cutscene em vídeo da masmorra fica para o Higgsfield (T-024).
+- Não feito nesta rodada: reduzir o download inicial (~66 MB; o motor sozinho tem 43 MB) e padronizar o pixel dos objetos antigos.

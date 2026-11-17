@@ -68,3 +68,5 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 - v0.14: `sprites/ald_*` (10 aldeões) — PixelLab v3 a partir das fichas do dono (ChatGPT); chutes do Ren e da Forma Carmesim — PixelLab esqueleto; `props/barricada.png` — PixelLab Pixen; `sfx/coracao.ogg` — sintetizado; `story/shin_sombra.jpg`, `story/portao_eixo.jpg`, `story/ren_vs_shin.jpg`, `portraits/shin.jpg` — artes do dono (ChatGPT).
 
 - v0.15: músicas `fase_ferreiros`, `fase_torii`, `fase_palacio`, `memoria` — PixelLab create_music (biblioteca do dono, links secretos no build); `sfx/rasgo.ogg` — sintetizado.
+
+- v0.16: `bg/masmorra.png` — PixelLab Pro (estilo do fundo dos Ferreiros); `props/cela_porta.png` — PixelLab Pixen; músicas `chefe_baku`, `chefe_xui` — PixelLab create_music.

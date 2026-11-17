@@ -5,10 +5,18 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.15 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.16 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.16 (17/11) — masmorra, Duelo do Ferreiro, golpe com retrato, Luke ao resgate (DEC-028)
+- **Masmorra (novo começo):** depois da abertura, Ren está numa cela das Sete Casas (fundo novo PixelLab + porta de grades). O cão corre até a mesa do carcereiro, traz o molho de chaves na boca, Ren abre a cela e o segue escada acima até a cidade em chamas. O cercado de madeira saiu.
+- **Duelo do Ferreiro:** antes de cada chefe, faixas pretas de cinema, os dois parados; ao sinal "!", ATAQUE (ou CHUTE) em até 0,5 s: Ren atravessa o chefe com um corte (15% da vida + postura). Cedo ou tarde demais: Ren leva o primeiro golpe.
+- **Golpe com retrato (estilo KOF):** ao usar Fúria, Jade, Carmesim e no Corte da Tempestade, a tela congela meio segundo com o rosto do Ren e o nome do golpe.
+- **Luke ao resgate:** uma vez por fase, quando Ren cairia, o Luke morde o inimigo (atordoa) e Ren volta com 3 de vida.
+- **Lista de golpes** no menu de pausa.
+- **Música de cada chefe:** Baku (taiko furioso) e Xui (valsa grotesca), PixelLab; cai na música geral de chefe se faltar.
 
 ## v0.15 (17/11) — música por fase, chutes legíveis, curativo do Luke, menino em tamanho real
 - **Música própria por fase** (PixelLab, 1ª tomada de cada): Ferreiros (cidade em chamas), Vale das Torii (Ira), Palácio (Gula) e a Memória do portão. Links na variável secreta MUSIC_URLS_3; se faltar, cai na música geral de fase.

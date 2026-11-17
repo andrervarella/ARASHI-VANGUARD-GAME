@@ -768,7 +768,11 @@ func _start_special(kind: String) -> void:
 		o.dmg = 2 + dmg_bonus()
 		o.global_position = global_position + Vector2(facing * 60.0, -95.0)
 		level.add_child(o)
-		level.toast("Corte da Tempestade!")
+		_cutin("CORTE DA TEMPESTADE")
+
+func _cutin(nome: String) -> void:
+	if level and level.has_method("super_cutin"):
+		level.super_cutin(nome, carmesim)
 
 func _use_power() -> void:
 	var p: String = Game.data["equipado"]
@@ -785,6 +789,7 @@ func _use_power() -> void:
 		return
 	ki -= cost
 	Game.sfx("power", -2.0)
+	_cutin({"furia": "GOLPE DA FÚRIA", "jade": "BOCARRA DE JADE", "carmesim": "FORMA CARMESIM"}.get(p, ""))
 	match p:
 		"furia":
 			state = "dash"
@@ -892,6 +897,14 @@ func take_damage(n: int, src_x: float, src: Node = null, heavy := false) -> void
 	Game.sfx("hit2", -6.0)
 	level.shake(8.0)
 	level.hitstop(0.06)
+	if hp <= 0 and level and level.has_method("luke_resgate") and level.luke_resgate(src):
+		# o Luke salvou o Ren: volta com um pouco de vida
+		hp = 3
+		hp_changed.emit()
+		invuln = 2.2
+		state = "hurt"
+		hurt_t = 0.5
+		return
 	if hp <= 0:
 		if Game.has_item("omamori") and not revived:
 			revived = true

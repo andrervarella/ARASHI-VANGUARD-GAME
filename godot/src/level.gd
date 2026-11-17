@@ -278,6 +278,8 @@ func _build_world() -> void:
 		_add_door(d)
 	if level_id == "ferreiros" and not Game.seen("luke_salvo"):
 		_setup_prologue()
+	if level_id == "masmorra":
+		_setup_masmorra()
 
 var _luke_caged := Vector2.ZERO
 
@@ -878,6 +880,10 @@ func _event(id: String) -> void:
 	match id:
 		"intro_ferreiros":
 			_intro_prologue()
+		"intro_masmorra":
+			_intro_masmorra()
+		"saida_masmorra":
+			_saida_masmorra()
 		"cao":
 			_cao_scene()
 		"portao":
@@ -956,8 +962,9 @@ func _free_prisoner(id: String) -> void:
 
 # ---------------- prólogo: cerca, o cão sem dono e o soldado ----------------
 func _setup_prologue() -> void:
-	# Ren preso no cercado da praça; o cão late do lado de fora
-	_fence_wall = _static_rect(400.0, GY - 600.0, 30.0, 600.0, 1)
+	# (v0.16) Ren agora foge da masmorra; na praça o cão já está com ele, sem cercado
+	if not Game.seen("masmorra_fuga"):
+		_fence_wall = _static_rect(400.0, GY - 600.0, 30.0, 600.0, 1)
 	_spawn_luke(Vector2(560.0, GY))
 	luke.set_skin("luke_rua")
 	luke.target = null
@@ -969,7 +976,7 @@ func _setup_prologue() -> void:
 	_cao_wall = _static_rect(2900.0, GY - 600.0, 30.0, 600.0, 1)
 
 func _draw_fence() -> void:
-	if Game.seen("luke_salvo") and not _fence_wall:
+	if (Game.seen("luke_salvo") and not _fence_wall) or Game.seen("masmorra_fuga"):
 		return
 	var x0 := 40.0
 	var x1 := 420.0
@@ -992,22 +999,27 @@ func _intro_prologue() -> void:
 	if Game.seen("luke_salvo"):
 		return
 	Game.sfx("bark", -4.0)
-	await say("intro_ferreiros")
-	frozen = true
-	player.locked = true
-	player.spr.set_facing(1)
-	player.facing = 1
-	player.pose("attack")
-	await get_tree().create_timer(0.25).timeout
-	player.pose("idle")
-	Game.sfx("break", 0.0)
-	shake(8.0)
-	_fence_broken = true
-	if _fence_wall:
-		_fence_wall.queue_free()
-		_fence_wall = null
-	for k in range(4):
-		load("res://src/fx.gd").spawn(self, "dust", Vector2(400.0 + randf_range(-20, 20), GY - randf_range(20, 150)), {"r": 60.0, "life": 0.5})
+	if Game.seen("masmorra_fuga"):
+		await say("intro_ferreiros_2")
+		frozen = true
+		player.locked = true
+	else:
+		await say("intro_ferreiros")
+		frozen = true
+		player.locked = true
+		player.spr.set_facing(1)
+		player.facing = 1
+		player.pose("attack")
+		await get_tree().create_timer(0.25).timeout
+		player.pose("idle")
+		Game.sfx("break", 0.0)
+		shake(8.0)
+		_fence_broken = true
+		if _fence_wall:
+			_fence_wall.queue_free()
+			_fence_wall = null
+		for k in range(4):
+			load("res://src/fx.gd").spawn(self, "dust", Vector2(400.0 + randf_range(-20, 20), GY - randf_range(20, 150)), {"r": 60.0, "life": 0.5})
 	# o cão corre na frente, mostrando o caminho
 	Game.sfx("bark", -6.0)
 	luke.spr.set_facing(1)
@@ -1352,7 +1364,7 @@ func _baku_prologue() -> void:
 	no_death = true
 	hud.boss = b
 	hud.boss_name = "BAKU — a Ira"
-	Game.music("chefe", -7.0)
+	Game.music("chefe_" + String(D.get("chefe", "")), -7.0)
 	banner("Resista!")
 	b.start()
 	var t := 0.0
@@ -1455,7 +1467,8 @@ func _start_arena() -> void:
 		await get_tree().create_timer(0.7).timeout
 	if n_mortes >= 3 and n_mortes % 3 == 0 and LV_D().has("dica_" + ch):
 		await say("dica_" + ch)
-	Game.music("chefe", -7.0)
+	await _duelo()
+	Game.music("chefe_" + String(D.get("chefe", "")), -7.0)
 	boss.start()
 
 func LV_D() -> Dictionary:
@@ -1590,6 +1603,10 @@ func _toggle_pause() -> void:
 	info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	info.custom_minimum_size = Vector2(420, 0)
 	vb.add_child(info)
+	var golpes := Game.label("GOLPES — espada ×5 combo · segurar ESPADA: golpe carregado · cima+ESPADA: anti-aéreo · baixo+ESPADA: rasteira\nCHUTE ×3: alto, giratório, voadora · E-C-E: Lâmina Giratória · E-E-C: Chute Ascendente · C-C-E: Investida do Ferreiro · C-E-C: Pisão do Trovão\nDEFESA no instante do golpe: aparo perfeito · rolar no golpe: esquiva perfeita · aparos quebram a postura do chefe", 13, Color(1, 0.85, 0.55), false)
+	golpes.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	golpes.custom_minimum_size = Vector2(620, 0)
+	vb.add_child(golpes)
 	vb.add_child(Game.button("CONTINUAR", _toggle_pause))
 	if not D.get("hub", false):
 		vb.add_child(Game.button("RECOMEÇAR FASE", func():
@@ -1917,3 +1934,272 @@ func _draw_luke_ferido() -> void:
 		draw_circle(p + Vector2(-14 + i * 7, -2 + (i % 2) * 2), 2.5, Color(0.55, 0.02, 0.05, 0.9))
 	var drip := fmod(Time.get_ticks_msec() * 0.001, 1.2) / 1.2
 	draw_circle(p + Vector2(6, -44 + drip * 40.0), 2.0, Color(0.65, 0.03, 0.06, 1.0 - drip))
+
+
+# ================= v0.16: Duelo do Ferreiro, golpe com retrato, Luke ao resgate =================
+# DUELO: antes do chefe, os dois parados no vento. Espere o sinal e ATAQUE no instante certo.
+func _duelo() -> void:
+	if boss == null or OS.get_cmdline_user_args().has("--semduelo"):
+		return
+	frozen = true
+	player.locked = true
+	hud.release_all()
+	player.velocity = Vector2.ZERO
+	player.pose("idle")
+	var top := ColorRect.new()
+	var bot := ColorRect.new()
+	for r in [top, bot]:
+		r.color = Color(0, 0, 0, 1)
+		r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		_ui.add_child(r)
+	var vs := get_viewport().get_visible_rect().size
+	top.size = Vector2(vs.x, 0)
+	bot.position = Vector2(0, vs.y)
+	bot.size = Vector2(vs.x, 0)
+	var tw := create_tween()
+	tw.tween_property(top, "size:y", vs.y * 0.13, 0.4)
+	tw.parallel().tween_property(bot, "position:y", vs.y * 0.87, 0.4)
+	tw.parallel().tween_property(bot, "size:y", vs.y * 0.13, 0.4)
+	var lbl := Game.label("DUELO — espere o sinal e ATAQUE", 22, Color(1, 0.9, 0.7))
+	lbl.position = Vector2(vs.x * 0.5 - 220, vs.y * 0.03)
+	_ui.add_child(lbl)
+	Game.sfx("whisper", -6.0)
+	await get_tree().create_timer(0.6).timeout
+	var wait := randf_range(1.4, 3.0)
+	var t := 0.0
+	var sinal := false
+	var res := ""
+	var mark: Label
+	while res == "":
+		await get_tree().process_frame
+		t += get_process_delta_time()
+		if not sinal and t >= wait:
+			sinal = true
+			Game.sfx("sino", 2.0)
+			Game.flash(Color(1, 1, 1, 0.5), 0.12)
+			mark = Game.label("!", 96, Color(1, 0.25, 0.2))
+			mark.position = Vector2(vs.x * 0.5 - 20, vs.y * 0.25)
+			_ui.add_child(mark)
+		if hud.attack_pressed or hud.kick_pressed:
+			res = "ok" if sinal and t - wait <= 0.5 else "cedo"
+		elif sinal and t - wait > 0.5:
+			res = "tarde"
+	if mark:
+		mark.queue_free()
+	var bx: float = boss.global_position.x
+	if res == "ok":
+		# um corte só: Ren atravessa o chefe
+		var dir := 1.0 if bx > player.global_position.x else -1.0
+		player.pose("finisher")
+		Game.sfx("slash3", 2.0)
+		Game.flash(Color(1, 0.95, 0.85, 0.9), 0.25)
+		var t2 := create_tween()
+		t2.tween_property(player, "global_position:x", bx + dir * 170.0, 0.12)
+		await t2.finished
+		player.facing = -int(dir)
+		player.spr.set_facing(player.facing)
+		hitstop(0.35)
+		shake(16.0)
+		load("res://src/fx.gd").spawn(self, "slash", Vector2(bx, GY - 110), {"dir": int(dir), "col": Color(1, 0.9, 0.6), "r": 260.0, "life": 0.4})
+		boss.take_hit(maxi(4, int(boss.hp_max * 0.15)), int(dir), "katana")
+		boss.add_posture(60.0)
+		banner("DUELO VENCIDO! O primeiro sangue é seu.")
+	else:
+		banner("Cedo demais!" if res == "cedo" else "Lento demais!")
+		Game.sfx("slash2", 0.0)
+		player.take_damage(1, bx, boss)
+	await get_tree().create_timer(0.8).timeout
+	var t3 := create_tween()
+	t3.tween_property(top, "size:y", 0.0, 0.3)
+	t3.parallel().tween_property(bot, "position:y", vs.y, 0.3)
+	t3.parallel().tween_property(lbl, "modulate:a", 0.0, 0.3)
+	await t3.finished
+	top.queue_free()
+	bot.queue_free()
+	lbl.queue_free()
+	player.pose("idle")
+	frozen = false
+	player.locked = false
+
+# GOLPE ESPECIAL com retrato em tela cheia (estilo KOF): tudo congela meio segundo
+func super_cutin(nome: String, carm := false) -> void:
+	if nome == "":
+		return
+	var vs := get_viewport().get_visible_rect().size
+	var c := Control.new()
+	c.process_mode = Node.PROCESS_MODE_ALWAYS
+	c.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui.add_child(c)
+	var band := ColorRect.new()
+	band.color = Color(0.05, 0.0, 0.02, 0.85)
+	band.position = Vector2(0, vs.y * 0.3)
+	band.size = Vector2(vs.x, vs.y * 0.36)
+	band.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.add_child(band)
+	for k in range(4):
+		var st := ColorRect.new()
+		st.color = Color(0.9, 0.08 + k * 0.05, 0.08, 0.7 - k * 0.12)
+		st.position = Vector2(-vs.x, vs.y * 0.32 + k * vs.y * 0.08)
+		st.size = Vector2(vs.x * 1.2, 6.0 + k * 3.0)
+		st.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		c.add_child(st)
+		var ts := c.create_tween().set_ignore_time_scale(true)
+		ts.tween_property(st, "position:x", vs.x * 0.2, 0.25 + k * 0.05)
+	var face := TextureRect.new()
+	face.texture = load("res://assets/portraits/ren.jpg")
+	face.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	face.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	face.size = Vector2(vs.y * 0.36, vs.y * 0.36)
+	face.position = Vector2(-face.size.x, vs.y * 0.3)
+	face.modulate = Color(1, 0.55, 0.5) if carm else Color.WHITE
+	face.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	c.add_child(face)
+	var lb := Game.label(nome, 40, Color(1, 0.88, 0.5))
+	lb.position = Vector2(vs.x, vs.y * 0.43)
+	c.add_child(lb)
+	Engine.time_scale = 0.05
+	Game.sfx("power", 0.0)
+	var tw := c.create_tween().set_ignore_time_scale(true)
+	tw.tween_property(face, "position:x", vs.x * 0.12, 0.16).set_trans(Tween.TRANS_BACK)
+	tw.parallel().tween_property(lb, "position:x", vs.x * 0.12 + face.size.x + 24.0, 0.2).set_trans(Tween.TRANS_BACK)
+	tw.tween_interval(0.42)
+	tw.tween_property(c, "modulate:a", 0.0, 0.12)
+	await tw.finished
+	Engine.time_scale = 1.0
+	c.queue_free()
+
+# LUKE AO RESGATE: uma vez por fase, quando Ren cairia, o Luke morde o inimigo e o arrasta
+var _luke_salvou := false
+func luke_resgate(src: Node) -> bool:
+	if _luke_salvou or luke == null or not _luke_free or D.get("hub", false):
+		return false
+	_luke_salvou = true
+	var alvo = src if src and is_instance_valid(src) and src.has_method("take_hit") else null
+	if alvo == null:
+		var best := 99999.0
+		for f in get_tree().get_nodes_in_group("foes"):
+			if not f.get("dead") and absf(f.global_position.x - player.global_position.x) < best:
+				best = absf(f.global_position.x - player.global_position.x)
+				alvo = f
+	Game.sfx("bark", 2.0)
+	Game.flash(Color(1, 0.9, 0.7, 0.6), 0.3)
+	hitstop(0.2)
+	toast("O LUKE TE SALVOU!")
+	if alvo:
+		var ax: float = alvo.global_position.x
+		luke.spr.set_facing(1 if ax > luke.position.x else -1)
+		luke.spr.play_anim("run", true, 1.6)
+		var tw := create_tween()
+		tw.tween_property(luke, "position:x", ax - 40.0 * signf(ax - luke.position.x), 0.18)
+		tw.tween_callback(func():
+			Game.sfx("bark", 4.0)
+			Game.sfx("hit1", 0.0)
+			load("res://src/fxsprite.gd").play(self, "acerto", alvo.global_position + Vector2(0, -60), {"scale_px": 2.2})
+			if is_instance_valid(alvo) and not alvo.get("dead"):
+				alvo.take_hit(3, 1 if ax > player.global_position.x else -1, "rasteira")
+				alvo.set("stun_t", 1.6)
+			shake(10.0))
+	return true
+
+
+# ================= v0.16: a masmorra (Ren na cela, o cão traz as chaves) =================
+var _cela_wall: StaticBody2D
+var _cela_porta: Sprite2D
+var _chaves: Node2D
+const CELA_X := 400.0
+const CHAVE_X := 980.0
+
+func _setup_masmorra() -> void:
+	_cela_wall = _static_rect(CELA_X + 30.0, GY - 600.0, 30.0, 600.0, 1)
+	_cela_porta = Sprite2D.new()
+	_cela_porta.texture = prop("cela_porta")
+	_cela_porta.centered = false
+	var sc := 340.0 / float(_cela_porta.texture.get_height())
+	_cela_porta.scale = Vector2(sc, sc)
+	_cela_porta.position = Vector2(CELA_X - _cela_porta.texture.get_width() * sc * 0.5 + 40.0, GY - 340.0 + 6.0)
+	_cela_porta.z_index = 6
+	add_child(_cela_porta)
+	# paredes de pedra da cela (atrás de Ren) e a mesa do carcereiro com as chaves
+	_spawn_luke(Vector2(CELA_X + 170.0, GY))
+	luke.set_skin("luke_rua")
+	luke.target = null
+	luke.spr.set_facing(-1)
+	_chaves = Node2D.new()
+	_chaves.position = Vector2(CHAVE_X, GY - 96.0)
+	_chaves.z_index = 4
+	_chaves.set_script(load("res://src/chaves.gd"))
+	add_child(_chaves)
+
+func _intro_masmorra() -> void:
+	frozen = true
+	player.locked = true
+	hud.release_all()
+	player.spr.set_facing(1)
+	player.facing = 1
+	Game.sfx("bark", -4.0)
+	await say("intro_masmorra")
+	frozen = true
+	player.locked = true
+	# o cão corre até a mesa do carcereiro, salta e pega o molho de chaves
+	luke.spr.set_facing(1)
+	luke.spr.play_anim("run", true, 1.2)
+	var tw := create_tween()
+	tw.tween_property(luke, "position:x", CHAVE_X - 30.0, 1.1)
+	await tw.finished
+	luke.spr.play_anim("idle")
+	var hop := create_tween()
+	hop.tween_property(luke, "position:y", GY - 70.0, 0.2).set_trans(Tween.TRANS_SINE)
+	hop.tween_property(luke, "position:y", GY, 0.25).set_trans(Tween.TRANS_SINE)
+	await get_tree().create_timer(0.2).timeout
+	Game.sfx("pickup", -2.0)
+	_chaves.reparent(luke)
+	_chaves.position = Vector2(26, -40)
+	await hop.finished
+	# volta correndo com as chaves na boca
+	luke.spr.set_facing(-1)
+	luke.spr.play_anim("run", true, 1.2)
+	var tw2 := create_tween()
+	tw2.tween_property(luke, "position:x", CELA_X + 90.0, 1.0)
+	await tw2.finished
+	luke.spr.play_anim("idle")
+	Game.sfx("bark", -6.0)
+	_chaves.reparent(self)
+	_chaves.position = Vector2(CELA_X + 60.0, GY - 18.0)
+	await get_tree().create_timer(0.3).timeout
+	# Ren estica o braço pelas grades e abre a cela
+	player.pose("thrust")
+	await get_tree().create_timer(0.3).timeout
+	_chaves.queue_free()
+	Game.sfx("chains", 0.0)
+	Game.sfx("break", -6.0)
+	player.pose("idle")
+	var t3 := create_tween()
+	t3.tween_property(_cela_porta, "scale:x", _cela_porta.scale.x * 0.18, 0.5).set_trans(Tween.TRANS_BACK)
+	await t3.finished
+	if _cela_wall:
+		_cela_wall.queue_free()
+		_cela_wall = null
+	await say("masmorra_chave")
+	Game.sfx("bark", -6.0)
+	luke.spr.set_facing(1)
+	luke.spr.play_anim("run", true, 1.1)
+	var t4 := create_tween()
+	t4.tween_property(luke, "position:x", 2420.0, 3.0)
+	t4.tween_callback(func(): luke.spr.play_anim("idle"))
+	frozen = false
+	player.locked = false
+	banner("Siga o cão para fora da masmorra.")
+
+func _saida_masmorra() -> void:
+	frozen = true
+	player.locked = true
+	hud.release_all()
+	Game.sfx("step1", -4.0)
+	var cr := ColorRect.new()
+	cr.color = Color(0, 0, 0, 0)
+	cr.set_anchors_preset(Control.PRESET_FULL_RECT)
+	_ui.add_child(cr)
+	var tw := create_tween()
+	tw.tween_property(cr, "color:a", 1.0, 0.8)
+	await tw.finished
+	Game.advance("masmorra")
