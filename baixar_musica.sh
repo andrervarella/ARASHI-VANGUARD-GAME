@@ -1,13 +1,19 @@
 #!/bin/sh
-# Build do Vercel: copia o jogo para dist/ e baixa as músicas (biblioteca PixelLab do dono)
-# listadas na variável secreta MUSIC_URLS ("nome|url;nome|url"). Os links não ficam no repositório.
+# Build do Vercel: copia o jogo para dist/ e baixa músicas e efeitos (biblioteca PixelLab do dono)
+# listados nas variáveis secretas MUSIC_URLS, MUSIC_URLS_2 e SFX_URLS ("nome|url;nome|url").
+# Os links não ficam no repositório.
 set -e
-mkdir -p dist/music
+mkdir -p dist/music dist/sfx
 cp index.* dist/
-if [ -n "$MUSIC_URLS" ]; then
-  echo "$MUSIC_URLS" | tr ';' '\n' | while IFS='|' read -r nome url; do
+baixar() {
+  lista="$1"; pasta="$2"; ext="$3"
+  [ -z "$lista" ] && return 0
+  echo "$lista" | tr ';' '\n' | while IFS='|' read -r nome url; do
     [ -z "$nome" ] && continue
-    curl -fsSL "$url" -o "dist/music/$nome.mp3" && echo "musica ok: $nome" || echo "musica falhou: $nome"
+    curl -fsSL "$url" -o "dist/$pasta/$nome.$ext" && echo "ok: $pasta/$nome" || echo "falhou: $pasta/$nome"
   done
-fi
-ls -la dist dist/music
+}
+baixar "$MUSIC_URLS" music mp3
+baixar "$MUSIC_URLS_2" music mp3
+baixar "$SFX_URLS" sfx wav
+ls -la dist dist/music dist/sfx
