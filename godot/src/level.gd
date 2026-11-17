@@ -910,6 +910,93 @@ func _villagers_flee(gx: float) -> void:
 		tw.tween_callback(v.queue_free)
 	Game.sfx("step1", -6.0)
 
+# ---------------- Forma Carmesim (fim da fase 2, DEC-020 / T-018) ----------------
+var _carm_done := false
+
+func carmesim_awaken() -> void:
+	if _carm_done or player == null or player.state == "dead":
+		return
+	_carm_done = true
+	frozen = true
+	player.locked = true
+	player.velocity.x = 0.0
+	hud.release_all()
+	player.pose("crouch")
+	Game.sfx("ren_hurt", -2.0)
+	Game.sfx("whisper", 0.0)
+	for k in range(3):
+		shake(5.0 + k * 4.0)
+		load("res://src/fx.gd").spawn(self, "ring", player.position + Vector2(0, -80), {"col": Color(1, 0.1, 0.15), "r": 90.0 + k * 60.0, "life": 0.5})
+		await get_tree().create_timer(0.35).timeout
+	Game.sfx("ren_effort", 2.0)
+	Game.sfx("impact", 0.0)
+	player.set_carmesim(true, -1.0)
+	player.pose("idle")
+	shake(16.0)
+	banner("FORMA CARMESIM")
+	await get_tree().create_timer(0.6).timeout
+	await say("carmesim_desperta")
+	player.pose("idle")
+	frozen = false
+	player.locked = false
+
+func _carmesim_calm() -> void:
+	frozen = true
+	player.locked = true
+	player.velocity.x = 0.0
+	hud.release_all()
+	if luke == null or not is_instance_valid(luke):
+		player.set_carmesim(false)
+		return
+	luke.target = null
+	# Ren caminha, possuído, para o centro da arena (fica sempre em quadro)
+	var mid := (arena_x0 + arena_x1) * 0.5 if arena_x1 > arena_x0 else player.position.x
+	var dir := signf(mid - player.position.x)
+	if dir == 0.0:
+		dir = 1.0
+	var dest := player.position.x + dir * minf(absf(mid - player.position.x), 260.0)
+	player.facing = int(dir)
+	player.spr.set_facing(player.facing)
+	Game.sfx("whisper", 2.0)
+	shake(6.0)
+	player.pose("run")
+	player.spr.speed_scale = 0.45
+	var tw := create_tween()
+	tw.tween_property(player, "position:x", dest, 1.2)
+	await tw.finished
+	player.pose("idle")
+	await say("carmesim_calma_1")
+	frozen = true
+	player.locked = true
+	var side := signf(luke.position.x - player.position.x)
+	if side == 0.0:
+		side = dir
+	player.facing = int(side)
+	player.spr.set_facing(player.facing)
+	luke.spr.set_facing(-int(side))
+	luke.spr.play_anim("run")
+	var tw2 := create_tween()
+	tw2.tween_property(luke, "position:x", player.position.x + side * 80.0, 0.45)
+	await tw2.finished
+	luke.spr.play_anim("idle")
+	Game.sfx("bark", 0.0)
+	await get_tree().create_timer(0.4).timeout
+	Game.sfx("absorb", 0.0)
+	for k in range(3):
+		load("res://src/fx.gd").spawn(self, "ring", luke.position + Vector2(0, -40), {"col": Color(0.6, 1, 0.8), "r": 160.0 + k * 90.0, "life": 0.8})
+		await get_tree().create_timer(0.15).timeout
+	player.set_carmesim(false)
+	player.pose("crouch")
+	await get_tree().create_timer(0.9).timeout
+	await say("carmesim_calma_2")
+	player.pose("idle")
+	luke.target = player
+	if not Game.data["poderes"].has("carmesim"):
+		Game.data["poderes"].append("carmesim")
+		Game.save()
+	banner("Nova habilidade: Forma Carmesim (ki cheio)")
+	await get_tree().create_timer(1.4).timeout
+
 # ---------------- Baku reivindica as oferendas ----------------
 func _baku_prologue() -> void:
 	frozen = true
@@ -1038,6 +1125,8 @@ func _on_boss_defeated() -> void:
 	for s in get_tree().get_nodes_in_group("enemy_shot"):
 		s.queue_free()
 	await get_tree().create_timer(1.0).timeout
+	if player.carmesim:
+		await _carmesim_calm()
 	await say("fim_" + D["chefe"])
 	Game.data["vencidos"].append(D["chefe"])
 	Game.data["cp"] = {}

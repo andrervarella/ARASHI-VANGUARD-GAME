@@ -5,10 +5,16 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.5 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.6 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.6 (16/11, noite) — Forma Carmesim (T-018, aprovada pelo dono)
+- Sprites da Forma Carmesim (cabelo prateado longo, marcas e olhos vermelhos, colete aberto) gerados como estado do mesmo Ren no PixelLab (`36f2ce1b`), 13 animações.
+- Na luta contra Xui, ao chegar na metade da vida dele, a Forma Carmesim desperta sozinha (dano maior e mais velocidade até o fim da luta). Depois da vitória, Ren se perde nela; Luke late, o pingente brilha e o traz de volta. A partir daí a Forma Carmesim vira poder equipável (custa o ki cheio, dura 12 s).
+- Corrigido: a chuva de comida e os espíritos da fase 2 do Xui não funcionavam (referência quebrada).
+- Pôster com o novo chefe final: 2 versões geradas no Fenaky, aguardando escolha do dono (T-019).
 
 ## v0.5 (16/11, noite) — T-019a, terceiro retorno do dono (DEC-020)
 - Abertura reescrita (maldição, sete pecados, selos em sete regiões, seita das Sete Casas, portões fechados para o sacrifício); legendas só avançam por toque.

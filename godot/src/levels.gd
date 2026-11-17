@@ -196,6 +196,21 @@ const D := {
 		["xui", "Ainda... tenho... fome..."],
 		["ren", "Agora sabes o que eles sentiram."],
 	],
+	"carmesim_desperta": [
+		["ren", "Meu sangue... queima. As cicatrizes da Ira estão se abrindo!"],
+		["xui", "Que fome é essa nos teus olhos, menino? Ela... se parece com a minha!"],
+		["ren", "Não... não agora! Algo vermelho como a lua daquela noite rasga-me por dentro..."],
+		["ren", "...Gula. Eu vou devorar-te por inteiro."],
+	],
+	"carmesim_calma_1": [
+		["ren", "Ainda não basta... Preciso de mais. Mais sangue. Mais selos."],
+		["luke", "Au! Au! Auuu!"],
+	],
+	"carmesim_calma_2": [
+		["ren", "Luke... a tua luz, outra vez. Eu quase me perdi naquela escuridão vermelha."],
+		["ren", "Esse poder nasceu na noite da Lua Carmesim. Se eu não o dominar, ele me dominará."],
+		["ren", "Fica ao meu lado, amigo. Enquanto ouvires meu nome, eu sempre voltarei."],
+	],
 	"segredo": [
 		["ren", "Uma câmara oculta... e um fragmento de selo, ainda morno."],
 	],

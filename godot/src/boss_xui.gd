@@ -42,6 +42,8 @@ func on_hurt() -> void:
 		Game.sfx("xui_laugh", 0.0)
 		level.toast("A fome de Xui desperta!")
 		level.shake(8.0)
+		if level.has_method("carmesim_awaken"):
+			level.carmesim_awaken()
 
 func ai(dt: float) -> void:
 	t += dt
@@ -50,7 +52,7 @@ func ai(dt: float) -> void:
 		if _rain_t <= 0.0:
 			_rain_t = 2.6
 			var x := randf_range(level.arena_x0 + 80.0, level.arena_x1 - 80.0)
-			shoot(Vector2(x, level.ground_y - 900.0), Vector2(0, 120), {"grav": 900.0, "kind": "food", "radius": 16.0, "dmg": 1, "col": [Color(0.8, 0.2, 0.2), Color(0.9, 0.6, 0.1), Color(0.5, 0.75, 0.2)].pick_random()})
+			shoot(Vector2(x, level.GY - 900.0), Vector2(0, 120), {"grav": 900.0, "kind": "food", "radius": 16.0, "dmg": 1, "col": [Color(0.8, 0.2, 0.2), Color(0.9, 0.6, 0.1), Color(0.5, 0.75, 0.2)].pick_random()})
 	match state:
 		"intro":
 			spr.play_anim("idle")
@@ -70,7 +72,7 @@ func ai(dt: float) -> void:
 					state = "slam_wind"
 					spr.play_anim("slam", true, 0.8)
 				if phase == 2 and _cycle % 4 == 0 and get_tree().get_nodes_in_group("foes").size() < 2:
-					level.spawn_enemy("espirito", global_position.x + randf_range(-300, 300), level.ground_y - 300.0)
+					level.spawn_enemy("espirito", global_position.x + randf_range(-300, 300), level.GY - 300.0)
 		"breath":
 			telegraph_t = 1.0 if spr.frame < 4 else 0.0
 			if spr.frame >= 5 and not _did:

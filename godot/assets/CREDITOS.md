@@ -32,3 +32,5 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `props/portao_aberto.png`, `props/toldo.png`, `props/aldeao_1.png`, `props/aldeao_2.png` | PixelLab `create_image_pixen` |
 | `sprites/luke_rua/*` (Luke de rua, sem lenço, com pingente) | PixelLab, estado do personagem Luke |
 | `sprites/ren/run_*` (10 quadros), `roll_*`, `fall_*` | PixelLab, animações do personagem Ren |
+| `sprites/ren_carmesim/*` (Forma Carmesim) | PixelLab, estado "Forma Carmesim" do personagem Ren (`36f2ce1b`), a partir da ficha AV-FIC-002 |
+| `icons/carmesim.png` | PixelLab `create_image_pixen` |

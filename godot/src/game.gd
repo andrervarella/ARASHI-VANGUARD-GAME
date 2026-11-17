@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.5 · fases 1 e 2 · 16/11/2026"
+const VERSION := "v0.6 · fases 1 e 2 · 16/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -18,6 +18,7 @@ const POWERS := {
 	"": {"nome": "Ren", "desc": "Forma base.", "cor": Color(0.70, 0.05, 0.12), "custo": 0},
 	"furia": {"nome": "Golpe da Fúria", "desc": "Investida em brasa que atravessa inimigos e quebra paredes rachadas. (poder de Baku)", "cor": Color(1.0, 0.42, 0.05), "custo": 40},
 	"jade": {"nome": "Bocarra de Jade", "desc": "Escudo que engole projéteis e devolve vida. (poder de Xui)", "cor": Color(0.12, 0.78, 0.45), "custo": 30},
+	"carmesim": {"nome": "Forma Carmesim", "desc": "Desperta o sangue da Lua Carmesim: golpes mais fortes e mais velocidade por 12 segundos. Exige o ki cheio.", "cor": Color(0.95, 0.08, 0.15), "custo": 100},
 }
 
 var data := {}

@@ -52,6 +52,8 @@ var _last_guard_tap := -10.0
 var roll_t := 0.0
 var roll_dir := 1
 var guard_t := 0.0
+var carmesim := false
+var carmesim_t := 0.0        # < 0 = sem limite (cena roteirizada)
 var _shape: RectangleShape2D
 var _cshape: CollisionShape2D
 var _aura: CPUParticles2D
@@ -107,8 +109,13 @@ func apply_outfit() -> void:
 	_aura.scale_amount_min = 2
 	_aura.scale_amount_max = 3
 	_aura.emission_rect_extents = Vector2(30, 70)
-	_aura.emitting = p != ""
+	_aura.emitting = p != "" or carmesim
 	_aura.color = Color(info["cor"].r, info["cor"].g, info["cor"].b, 0.45)
+	if carmesim:
+		_aura.amount = 26
+		_aura.scale_amount_min = 3
+		_aura.scale_amount_max = 6
+		_aura.color = Color(1.0, 0.12, 0.18, 0.6)
 	if _hand_fire == null:
 		_hand_fire = CPUParticles2D.new()
 		_hand_fire.amount = 22
@@ -134,6 +141,10 @@ func apply_outfit() -> void:
 	queue_redraw()
 
 func _process(dt: float) -> void:
+	if carmesim and carmesim_t > 0.0 and not locked:
+		carmesim_t -= dt
+		if carmesim_t <= 0.0:
+			set_carmesim(false)
 	if _hand_fire and _hand_fire.emitting:
 		var hand := Vector2(facing * 26.0, -96.0)
 		if crouching:
@@ -144,10 +155,29 @@ func _process(dt: float) -> void:
 		queue_redraw()
 
 func dmg_bonus() -> int:
-	return 1 if Game.has_item("fio") else 0
+	return (1 if Game.has_item("fio") else 0) + (2 if carmesim else 0)
 
 func speed() -> float:
-	return SPEED * (1.15 if Game.has_item("sandalia") else 1.0)
+	return SPEED * (1.15 if Game.has_item("sandalia") else 1.0) * (1.2 if carmesim else 1.0)
+
+# ---------------- Forma Carmesim ----------------
+func set_carmesim(on: bool, dur := 12.0) -> void:
+	if on == carmesim:
+		if on:
+			carmesim_t = dur
+		return
+	carmesim = on
+	carmesim_t = dur if on else 0.0
+	var an: String = spr.animation
+	var fr: int = spr.frame
+	spr.setup("ren_carmesim" if on else "ren")
+	spr.play_anim(an if spr.has_anim(an) else "idle", true)
+	if spr.animation == an:
+		spr.frame = mini(fr, spr.sprite_frames.get_frame_count(an) - 1)
+	spr.set_facing(facing)
+	Game.flash(Color(1, 0.1, 0.15, 0.7) if on else Color(1, 1, 1, 0.5), 0.35)
+	load("res://src/fx.gd").spawn(self, "ring", Vector2(0, -80), {"col": Color(1, 0.15, 0.2) if on else Color(1, 0.95, 0.8), "r": 130.0, "life": 0.5})
+	apply_outfit()
 
 func hurt_rect() -> Rect2:
 	var h := H_CROUCH if crouching else H_STAND
@@ -437,6 +467,8 @@ func _use_power() -> void:
 		if p == "":
 			level.toast("Nenhum poder equipado")
 		return
+	if p == "carmesim" and carmesim:
+		return
 	var cost: float = Game.POWERS[p]["custo"]
 	if ki < cost:
 		Game.sfx("ui_back", -6.0)
@@ -453,6 +485,10 @@ func _use_power() -> void:
 			spr.play_anim("attack", true, 1.6)
 			level.shake(6.0)
 			load("res://src/fx.gd").spawn(self, "slash", Vector2(facing * 50.0, -80.0), {"dir": facing, "col": Color(1, 0.45, 0.05), "r": 150.0, "life": 0.3})
+		"carmesim":
+			Game.sfx("evil_laugh", -8.0)
+			level.shake(10.0)
+			set_carmesim(true, 12.0)
 		"jade":
 			jade_t = 1.8
 			jade_heals = 0
@@ -550,6 +586,8 @@ func heal(n: int) -> void:
 	hp_changed.emit()
 
 func _die() -> void:
+	if carmesim:
+		set_carmesim(false)
 	hp = 0
 	state = "dead"
 	# cai de costas no chão (animação própria, sem girar o sprite)
