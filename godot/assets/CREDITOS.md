@@ -41,3 +41,8 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `props/altar.png`, `props/nevoa.png`, `props/selo_carmesim.png` | PixelLab `create_image_pixen` |
 | `sprites/ren/tired_*` (Ren ofegante) | PixelLab, animação do Ren `036acc6d` |
 | `sfx/sino.ogg`, `sfx/esquiva.ogg` | Sintetizados por código (Python/numpy), originais do projeto |
+
+## Acréscimos v0.8 (16/11/2026)
+| Arquivo | Origem |
+|---|---|
+| `props/caixa.png`, `props/pedra.png`, `props/altar.png` (lanterna de pedra) | PixelLab `create_image_pixen` (substituem as versões isométricas) |

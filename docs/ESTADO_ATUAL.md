@@ -5,10 +5,16 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.7 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.8 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.8 (16/11, noite) — coesão de cenário e música no título
+- Pedido do dono: props desproporcionais e "flutuando", piso desconectado do fundo.
+- Caixas e pedras refeitas de frente (sem perspectiva isométrica), arte sem sobras transparentes, sombras de contato sob blocos, props e personagens; piso tingido com a paleta de cada fase e névoa no pé do cenário ligando fundo e chão; altar trocado por lanterna de pedra na escala do Ren.
+- Tela-título com "TOQUE PARA COMEÇAR": o navegador só libera o som após o 1º toque; a música do título (biblioteca PixelLab) toca a partir daí.
+- Limite honesto: a solução definitiva é um tileset de chão feito para cada fundo (bíblia visual), ainda não feito.
 
 ## v0.7 (16/11, noite) — plano de game design (DEC-022, T-020)
 - Ruptura (barra enche jogando bem), esquiva perfeita, aparo com sino, cansaço após a Forma Carmesim.

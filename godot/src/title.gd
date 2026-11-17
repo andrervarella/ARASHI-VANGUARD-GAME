@@ -5,6 +5,8 @@ var _bg: TextureRect
 var _t := 0.0
 var _menu: HBoxContainer
 var _creditos: Control
+var _press: Label
+var _started := false
 
 func _ready() -> void:
 	# fundo: a mesma arte ampliada e escurecida preenche as sobras da tela larga
@@ -63,17 +65,39 @@ func _ready() -> void:
 	Game.ambience("amb_rain", -22.0)
 	get_viewport().size_changed.connect(_layout)
 	_layout()
+	# PRESS START: o navegador só libera o som depois do primeiro toque
 	_menu.modulate.a = 0.0
-	create_tween().tween_property(_menu, "modulate:a", 1.0, 1.2).set_delay(0.5)
+	_menu.visible = false
+	_press = Game.label("TOQUE PARA COMEÇAR", 22, Color(1, 0.9, 0.75), false)
+	_press.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	add_child(_press)
+	_layout()
+
+func _input(e: InputEvent) -> void:
+	if _started:
+		return
+	if (e is InputEventScreenTouch and e.pressed) or (e is InputEventMouseButton and e.pressed) or (e is InputEventKey and e.pressed):
+		_started = true
+		get_viewport().set_input_as_handled()
+		Game.sfx("ui_ok", -4.0)
+		Game.music_restart("titulo", -6.0)
+		_press.visible = false
+		_menu.visible = true
+		create_tween().tween_property(_menu, "modulate:a", 1.0, 0.6)
 
 func _layout() -> void:
 	var vs := get_viewport().get_visible_rect().size
 	_bg.pivot_offset = vs / 2.0
 	_menu.reset_size()
 	_menu.position = Vector2((vs.x - _menu.size.x) / 2.0, vs.y - _menu.size.y - 18.0)
+	if _press:
+		_press.size = Vector2(vs.x, 40)
+		_press.position = Vector2(0, vs.y - 58.0)
 
 func _process(dt: float) -> void:
 	_t += dt
+	if _press and _press.visible:
+		_press.modulate.a = 0.55 + 0.45 * sin(_t * 3.0)
 	_bg.scale = Vector2.ONE * (1.0 + 0.01 * sin(_t * 0.15))
 
 func _on_new() -> void:

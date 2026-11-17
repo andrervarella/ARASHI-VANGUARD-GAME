@@ -12,6 +12,7 @@ const GY := 900.0
 
 const L := {
 	"ferreiros": {
+		"tom_chao": Color(0.8, 0.68, 0.62), "nevoa_chao": Color(0.28, 0.09, 0.05),
 		"nome": "Prólogo — Cidade de Arashi",
 		"bg": "ferreiros", "musica": "fase", "amb": "amb_rain", "particulas": "brasas",
 		"chao": Color(0.16, 0.11, 0.10), "borda": Color(0.42, 0.26, 0.18),
@@ -35,6 +36,7 @@ const L := {
 		"pickups": [[2800, 60, "cura"], [3680, 380, "ki"], [5500, 60, "cura"]],
 	},
 	"torii": {
+		"tom_chao": Color(0.66, 0.55, 0.66), "nevoa_chao": Color(0.22, 0.05, 0.12),
 		"nome": "Fase 1 — Vale das Torii",
 		"bg": "torii", "musica": "fase", "amb": "amb_water", "particulas": "petalas",
 		"chao": Color(0.12, 0.10, 0.13), "borda": Color(0.36, 0.30, 0.34),
@@ -56,6 +58,7 @@ const L := {
 		"chefe": "baku", "arena": [7000.0, 8150.0],
 	},
 	"palacio": {
+		"tom_chao": Color(0.82, 0.75, 0.62), "nevoa_chao": Color(0.22, 0.13, 0.06),
 		"nome": "Fase 2 — Palácio de Xui",
 		"bg": "xui", "musica": "fase", "amb": "", "particulas": "incenso",
 		"chao": Color(0.10, 0.12, 0.10), "borda": Color(0.62, 0.50, 0.22),
@@ -77,6 +80,7 @@ const L := {
 		"chefe": "xui", "arena": [7050.0, 8150.0],
 	},
 	"vila": {
+		"tom_chao": Color(0.7, 0.66, 0.72), "nevoa_chao": Color(0.12, 0.1, 0.15),
 		"nome": "Refúgio de Arashi",
 		"bg": "refugio", "musica": "vila", "amb": "amb_rain", "particulas": "chuva",
 		"chao": Color(0.13, 0.11, 0.12), "borda": Color(0.40, 0.31, 0.25),

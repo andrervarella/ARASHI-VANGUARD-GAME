@@ -420,7 +420,7 @@ func _draw_ground_tex(g: Array, t: Texture2D) -> void:
 	var x: float = g[0]
 	while x < g[1]:
 		var w := minf(tw, g[1] - x)
-		draw_texture_rect_region(t, Rect2(x, GY - 6.0, w, th), Rect2(fmod(x, tw) * 0.0, 0, w, th))
+		draw_texture_rect_region(t, Rect2(x, GY - 6.0, w, th), Rect2(fmod(x, tw) * 0.0, 0, w, th), D.get("tom_chao", Color.WHITE))
 		x += w
 	# bordas de penhasco nos dois lados do trecho
 	for side in [0, 1]:
@@ -458,6 +458,7 @@ func _draw() -> void:
 		var r := Rect2(g[0], GY, g[1] - g[0], 800.0)
 		draw_rect(r, fill)
 		if gt:
+			_draw_ground_fog(g)
 			_draw_ground_tex(g, gt)
 			draw_rect(Rect2(g[0], GY - 6.0 + gt.get_height(), g[1] - g[0], 800.0), fill.darkened(0.3))
 			continue
@@ -488,12 +489,18 @@ func _draw() -> void:
 			draw_line(r.position + Vector2(30 + k * 60, 5), r.position + Vector2(30 + k * 60, 17), Color(0.2, 0.11, 0.07), 2.0)
 		draw_line(r.position + Vector2(8, 22), r.position + Vector2(8, 60), Color(0.45, 0.35, 0.25), 3.0)
 		draw_line(r.position + Vector2(r.size.x - 8, 22), r.position + Vector2(r.size.x - 8, 60), Color(0.45, 0.35, 0.25), 3.0)
+	_draw_actor_shadows()
 	for b in D["blocks"]:
 		_draw_block(Rect2(b[0], GY - b[1], b[2], b[3]), b[4])
 	var at := prop("altar")
 	if at:
 		for x in _altares:
-			draw_texture_rect(at, Rect2(x - 96.0, GY - 182.0, 192.0, 192.0), false)
+			# lanterna de pedra na escala do Ren (~150 px), apoiada no chão
+			var ah := 172.0
+			var aw := ah * float(at.get_width()) / float(at.get_height())
+			_shadow(Vector2(x, GY), aw * 0.9)
+			draw_texture_rect(at, Rect2(x - aw / 2.0, GY - ah + 3.0, aw, ah), false)
+			draw_circle(Vector2(x, GY - ah * 0.5), 46.0 + 4.0 * sin(Time.get_ticks_msec() * 0.003), Color(1, 0.7, 0.3, 0.08))
 	for d in _doors:
 		_draw_door(d)
 	if D.has("portao_x"):
@@ -512,16 +519,64 @@ func _draw() -> void:
 	if level_id == "ferreiros":
 		_draw_fence()
 
+func _shadow(c: Vector2, w: float) -> void:
+	var pts := PackedVector2Array()
+	for i in range(18):
+		var a := TAU * i / 18.0
+		pts.append(c + Vector2(cos(a) * w * 0.5, sin(a) * 7.0))
+	draw_colored_polygon(pts, Color(0, 0, 0, 0.38))
+
+# sombra sob quem está no chão (Ren, Luke, inimigos)
+func _draw_actor_shadows() -> void:
+	var list: Array = []
+	if player:
+		list.append([player, 70.0])
+	if luke and is_instance_valid(luke):
+		list.append([luke, 52.0])
+	for f in get_tree().get_nodes_in_group("foes"):
+		if f.get("uses_gravity") and not f.get("dead"):
+			list.append([f, float(f.get("w")) * 1.4])
+	for it in list:
+		var n: Node2D = it[0]
+		var p := n.global_position
+		# acha o chão logo abaixo (chão principal ou plataforma)
+		var fy := GY
+		for pl in D["plats"]:
+			var py := GY - float(pl[1])
+			if p.x >= pl[0] and p.x <= pl[0] + pl[2] and p.y <= py + 4.0 and py - p.y < 260.0:
+				fy = py
+				break
+		var on_ground := false
+		for g in D["ground"]:
+			if p.x >= g[0] and p.x <= g[1]:
+				on_ground = true
+		if fy == GY and not on_ground:
+			continue
+		var h := clampf(fy - p.y, 0.0, 260.0)
+		var k := 1.0 - h / 300.0
+		_shadow(Vector2(p.x, fy + 1.0), float(it[1]) * k)
+
+# faixa de névoa no pé do cenário: o fundo pintado "desce" até o piso
+func _draw_ground_fog(g: Array) -> void:
+	var c: Color = D.get("nevoa_chao", Color(0.18, 0.08, 0.14))
+	var top := Color(c.r, c.g, c.b, 0.0)
+	var mid := Color(c.r, c.g, c.b, 0.55)
+	var pts := PackedVector2Array([Vector2(g[0], GY - 70.0), Vector2(g[1], GY - 70.0), Vector2(g[1], GY - 4.0), Vector2(g[0], GY - 4.0)])
+	draw_polygon(pts, PackedColorArray([top, top, mid, mid]))
+
 func _draw_block(r: Rect2, style: String) -> void:
 	var tex_name: String = {"caixas": "caixa", "viga": "telhado", "pedra": "pedra", "mesa": "mesa"}.get(style, "")
 	var t := prop(tex_name) if tex_name != "" else null
 	if t:
+		# sombra de contato: tudo assenta no chão
+		_shadow(Vector2(r.get_center().x, r.end.y), r.size.x * 0.62)
 		if style == "caixas":
-			var n := maxi(1, int(round(r.size.x / r.size.y)))
+			# pilhas de caixas lado a lado, sem esticar a arte
+			var asp := float(t.get_width()) / float(t.get_height())
+			var n := maxi(1, int(round(r.size.x / (r.size.y * asp))))
 			var cw := r.size.x / n
 			for i in range(n):
-				var ch := r.size.y + 6.0
-				draw_texture_rect(t, Rect2(r.position.x + i * cw - 4, r.end.y - ch + 4.0, cw + 8, ch), false)
+				draw_texture_rect(t, Rect2(r.position.x + i * cw, r.position.y + 2.0, cw, r.size.y + 2.0), false)
 		elif style == "viga":
 			var tl := prop("toldo")
 			if tl:
@@ -529,8 +584,10 @@ func _draw_block(r: Rect2, style: String) -> void:
 				draw_texture_rect(tl, Rect2(r.position.x - 40, r.end.y - 67.5, r.size.x + 80, 180), false)
 			else:
 				draw_texture_rect(t, Rect2(r.position.x - 30, r.position.y - 40, r.size.x + 60, r.size.y + 60), false)
+		elif style == "pedra":
+			draw_texture_rect(t, Rect2(r.position.x - 8, r.position.y - 6, r.size.x + 16, r.size.y + 10), false)
 		else:
-			draw_texture_rect(t, Rect2(r.position.x - 6, r.position.y - 8, r.size.x + 12, r.size.y + 14), false)
+			draw_texture_rect(t, Rect2(r.position.x - 6, r.position.y - 8, r.size.x + 12, r.size.y + 12), false)
 		return
 	match style:
 		"caixas":
@@ -1213,7 +1270,7 @@ func luke_alert() -> void:
 var _altar_tex: Texture2D
 func _add_altar(x: float) -> void:
 	var done := {"v": false}
-	_interactables.append({"rect": Rect2(x - 120, GY - 220, 240, 220), "prompt": "ATACAR: descansar no altar", "cb": func(): _rest_at_altar(x, done), "pos": Vector2(x, GY - 210)})
+	_interactables.append({"rect": Rect2(x - 120, GY - 220, 240, 220), "prompt": "ATACAR: descansar na lanterna", "cb": func(): _rest_at_altar(x, done), "pos": Vector2(x, GY - 210)})
 	_altares.append(x)
 
 var _altares: Array = []
@@ -1226,7 +1283,7 @@ func _rest_at_altar(x: float, done: Dictionary) -> void:
 	load("res://src/fx.gd").spawn(self, "ring", Vector2(x, GY - 80), {"col": Color(1, 0.85, 0.5), "r": 120.0, "life": 0.6})
 	if not done["v"]:
 		done["v"] = true
-		banner("Altar de descanso — a jornada foi gravada.")
+		banner("Lanterna de descanso — a jornada foi gravada.")
 	else:
 		toast("Vigor restaurado.")
 

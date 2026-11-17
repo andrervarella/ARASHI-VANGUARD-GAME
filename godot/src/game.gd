@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.7 · fases 1 e 2 · 16/11/2026"
+const VERSION := "v0.8 · fases 1 e 2 · 16/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -280,6 +280,12 @@ func _fetch_music(name: String, vol_db: float) -> void:
 		if _music_name == name:
 			_play_music(mp, vol_db))
 	req.request(base + "music/%s.mp3" % name)
+
+# toca de novo do começo (usado depois do 1º toque, quando o navegador libera o áudio)
+func music_restart(name: String, vol_db := -8.0) -> void:
+	_music_name = ""
+	_music.stop()
+	music(name, vol_db)
 
 func stop_music() -> void:
 	_music_name = ""
