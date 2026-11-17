@@ -1,0 +1,39 @@
+{
+ "walk": {
+  "frames": [
+   "walk_00.png",
+   "walk_01.png",
+   "walk_02.png",
+   "walk_03.png",
+   "walk_04.png",
+   "walk_05.png",
+   "walk_06.png",
+   "walk_07.png"
+  ],
+  "fps": 10,
+  "loop": true,
+  "anchor": [
+   110.3,
+   192
+  ],
+  "size": [
+   224,
+   224
+  ]
+ },
+ "idle": {
+  "frames": [
+   "idle_00.png"
+  ],
+  "fps": 1,
+  "loop": true,
+  "anchor": [
+   110.3,
+   192
+  ],
+  "size": [
+   224,
+   224
+  ]
+ }
+}

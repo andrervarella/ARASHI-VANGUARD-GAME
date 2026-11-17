@@ -5,10 +5,21 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.13 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.14 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.14 (17/11) — som de volta, chutes e combos, aldeões novos, transformação com explicação (DEC-027)
+- **Som:** a v0.13 ficou muda na web. Causa medida no Chrome (sinal zero na v0.13, sinal na v0.12): o filtro passa-baixa do barramento novo de música. Removido; a "música que reage" agora só muda o volume.
+- **Chute:** botão novo (pé), à esquerda da espada; teclado U/Z, controle B (defesa foi para RB/RT). Cadeia de 3 chutes (alto, giratório, voadora) animada no PixelLab com esqueleto, também na Forma Carmesim.
+- **Combos misturados:** espada-chute-espada = Lâmina Giratória; espada-espada-chute = Chute Ascendente; chute-chute-espada = Investida do Ferreiro; chute-espada-chute = Pisão do Trovão.
+- **Aldeões:** 10 personagens novos no estilo do Ren, das fichas do dono (erveira, duas moças do arroz, carregador, idosa, mãe com bebê, mendigo, menino, pescador, velho de verde), com andar animado. Usados na fuga do portão, nos libertos das jaulas (andam embora), no Refúgio (alguns passeiam) e nos fantasmas da memória.
+- **Barreiras naturais:** emboscada fechada por barricadas de toras com talismãs que caem do alto (e caem de novo no fim); névoa da Gula saindo de uma fenda, suave, com poste de aviso; selo de sangue com estacas, correntes e talismã. Dica aparece ao chegar perto (diz qual poder abre).
+- **Vilão em vulto:** retrato do "???" e a abertura usam as artes do dono (vulto e montanha); memória do portão mostra a pintura do eixo partido; fim da demo mostra Ren e Luke diante do demônio.
+- **Transformação:** Ren passa mal (coração acelerando, veias vermelhas saindo da marca, ajoelha), Xui reconhece "a vida de Arashi, a oferenda daquela noite" dentro dele, e o vermelho explode. Tetsu aprofunda no Refúgio (vale nas duas ordens de chefes).
+- **Fúria:** sem fogo preso na mão; brasas sobem do chão em volta do corpo e o corte deixa rastro de fogo.
+- **Primeiro plano:** sem colunas escuras de cima a baixo (pareciam defeito); agora galhos/cordões pendendo do alto e arbustos baixos.
 
 ## v0.13 (17/11) — peso no golpe, leitura, golpes novos, postura, flow e história amarrada (DEC-026)
 - **Golpe:** pausa de impacto que cresce com a sequência, faíscas na direção do corte, corpo do inimigo tremendo, contador "N GOLPES" (estilo KOF).

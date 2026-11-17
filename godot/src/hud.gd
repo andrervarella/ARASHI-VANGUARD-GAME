@@ -15,6 +15,9 @@ var _lb_prev := false
 var _st_prev := false
 var jump_down := false
 var attack_down := false
+var kick_down := false
+var kick_pressed := false
+var _kick_prev := false
 var power_down := false
 var guard_down := false
 var guard_pressed := false
@@ -56,7 +59,7 @@ func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_portrait = load("res://assets/portraits/ren.jpg")
-	for k in ["attack", "jump", "power", "guard"]:
+	for k in ["attack", "jump", "power", "guard", "kick"]:
 		var bp := "res://assets/ui/btn_%s.png" % k
 		if ResourceLoader.exists(bp):
 			_btn_tex[k] = load(bp)
@@ -81,7 +84,8 @@ func _layout() -> void:
 		"attack": {"pos": atk, "r": ra},
 		"jump": {"pos": jmp, "r": rj},
 		"power": {"pos": Vector2((atk.x + jmp.x) / 2.0 - 8.0, h - 160.0), "r": 34.0},
-		"guard": {"pos": Vector2(atk.x - 64.0, h - 148.0), "r": 34.0},
+		"guard": {"pos": Vector2(atk.x - 86.0, h - 170.0), "r": 32.0},
+		"kick": {"pos": Vector2(atk.x - ra * 2.0 - 12.0, h - MARGIN - ra + 4.0), "r": 36.0},
 	}
 
 func _icon_power_rect() -> Rect2:
@@ -153,10 +157,12 @@ func _process(_dt: float) -> void:
 	var a := false
 	var pw := false
 	var gd := false
+	var kk := false
 	for idx in _fingers:
 		match _fingers[idx]:
 			"jump": j = true
 			"attack": a = true
+			"kick": kk = true
 			"power": pw = true
 			"guard": gd = true
 	var v := _stick_vec if _stick_finger != -1 else _demo_vec
@@ -187,7 +193,8 @@ func _process(_dt: float) -> void:
 		if Input.is_joy_button_pressed(d, JOY_BUTTON_A): j = true
 		if Input.is_joy_button_pressed(d, JOY_BUTTON_X): a = true
 		if Input.is_joy_button_pressed(d, JOY_BUTTON_Y): pw = true
-		if Input.is_joy_button_pressed(d, JOY_BUTTON_B) or Input.is_joy_button_pressed(d, JOY_BUTTON_RIGHT_SHOULDER): gd = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_B): kk = true
+		if Input.is_joy_button_pressed(d, JOY_BUTTON_RIGHT_SHOULDER) or Input.get_joy_axis(d, JOY_AXIS_TRIGGER_RIGHT) > 0.5: gd = true
 		var lb := Input.is_joy_button_pressed(d, JOY_BUTTON_LEFT_SHOULDER)
 		if lb and not _lb_prev:
 			power_cycle_requested.emit()
@@ -202,6 +209,7 @@ func _process(_dt: float) -> void:
 	if Input.is_key_pressed(KEY_SPACE) or Input.is_key_pressed(KEY_W) or Input.is_key_pressed(KEY_UP): j = true
 	if Input.is_key_pressed(KEY_J) or Input.is_key_pressed(KEY_X): a = true
 	if Input.is_key_pressed(KEY_K) or Input.is_key_pressed(KEY_C): pw = true
+	if Input.is_key_pressed(KEY_U) or Input.is_key_pressed(KEY_Z): kk = true
 	if Input.is_key_pressed(KEY_L) or Input.is_key_pressed(KEY_V): gd = true
 	var q := Input.is_key_pressed(KEY_Q)
 	if q and not _q_prev:
@@ -225,6 +233,12 @@ func _process(_dt: float) -> void:
 		var tt := fmod(_auto_t, 5.0)
 		a = (tt > 0.3 and tt < 0.36) or (tt > 0.6 and tt < 0.66) or (tt > 0.9 and tt < 0.96) or (tt > 1.4 and tt < 2.9) or (tt > 3.6 and tt < 3.66)
 		up = tt > 3.5 and tt < 3.7
+		kk = false
+		if OS.get_cmdline_user_args().has("--demo-chutes"):
+			# espada, chute, espada  /  chute, chute, chute  /  espada, espada, chute
+			a = (tt > 0.3 and tt < 0.36) or (tt > 0.9 and tt < 0.96) or (tt > 3.3 and tt < 3.36) or (tt > 3.6 and tt < 3.66)
+			kk = (tt > 0.6 and tt < 0.66) or (tt > 1.8 and tt < 1.86) or (tt > 2.1 and tt < 2.16) or (tt > 2.4 and tt < 2.46) or (tt > 3.9 and tt < 3.96)
+			up = false
 	move = (1.0 if r else 0.0) - (1.0 if l else 0.0)
 	# andar: direcional de toque perto do centro, analógico leve ou Shift no teclado
 	var stick_used := (_stick_finger != -1 or _demo_vec != Vector2.ZERO) and (l or r)
@@ -236,6 +250,9 @@ func _process(_dt: float) -> void:
 	jump_pressed = j and not _jump_prev
 	attack_pressed = a and not _attack_prev
 	power_pressed = pw and not _power_prev
+	kick_pressed = kk and not _kick_prev
+	_kick_prev = kk
+	kick_down = kk
 	_jump_prev = j
 	_attack_prev = a
 	_power_prev = pw
@@ -373,7 +390,7 @@ func _draw() -> void:
 	for k in BTN:
 		if k == "power" and Game.data["poderes"].is_empty():
 			continue
-		var on: bool = {"jump": jump_down, "attack": attack_down, "power": power_down, "guard": guard_down}[k]
+		var on: bool = {"jump": jump_down, "attack": attack_down, "power": power_down, "guard": guard_down, "kick": kick_down}[k]
 		var bc: Vector2 = BTN[k]["pos"]
 		var rad: float = BTN[k]["r"] * (0.94 if on else 1.0)
 		var ring := RED

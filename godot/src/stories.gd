@@ -49,6 +49,7 @@ const S := {
 			{"img": "lua", "txt": "Dois demônios tombaram. Dois fragmentos de selo voltaram a dormir. Mas as cicatrizes de Ren começam a se espalhar."},
 			{"img": "baku2", "txt": "Nas noites mais escuras, algo dentro dele anseia por sair. Algo vermelho como a lua daquela noite: a Forma Carmesim."},
 			{"img": "ren_luke", "txt": "E só uma presença consegue trazê-lo de volta: o pequeno cão do pingente de jade."},
+			{"img": "ren_vs_shin", "txt": "E no fim do caminho, sob a mesma lua, alguém o espera. Alguém que um dia também carregou os sete pecados no peito."},
 			{"img": "mapa", "txt": "FIM DA DEMONSTRAÇÃO\nFases 1 e 2 concluídas. Obrigado por jogar!", "titulo": true},
 		],
 	},

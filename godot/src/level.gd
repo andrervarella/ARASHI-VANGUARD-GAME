@@ -357,8 +357,20 @@ func _spawn_refugees() -> void:
 		var fala: String = falas[idx] if idx >= 0 and idx < falas.size() else "Obrigado, ferreiro."
 		var x: float = xs[i]
 		# no refúgio eles estão em paz: poses paradas (não correndo)
-		var tex := prop("refugiado_%d" % (1 + i % 4))
-		_refugees.append([x, tex, i % 3 == 0])
+		var kinds := _ald_list()
+		if not kinds.is_empty():
+			var v := _villager(kinds[i % kinds.size()], Vector2(x, GY + 2.0), -1 if i % 3 == 0 else 1, "idle")
+			if i % 3 == 1:
+				# alguns andam devagar pelo acampamento
+				var tw := create_tween().set_loops()
+				tw.tween_callback(func(): v.play_anim("walk", true, 0.8); v.set_facing(1))
+				tw.tween_property(v, "position:x", x + 70.0, 2.2)
+				tw.tween_callback(func(): v.play_anim("idle"))
+				tw.tween_interval(1.5)
+				tw.tween_callback(func(): v.play_anim("walk", true, 0.8); v.set_facing(-1))
+				tw.tween_property(v, "position:x", x, 2.2)
+				tw.tween_callback(func(): v.play_anim("idle"))
+				tw.tween_interval(1.5)
 		_interactables.append({"rect": Rect2(x - 70, GY - 170, 140, 170), "prompt": "ATACAR: ouvir", "cb": func(): banner(fala), "pos": Vector2(x, GY - 170)})
 		i += 1
 	if lst.size() > 0 and int(Game.data.get("refugio_visto", 0)) < lst.size():
@@ -924,21 +936,15 @@ func _free_prisoner(id: String) -> void:
 	Game.sfx("sino", -10.0, 0.05)
 	load("res://src/fx.gd").spawn(self, "ring", Vector2(br_x, GY - 70), {"col": Color(1, 0.85, 0.5), "r": 90.0, "life": 0.5})
 	# o liberto agradece e corre de volta pelo caminho seguro
-	var tex := prop("aldeao_%d" % (1 + randi() % 8))
-	if tex:
-		var spr := Sprite2D.new()
-		spr.texture = tex
-		spr.centered = false
-		var sc := 135.0 / float(tex.get_height())
-		spr.scale = Vector2(sc, sc)
-		spr.position = Vector2(br_x - tex.get_width() * sc * 0.5, GY - tex.get_height() * sc)
-		spr.flip_h = true
-		add_child(spr)
+	var kinds := _ald_list()
+	if not kinds.is_empty():
+		var v := _villager(kinds[randi() % kinds.size()], Vector2(br_x, GY + 2.0), -1, "idle")
 		var tw := create_tween()
-		tw.tween_interval(1.2)
-		tw.tween_property(spr, "position:x", spr.position.x - 520.0, 1.8)
-		tw.parallel().tween_property(spr, "modulate:a", 0.0, 1.8)
-		tw.tween_callback(spr.queue_free)
+		tw.tween_interval(1.0)
+		tw.tween_callback(func(): v.play_anim("walk", true, 1.9))
+		tw.tween_property(v, "position:x", v.position.x - 560.0, 1.8)
+		tw.parallel().tween_property(v, "modulate:a", 0.0, 1.8).set_delay(0.8)
+		tw.tween_callback(v.queue_free)
 	var n := 0
 	for k in lst:
 		if String(k).begins_with(level_id + ":"):
@@ -1129,34 +1135,21 @@ func _gate_sequence() -> void:
 	_baku_prologue()
 
 func _villagers_flee(gx: float) -> void:
-	# 8 aldeões diferentes (idosa, mãe com bebê, menino, aprendiz de ferreiro...), embaralhados
-	var texs: Array = []
-	for k in range(1, 9):
-		var tx := prop("aldeao_%d" % k)
-		if tx:
-			texs.append(tx)
-	texs.shuffle()
+	# o povo foge correndo pelo portão: aldeões no estilo do Ren, com passos de verdade
+	var kinds := _ald_list()
+	if kinds.is_empty():
+		return
+	kinds.shuffle()
 	for i in range(22):
-		var t: Texture2D = texs[i % texs.size()]
-		if t == null:
-			continue
-		var v := Sprite2D.new()
-		v.texture = t
-		v.centered = false
-		v.offset = Vector2(-t.get_width() / 2.0, -t.get_height())
-		# altura de gente (~135 px), o menino menor
-		var alvo := 100.0 if t == prop("aldeao_5") else randf_range(128.0, 142.0)
-		v.scale = Vector2.ONE * (alvo / float(t.get_height()))
-		v.position = Vector2(gx - 900.0 - i * 58.0 + randf_range(-30, 30), GY + 2.0)
+		var kind: String = kinds[i % kinds.size()]
+		var v := _villager(kind, Vector2(gx - 900.0 - i * 58.0 + randf_range(-30, 30), GY + 2.0), 1, "walk", randf_range(1.9, 2.3))
 		v.z_index = -1 if i % 3 == 0 else 2
-		v.modulate = Color(0.85, 0.8, 0.8)
-		add_child(v)
+		v.modulate = Color(0.88, 0.84, 0.84)
 		var sp := randf_range(330.0, 430.0)
 		var dur := (gx - v.position.x) / sp
 		var tw := create_tween()
 		tw.tween_interval(i * 0.12)
 		tw.tween_property(v, "position:x", gx + randf_range(-40, 40), dur)
-		tw.parallel().tween_method(func(k): v.offset.y = -t.get_height() - absf(sin(k * 18.0)) * 6.0, 0.0, dur, dur)
 		tw.tween_property(v, "modulate:a", 0.0, 0.4)
 		tw.tween_callback(v.queue_free)
 	Game.sfx("step1", -6.0)
@@ -1165,6 +1158,8 @@ func _villagers_flee(gx: float) -> void:
 var _carm_done := false
 
 func carmesim_awaken() -> void:
+	# A crise: a marca do peito (o sacrifício roubado de Arashi) bebe a energia do demônio
+	# e transborda. Ren passa mal, Xui reconhece a oferenda, e o vermelho explode.
 	if _carm_done or player == null or player.state == "dead":
 		return
 	_carm_done = true
@@ -1172,24 +1167,88 @@ func carmesim_awaken() -> void:
 	player.locked = true
 	player.velocity.x = 0.0
 	hud.release_all()
-	player.pose("crouch")
+	var ui_red := ColorRect.new()
+	ui_red.color = Color(0.5, 0.0, 0.03, 0.0)
+	ui_red.set_anchors_preset(Control.PRESET_FULL_RECT)
+	ui_red.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_ui.add_child(ui_red)
+	var veias = load("res://src/veias_fx.gd").new()
+	player.add_child(veias)
+	var z0 := cam.zoom
+	create_tween().tween_property(cam, "zoom", z0 * 1.28, 1.6).set_trans(Tween.TRANS_SINE)
+	# 1) dor no peito: mão na marca, o corpo curva (batidas cada vez mais rápidas)
+	player.pose("hurt")
 	Game.sfx("ren_hurt", -2.0)
-	Game.sfx("whisper", 0.0)
+	var gaps := [0.75, 0.6, 0.48, 0.38]
+	for k in range(gaps.size()):
+		Game.sfx("coracao", 2.0 + k)
+		veias.power = 0.2 + k * 0.18
+		shake(3.0 + k * 2.0)
+		var tw := create_tween()
+		tw.tween_property(ui_red, "color:a", 0.18 + k * 0.05, 0.08)
+		tw.tween_property(ui_red, "color:a", 0.05 + k * 0.03, 0.3)
+		if k == 1:
+			player.pose("tired")
+			Game.sfx("whisper", 0.0)
+		await get_tree().create_timer(gaps[k]).timeout
+	# 2) cai de joelhos; o demônio reconhece o que há dentro dele
+	player.pose("crouch")
+	Game.sfx("ren_effort", -4.0)
+	await say("carmesim_desperta")
+	# 3) a explosão: grito, coluna vermelha, onda
+	veias.power = 1.0
 	for k in range(3):
-		shake(5.0 + k * 4.0)
-		load("res://src/fx.gd").spawn(self, "ring", player.position + Vector2(0, -80), {"col": Color(1, 0.1, 0.15), "r": 90.0 + k * 60.0, "life": 0.5})
-		await get_tree().create_timer(0.35).timeout
-	Game.sfx("ren_effort", 2.0)
-	Game.sfx("impact", 0.0)
+		Game.sfx("coracao", 6.0)
+		shake(6.0 + k * 3.0)
+		load("res://src/fx.gd").spawn(self, "ring", player.position + Vector2(0, -90), {"col": Color(1, 0.1, 0.15), "r": 70.0 + k * 50.0, "life": 0.4})
+		await get_tree().create_timer(0.22).timeout
+	Game.sfx("ren_effort", 4.0)
+	Game.sfx("impact", 2.0)
+	Game.sfx("hit_big", 0.0)
+	Game.flash(Color(1, 0.12, 0.08, 0.9), 0.5)
 	player.set_carmesim(true, -1.0)
 	player.pose("idle")
-	shake(16.0)
+	veias.queue_free()
+	_carm_pillar()
+	shake(20.0)
 	banner("FORMA CARMESIM")
-	await get_tree().create_timer(0.6).timeout
-	await say("carmesim_desperta")
+	var t2 := create_tween()
+	t2.tween_property(cam, "zoom", z0, 0.5)
+	t2.parallel().tween_property(ui_red, "color:a", 0.0, 0.8)
+	await get_tree().create_timer(0.7).timeout
+	ui_red.queue_free()
+	await say("carmesim_desperta_2")
 	player.pose("idle")
 	frozen = false
 	player.locked = false
+
+# coluna de energia vermelha subindo do Ren + brasas
+func _carm_pillar() -> void:
+	var p := CPUParticles2D.new()
+	p.one_shot = true
+	p.emitting = true
+	p.amount = 90
+	p.lifetime = 1.1
+	p.explosiveness = 0.85
+	p.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	p.emission_rect_extents = Vector2(40, 10)
+	p.direction = Vector2(0, -1)
+	p.spread = 12.0
+	p.initial_velocity_min = 500.0
+	p.initial_velocity_max = 1100.0
+	p.gravity = Vector2(0, 300)
+	p.scale_amount_min = 4.0
+	p.scale_amount_max = 9.0
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 0.85, 0.7, 1))
+	g.set_color(1, Color(0.8, 0.0, 0.05, 0))
+	p.color_ramp = g
+	p.position = player.position
+	p.z_index = 20
+	add_child(p)
+	get_tree().create_timer(1.6).timeout.connect(p.queue_free)
+	for k in range(3):
+		load("res://src/fx.gd").spawn(self, "ring", player.position + Vector2(0, -80), {"col": Color(1, 0.2, 0.15), "r": 160.0 + k * 90.0, "life": 0.5 + k * 0.1})
 
 func _carmesim_calm() -> void:
 	frozen = true
@@ -1600,6 +1659,13 @@ func _start_ambush(a: Dictionary) -> void:
 	_amb_x = Vector2(a["x0"], a["x1"])
 	_amb_walls.append(_static_rect(a["x0"] - 100.0, GY - 3000.0, 100.0, 3000.0, 1))
 	_amb_walls.append(_static_rect(a["x1"], GY - 3000.0, 100.0, 3000.0, 1))
+	_amb_drop = Time.get_ticks_msec() / 1000.0
+	get_tree().create_timer(0.35).timeout.connect(func():
+		for xx in [a["x0"], a["x1"]]:
+			for k in range(4):
+				load("res://src/fx.gd").spawn(self, "dust", Vector2(xx + randf_range(-50, 50), GY - 20.0), {"r": 80.0, "life": 0.6})
+		Game.sfx("slam", -2.0)
+		shake(10.0))
 	banner("EMBOSCADA!")
 	Game.sfx("impact", -2.0)
 	Game.sfx("chains", -6.0)
@@ -1637,20 +1703,40 @@ func _end_ambush() -> void:
 		w.queue_free()
 	_amb_walls.clear()
 	_amb_on = false
+	_amb_fall = Time.get_ticks_msec() / 1000.0
+	Game.sfx("break", -2.0)
 	Game.sfx("victory", -10.0)
 	toast("Respira. O caminho está livre.")
 	spawn_pickup("cura", player.global_position + Vector2(player.facing * 90.0, -60.0))
 	spawn_pickup("ki", player.global_position + Vector2(player.facing * 150.0, -60.0))
 
+var _amb_drop := 0.0
+var _amb_fall := -1.0
 func _draw_amb_walls() -> void:
-	if not _amb_on:
+	# barricadas de toras com talismãs das Sete Casas: caem do alto, fecham a passagem
+	if not _amb_on and _amb_fall < 0.0:
 		return
-	var a := 0.35 + 0.15 * sin(Time.get_ticks_msec() * 0.008)
-	for x in [_amb_x.x, _amb_x.y]:
-		draw_rect(Rect2(x - 10.0, GY - 900.0, 20.0, 900.0), Color(1, 0.2, 0.15, a))
-		draw_rect(Rect2(x - 3.0, GY - 900.0, 6.0, 900.0), Color(1, 0.8, 0.6, a + 0.2))
-		for k in range(6):
-			draw_circle(Vector2(x, GY - 120.0 - k * 140.0), 14.0, Color(1, 0.35, 0.2, a + 0.2))
+	var tex := prop("barricada")
+	if tex == null:
+		return
+	var hh := 430.0
+	var ww := hh * tex.get_width() / tex.get_height()
+	var drop := clampf((Time.get_ticks_msec() / 1000.0 - _amb_drop) / 0.35, 0.0, 1.0)
+	var yoff := -(1.0 - drop * drop) * 700.0
+	var a := 1.0
+	var tilt := 0.0
+	if _amb_fall >= 0.0:
+		var f := clampf((Time.get_ticks_msec() / 1000.0 - _amb_fall) / 0.6, 0.0, 1.0)
+		a = 1.0 - f
+		tilt = f * 0.5
+		if f >= 1.0:
+			_amb_fall = -1.0
+	for side in [-1, 1]:
+		var x: float = _amb_x.x - ww * 0.6 if side < 0 else _amb_x.y - ww * 0.4
+		var base := Vector2(x + ww / 2.0, GY + 4.0)
+		draw_set_transform(base, tilt * side, Vector2.ONE)
+		draw_texture_rect(tex, Rect2(-ww / 2.0, -hh + yoff, ww, hh), false, Color(1, 1, 1, a))
+		draw_set_transform(Vector2.ZERO, 0.0, Vector2.ONE)
 
 # ---- o vilão observa: sussurro do Shin-Oni depois de cada chefe (planta o final) ----
 func _sussurro(ch: String) -> void:
@@ -1690,7 +1776,8 @@ func _build_memory_filter() -> void:
 	# vultos do povo daquela noite, transparentes, apontando para o ferreiro
 	for i in range(9):
 		var x := 500.0 + i * 300.0 + randf_range(-40, 40)
-		_ghosts.append([x, prop("aldeao_%d" % (1 + i % 8)), i % 2 == 0])
+		var ks := _ald_list()
+		_ghosts.append([x, _ald_tex(ks[i % ks.size()]) if not ks.is_empty() else null, i % 2 == 0])
 
 var _ghosts: Array = []
 func _draw_ghosts() -> void:
@@ -1742,7 +1829,50 @@ func _memory_break() -> void:
 	shake(20.0)
 	_gate_open = true
 	_gate_glow = 1.0
+	# a lembrança inteira, em pintura: o eixo partido, o povo fugindo, os demônios surgindo
+	var art := TextureRect.new()
+	art.texture = load("res://assets/story/portao_eixo.jpg")
+	art.set_anchors_preset(Control.PRESET_FULL_RECT)
+	art.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	art.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	art.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	art.modulate.a = 0.0
+	_ui.add_child(art)
+	create_tween().tween_property(art, "modulate:a", 1.0, 0.5)
 	await get_tree().create_timer(1.0).timeout
 	Game.sfx("evil_laugh", -6.0)
 	await say("memoria_fim")
 	Game.advance("memoria")
+
+
+# ---------------- aldeões no estilo do Ren, animados (v0.14) ----------------
+const ALDEOES := ["erveira", "arroz_avental", "arroz_vermelho", "carregador", "idosa", "mae", "mendigo", "menino", "pescador", "velho_verde"]
+func _ald_list() -> Array:
+	var out: Array = []
+	for k in ALDEOES:
+		if ResourceLoader.exists("res://assets/sprites/ald_%s/ald_%s.json" % [k, k]) or FileAccess.file_exists("res://assets/sprites/ald_%s/ald_%s.json" % [k, k]):
+			out.append(k)
+	return out
+
+func _villager(kind: String, pos: Vector2, facing_: int, anim := "idle", spd := 1.0) -> Node2D:
+	var a = load("res://src/actor_sprite.gd").new()
+	a.setup("ald_" + kind)
+	a.set_facing(facing_)
+	a.play_anim(anim, true, spd)
+	var alvo := 100.0 if kind == "menino" else randf_range(132.0, 142.0)
+	var fig := 112.0 if kind == "menino" else 147.0
+	a.scale = Vector2.ONE * (alvo / fig) * (1.0 if kind != "menino" else 0.9)
+	a.position = pos
+	add_child(a)
+	return a
+
+# quadro parado do aldeão, recortado (para desenhar fantasmas)
+func _ald_tex(kind: String) -> Texture2D:
+	var p := "res://assets/sprites/ald_%s/idle_00.png" % kind
+	if not ResourceLoader.exists(p):
+		return null
+	var t: Texture2D = load(p)
+	var at := AtlasTexture.new()
+	at.atlas = t
+	at.region = Rect2(t.get_image().get_used_rect())
+	return at

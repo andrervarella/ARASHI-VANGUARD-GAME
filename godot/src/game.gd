@@ -1,7 +1,7 @@
 extends Node
 # Autoload "Game": progresso, troca de cenas, sprites, sons e música.
 
-const VERSION := "v0.13 · fases 1 e 2 · 17/11/2026"
+const VERSION := "v0.14 · fases 1 e 2 · 17/11/2026"
 const SAVE_PATH := "user://arashi_save.json"
 var FONT_SERIF: Font = load("res://assets/fonts/DejaVuSerif-Bold.ttf")
 var FONT_SANS: Font = load("res://assets/fonts/DejaVuSans-Bold.ttf")
@@ -55,15 +55,7 @@ func _ready() -> void:
 		_sfx_players.append(p)
 	_music = AudioStreamPlayer.new()
 	add_child(_music)
-	# barramento da música com filtro: abafa quando está calmo, abre no combate (música que reage)
-	var bi := AudioServer.bus_count
-	AudioServer.add_bus(bi)
-	AudioServer.set_bus_name(bi, "Musica")
-	AudioServer.set_bus_send(bi, "Master")
-	var lp := AudioEffectLowPassFilter.new()
-	lp.cutoff_hz = 20000.0
-	AudioServer.add_bus_effect(bi, lp)
-	_music.bus = "Musica"
+	# (v0.13.1) sem barramento/filtro extra: o filtro passa-baixa silenciava TODO o áudio na web
 	_amb = AudioStreamPlayer.new()
 	add_child(_amb)
 	new_game()
@@ -315,7 +307,7 @@ func _play_music(st: AudioStream, vol_db: float) -> void:
 	_music.stream = st
 	_music.volume_db = -40.0
 	_music.play()
-	create_tween().tween_property(_music, "volume_db", vol_db, 1.2)
+	create_tween().tween_property(_music, "volume_db", vol_db + _tension_db, 1.2)
 
 func _fetch_music(name: String, vol_db: float) -> void:
 	if _music_loading.has(name):
@@ -349,15 +341,14 @@ func music_restart(name: String, vol_db := -8.0) -> void:
 	_music.stop()
 	music(name, vol_db)
 
-# 0 = calmo (abafado e mais baixo), 1 = combate (aberto)
+# 0 = calmo (música um pouco mais baixa), 1 = combate (volume cheio). Só volume: seguro na web.
+var _tension_db := 0.0
 func music_tension(t: float) -> void:
-	var bi := AudioServer.get_bus_index("Musica")
-	if bi < 0:
+	var nd := lerpf(-5.0, 0.0, clampf(t, 0.0, 1.0))
+	if absf(nd - _tension_db) < 0.05:
 		return
-	var lp := AudioServer.get_bus_effect(bi, 0) as AudioEffectLowPassFilter
-	if lp:
-		lp.cutoff_hz = lerpf(1400.0, 20000.0, t * t)
-	AudioServer.set_bus_volume_db(bi, lerpf(-4.5, 0.0, t))
+	_music.volume_db += nd - _tension_db
+	_tension_db = nd
 
 func stop_music() -> void:
 	_music_name = ""

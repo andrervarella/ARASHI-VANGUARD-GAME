@@ -64,3 +64,5 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `story/humildes.png`, `story/ren_luke_estrada.png` | PixelLab `create_image_pro` (estilo da imagem `ritual`; referências: sprites do Ren e do Luke) |
 
 - v0.13: `props/servo_acorrentado.png`, `props/santuario_quebrado.png`, `props/espadas_quebradas.png` — PixelLab Pixen (4 gerações, 1 refeita). `portraits/shin.jpg` e `story/shin_sombra.png` — recortes do pôster aprovado AV-POSTER-002 (arte do dono via Fenaky).
+
+- v0.14: `sprites/ald_*` (10 aldeões) — PixelLab v3 a partir das fichas do dono (ChatGPT); chutes do Ren e da Forma Carmesim — PixelLab esqueleto; `props/barricada.png` — PixelLab Pixen; `sfx/coracao.ogg` — sintetizado; `story/shin_sombra.jpg`, `story/portao_eixo.jpg`, `story/ren_vs_shin.jpg`, `portraits/shin.jpg` — artes do dono (ChatGPT).

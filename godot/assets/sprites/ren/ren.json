@@ -272,5 +272,65 @@
    216,
    216
   ]
+ },
+ "kick_alto": {
+  "frames": [
+   "kick_alto_00.png",
+   "kick_alto_01.png",
+   "kick_alto_02.png",
+   "kick_alto_03.png",
+   "kick_alto_04.png",
+   "kick_alto_05.png"
+  ],
+  "fps": 16,
+  "loop": false,
+  "anchor": [
+   126.7,
+   185
+  ],
+  "size": [
+   241,
+   241
+  ]
+ },
+ "kick_giro": {
+  "frames": [
+   "kick_giro_00.png",
+   "kick_giro_01.png",
+   "kick_giro_02.png",
+   "kick_giro_03.png",
+   "kick_giro_04.png",
+   "kick_giro_05.png"
+  ],
+  "fps": 15,
+  "loop": false,
+  "anchor": [
+   123.9,
+   196
+  ],
+  "size": [
+   241,
+   241
+  ]
+ },
+ "kick_voo": {
+  "frames": [
+   "kick_voo_00.png",
+   "kick_voo_01.png",
+   "kick_voo_02.png",
+   "kick_voo_03.png",
+   "kick_voo_04.png",
+   "kick_voo_05.png"
+  ],
+  "fps": 12,
+  "loop": false,
+  "anchor": [
+   125.1,
+   192
+  ],
+  "size": [
+   241,
+   241
+  ]
  }
 }

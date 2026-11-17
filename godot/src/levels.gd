@@ -277,9 +277,16 @@ const D := {
 		["ren", "...Luke. Estou acordado. Vamos. Cada demônio que eu soltei, eu mesmo vou buscar."],
 	],
 	"carmesim_desperta": [
-		["ren", "Meu sangue... queima. As cicatrizes da Ira estão se abrindo!"],
-		["xui", "Que fome é essa nos teus olhos, menino? Ela... se parece com a minha!"],
-		["ren", "Algo vermelho como a lua daquela noite rasga-me por dentro... Gula, eu vou devorar-te por inteiro."],
+		["ren", "(O peito... a marca está queimando. Agora não... não agora!)"],
+		["xui", "Hmm? Esse cheiro... Eu conheço esse cheiro!"],
+		["xui", "É a vida de Arashi! A oferenda daquela noite, a que as Casas nos prometeram! Está DENTRO de ti, ferreiro!"],
+		["xui", "Era para ser NOSSA. Devolve-a, ou eu a arranco junto com o teu coração!"],
+		["ren", "(A Ira de Baku ficou na marca... e agora ela bebe a fome dele também. Está transbordando!)"],
+		["luke", "Auuu... Au!"],
+	],
+	"carmesim_desperta_2": [
+		["ren", "Essa vida não é tua, nem minha. É do meu povo. E ela está com raiva, Gula."],
+		["ren", "Vou devorar-te por inteiro."],
 	],
 	"dica_baku": [
 		["tetsu", "(A voz do mestre, na memória) A Ira salta e desce com golpes pesados... e então respira."],

@@ -39,3 +39,8 @@ Resolução-base 960×540, `stretch=canvas_items`, `aspect=expand` (a tela larga
 - Toques em ATAQUE: combo de 5. **Cima + ATAQUE:** corte anti-aéreo. **Baixo + ATAQUE:** rasteira (derruba inimigos comuns).
 - **Segurar ATAQUE** depois de um corte: carrega (brilho dourado = nível 1; vermelho = nível 2). Soltar = golpe carregado; nível 2 solta a onda do Corte da Tempestade. Teclado: I = cima.
 - Diálogos: PULAR ▶▶ no canto pula a conversa.
+
+## Chute e combos (v0.14)
+- Botão CHUTE (pé) à esquerda da ESPADA. Teclado U ou Z; controle B. Defesa no controle: RB ou RT.
+- 3 chutes seguidos: alto, giratório, voadora. No ar: voadora.
+- Espada-chute-espada: Lâmina Giratória · espada-espada-chute: Chute Ascendente · chute-chute-espada: Investida do Ferreiro · chute-espada-chute: Pisão do Trovão.

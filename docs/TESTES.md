@@ -52,3 +52,8 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (EMULADO): todas as cenas (título, abertura, 4 fases, memória) rodam sem erro de script ou shader.
 - EXECUTADO (EMULADO): emboscada do Vale (paredes, ondas); Bocarra de Jade nova; servo acorrentado e santuário no lugar; memória do portão do começo ao fim (volta ao Refúgio); Baku com golpe carregado, contador e barra de postura (robô parado: Baku a ~30% em ~5 s trocando golpes; o robô também morre).
 - NÃO TESTADO: sensação no celular (segurar ATAQUE, cima+ATAQUE no direcional), filtro da música no navegador, desempenho com o primeiro plano.
+
+## 2026-11-17 — v0.14
+- EXECUTADO (Chrome sem tela, versão web real): saída de áudio medida por analisador. v0.12 = sinal; v0.13 = zero; v0.14 = sinal. Músicas remotas não testadas localmente (vêm do deploy).
+- EXECUTADO (EMULADO): todas as fases sem erro de script; barricada da emboscada; Refúgio com aldeões novos; combos Investida e Ascendente disparando; transformação completa contra o Xui (meia vida).
+- NÃO TESTADO: toque real no botão de chute; sensação dos combos; desempenho com 22 aldeões animados na fuga.

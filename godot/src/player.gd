@@ -32,6 +32,9 @@ var atk_kind := "stand"      # stand | low | air
 var atk_reach := 150.0
 var atk_lunge := 0.0
 var queued := false
+var queued_k := "S"   # próximo golpe da fila: S = espada, K = chute
+var seq: Array = []     # últimas entradas da sequência (para os combos misturados)
+var kchain := 0
 var combo_window := 0.0
 var hit_done := {}
 var invuln := 0.0
@@ -125,19 +128,21 @@ func apply_outfit() -> void:
 		_aura.scale_amount_max = 6
 		_aura.color = Color(1.0, 0.12, 0.18, 0.6)
 	if _hand_fire == null:
+		# (v0.14) Fúria equipada: brasas sobem do chão em volta do corpo, como calor de forja.
+		# Nada de fogo preso na mão (ficava estranho); o fogo aparece no corte (ver _furia_trail).
 		_hand_fire = CPUParticles2D.new()
-		_hand_fire.amount = 22
-		_hand_fire.lifetime = 0.45
+		_hand_fire.amount = 16
+		_hand_fire.lifetime = 0.9
 		_hand_fire.local_coords = false
-		_hand_fire.emission_shape = CPUParticles2D.EMISSION_SHAPE_SPHERE
-		_hand_fire.emission_sphere_radius = 6.0
+		_hand_fire.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+		_hand_fire.emission_rect_extents = Vector2(34, 4)
 		_hand_fire.direction = Vector2(0, -1)
-		_hand_fire.spread = 18
-		_hand_fire.gravity = Vector2(0, -260)
-		_hand_fire.initial_velocity_min = 20
-		_hand_fire.initial_velocity_max = 50
-		_hand_fire.scale_amount_min = 3
-		_hand_fire.scale_amount_max = 6
+		_hand_fire.spread = 25
+		_hand_fire.gravity = Vector2(0, -120)
+		_hand_fire.initial_velocity_min = 30
+		_hand_fire.initial_velocity_max = 90
+		_hand_fire.scale_amount_min = 2
+		_hand_fire.scale_amount_max = 4
 		var g := Gradient.new()
 		g.set_color(0, Color(1, 0.95, 0.6, 1))
 		g.add_point(0.4, Color(1, 0.5, 0.1, 0.9))
@@ -154,10 +159,7 @@ func _process(dt: float) -> void:
 		if carmesim_t <= 0.0:
 			set_carmesim(false, 0.0, true)
 	if _hand_fire and _hand_fire.emitting:
-		var hand := Vector2(facing * 26.0, -96.0)
-		if crouching:
-			hand.y = -60.0
-		_hand_fire.position = hand
+		_hand_fire.position = Vector2(0, -6)
 	if Game.data["equipado"] == "jade":
 		_orb_t += dt
 		queue_redraw()
@@ -213,7 +215,10 @@ func attack_rect() -> Rect2:
 		"low": return Rect2(global_position + Vector2(x0, -84), Vector2(reach, 80))
 		"anti": return Rect2(global_position + Vector2(-30.0 if facing > 0 else -reach + 30.0, -300), Vector2(reach, 290))
 		"carga": return Rect2(global_position + Vector2(x0, -190), Vector2(reach, 185))
-		"air": return Rect2(global_position + Vector2(x0, -165), Vector2(reach, 160))
+		"air", "kick_air": return Rect2(global_position + Vector2(x0, -165), Vector2(reach, 160))
+		"kick", "trovao", "investida": return Rect2(global_position + Vector2(x0, -160), Vector2(reach, 130))
+		"ascendente": return Rect2(global_position + Vector2(x0, -260), Vector2(reach, 250))
+		"giratoria": return Rect2(global_position + Vector2(x0, -180), Vector2(reach, 170))
 	if combo == 2:
 		return Rect2(global_position + Vector2(x0, -210), Vector2(reach, 200))
 	return Rect2(global_position + Vector2(x0, -150), Vector2(reach, 128))
@@ -339,10 +344,17 @@ func _physics_process(dt: float) -> void:
 			pass
 		elif state == "attack":
 			queued = true
+			queued_k = "S"
 		elif _inp("up_down") and on_floor and not crouching:
 			_start_special("anti")
 		else:
-			_start_attack(on_floor)
+			_press("S", on_floor)
+	if _inp("kick_pressed"):
+		if state == "attack":
+			queued = true
+			queued_k = "K"
+		else:
+			_press("K", on_floor)
 	# golpe carregado: depois do corte, continuar segurando ATAQUE acumula força (estilo Mega Man)
 	if _inp("attack_down") and state == "normal":
 		charge_t += dt
@@ -367,16 +379,23 @@ func _physics_process(dt: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, dir * speed() * mult, 3000.0 * dt)
 		if atk_t >= atk_from and atk_t <= atk_to:
-			_hit_check(atk_dmg, attack_rect(), "katana")
+			_hit_check(atk_dmg, attack_rect(), "chute" if atk_kind in ["kick", "kick_air", "trovao", "ascendente"] else "katana")
+			if atk_kind == "giratoria":
+				# Lâmina Giratória: o corte gira e acerta dos dois lados
+				facing = -facing
+				_hit_check(atk_dmg, attack_rect(), "katana")
+				facing = -facing
 		if atk_t >= atk_len:
 			state = "normal"
 			combo_window = 0.25
-			if atk_kind in ["anti", "carga"]:
+			if atk_kind in ["anti", "carga", "giratoria", "ascendente", "investida", "trovao"]:
 				queued = false
 				combo = 0
-			elif queued and combo < COMBO.size():
+				kchain = 0
+				seq.clear()
+			elif queued:
 				queued = false
-				_start_attack(is_on_floor())
+				_press(queued_k, is_on_floor())
 			else:
 				queued = false
 	else:
@@ -466,6 +485,109 @@ const COMBO := [
 	["finisher", 1.0, 0.46, 0.24, 0.36, 3, 190.0, 260.0],
 ]
 
+# ---------------- chutes e combos misturados (DEC-027) ----------------
+# Toques em ESPADA e CHUTE formam sequências. Três entradas certas viram um golpe especial:
+#   espada-chute-espada  = Lâmina Giratória (corta dos dois lados)
+#   espada-espada-chute  = Chute Ascendente (joga o inimigo para cima)
+#   chute-chute-espada   = Investida do Ferreiro (avanço longo que derruba)
+#   chute-espada-chute   = Pisão do Trovão (chute voador com onda no chão)
+const MIXES := {"SKS": "giratoria", "SSK": "ascendente", "KKS": "investida", "KSK": "trovao"}
+const MIX_NOME := {"giratoria": "Lâmina Giratória!", "ascendente": "Chute Ascendente!", "investida": "Investida do Ferreiro!", "trovao": "Pisão do Trovão!"}
+# anim, velocidade, duração, acerto de, até, dano, alcance, avanço
+const KCHAIN := [
+	["kick_alto", 1.4, 0.28, 0.08, 0.17, 1, 135.0, 60.0],
+	["kick_giro", 1.3, 0.32, 0.10, 0.21, 1, 150.0, 90.0],
+	["kick_voo", 1.2, 0.42, 0.12, 0.30, 2, 175.0, 320.0],
+]
+
+func _press(k: String, on_floor: bool) -> void:
+	if combo_window <= 0.0 and state != "attack":
+		seq.clear()
+	seq.append(k)
+	if seq.size() > 3:
+		seq.pop_front()
+	var key := "".join(PackedStringArray(seq))
+	if seq.size() == 3 and MIXES.has(key) and on_floor and not crouching:
+		_start_mix(MIXES[key])
+		return
+	if k == "S":
+		if seq.size() >= 2 and seq[seq.size() - 2] == "K":
+			combo = 0
+		kchain = 0
+		_start_attack(on_floor)
+	else:
+		_start_kick(on_floor)
+
+func _start_kick(on_floor: bool) -> void:
+	var cont: bool = combo_window > 0.0 and seq.size() >= 2 and seq[seq.size() - 2] == "K" and kchain < KCHAIN.size()
+	kchain = kchain + 1 if cont else 1
+	combo = 0
+	state = "attack"
+	atk_t = 0.0
+	hit_done = {}
+	atk_kind = "kick" if on_floor else "kick_air"
+	if crouching:
+		atk_kind = "low"
+	var c: Array = KCHAIN[2 if not on_floor else kchain - 1]
+	atk_dmg = int(c[5]) + dmg_bonus()
+	atk_len = c[2]
+	atk_from = c[3]
+	atk_to = c[4]
+	atk_reach = c[6]
+	atk_lunge = c[7] if on_floor and not crouching else 0.0
+	spr.play_anim("crouch" if crouching else c[0], true, c[1])
+	Game.sfx("esquiva", -6.0)
+	if kchain == 3:
+		Game.sfx("ren_effort", -8.0)
+	_furia_trail()
+
+func _start_mix(kind: String) -> void:
+	state = "attack"
+	atk_t = 0.0
+	hit_done = {}
+	combo = 0
+	kchain = 0
+	queued = false
+	atk_kind = kind
+	var FX = load("res://src/fx.gd")
+	var col := Color(1, 0.88, 0.55)
+	match kind:
+		"giratoria":
+			atk_dmg = 3 + dmg_bonus(); atk_len = 0.44; atk_from = 0.1; atk_to = 0.3; atk_reach = 190.0; atk_lunge = 0.0
+			spr.play_anim("finisher", true, 1.25)
+			Game.sfx("slash3", 0.0)
+			FX.spawn(self, "slash", Vector2(facing * 60.0, -95.0), {"dir": facing, "col": col, "r": 170.0, "life": 0.3})
+			FX.spawn(self, "slash", Vector2(-facing * 60.0, -95.0), {"dir": -facing, "col": col, "r": 170.0, "life": 0.3})
+		"ascendente":
+			atk_dmg = 2 + dmg_bonus(); atk_len = 0.4; atk_from = 0.08; atk_to = 0.24; atk_reach = 160.0; atk_lunge = 60.0
+			spr.play_anim("kick_giro", true, 1.2)
+			velocity.y = -420.0
+			Game.sfx("esquiva", 0.0)
+			FX.spawn(self, "rise", Vector2(facing * 50.0, -120.0), {"dir": facing, "col": col, "r": 150.0, "life": 0.25})
+		"investida":
+			atk_dmg = 3 + dmg_bonus(); atk_len = 0.42; atk_from = 0.06; atk_to = 0.3; atk_reach = 200.0; atk_lunge = 720.0
+			spr.play_anim("thrust", true, 1.1)
+			Game.sfx("slash3", 0.0)
+			FX.spawn(self, "thrust", Vector2(facing * 40.0, -92.0), {"dir": facing, "col": col, "r": 260.0, "life": 0.3})
+		"trovao":
+			atk_dmg = 3 + dmg_bonus(); atk_len = 0.48; atk_from = 0.14; atk_to = 0.34; atk_reach = 180.0; atk_lunge = 380.0
+			spr.play_anim("kick_voo", true, 1.1)
+			Game.sfx("esquiva", 0.0)
+			get_tree().create_timer(0.3).timeout.connect(func():
+				if level == null:
+					return
+				level.shake(10.0)
+				Game.sfx("slam", -4.0)
+				FX.spawn(level, "ring", global_position + Vector2(facing * 80.0, -10.0), {"col": Color(1, 0.85, 0.4), "r": 160.0, "life": 0.35})
+				# onda no chão: fere quem estiver perto, dos dois lados
+				for f in get_tree().get_nodes_in_group("foes"):
+					if is_instance_valid(f) and not f.get("dead") and absf(f.global_position.x - global_position.x) < 230.0 and absf(f.global_position.y - global_position.y) < 80.0:
+						f.take_hit(1 + dmg_bonus(), facing, "rasteira"))
+	Game.sfx("ren_effort", -2.0)
+	level.toast(MIX_NOME[kind])
+	level.hitstop(0.05)
+	_furia_trail(true)
+
 func _start_attack(on_floor: bool) -> void:
 	combo = combo + 1 if combo_window > 0.0 and combo < COMBO.size() else 1
 	state = "attack"
@@ -497,6 +619,7 @@ func _start_attack(on_floor: bool) -> void:
 			3: FX.spawn(self, "thrust", Vector2(facing * 30.0, -92.0), {"dir": facing, "col": col, "r": 200.0, "life": 0.18})
 			5: FX.spawn(self, "slash", Vector2(facing * 50.0, -80.0), {"dir": facing, "col": col.lightened(0.2), "r": 165.0, "life": 0.3})
 			_: FX.spawn(self, "slash", Vector2(facing * 40.0, -80.0), {"dir": facing, "col": col, "r": 100.0, "life": 0.16})
+	_furia_trail(combo >= 5)
 
 func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 	for f in get_tree().get_nodes_in_group("foes"):
@@ -507,8 +630,8 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 		if rect.intersects(f.hurt_rect()):
 			hit_done[f] = true
 			var k2 := kind
-			if kind == "katana" and atk_kind in ["low", "anti", "carga"]:
-				k2 = "rasteira" if atk_kind == "low" else atk_kind
+			if atk_kind in ["low", "anti", "carga", "ascendente", "investida"]:
+				k2 = {"low": "rasteira", "investida": "rasteira", "ascendente": "anti"}.get(atk_kind, atk_kind)
 			f.take_hit(dmg, facing, k2)
 			hit_count += 1
 			hit_count_t = 1.2
@@ -527,6 +650,35 @@ func _hit_check(dmg: int, rect: Rect2, kind: String) -> void:
 		if rect.intersects(b.get_rect()):
 			hit_done[b] = true
 			b.hit_by(kind)
+
+# rastro de fogo do corte quando a Fúria está equipada
+func _furia_trail(big := false) -> void:
+	if Game.data["equipado"] != "furia" or carmesim:
+		return
+	var f := CPUParticles2D.new()
+	f.one_shot = true
+	f.emitting = true
+	f.amount = 26 if big else 16
+	f.lifetime = 0.4
+	f.explosiveness = 0.9
+	f.emission_shape = CPUParticles2D.EMISSION_SHAPE_RECTANGLE
+	f.emission_rect_extents = Vector2(60, 40)
+	f.direction = Vector2(facing, -0.4)
+	f.spread = 35
+	f.initial_velocity_min = 120
+	f.initial_velocity_max = 320
+	f.gravity = Vector2(0, -200)
+	f.scale_amount_min = 3
+	f.scale_amount_max = 7
+	var g := Gradient.new()
+	g.set_color(0, Color(1, 0.95, 0.6, 1))
+	g.add_point(0.35, Color(1, 0.45, 0.08, 0.95))
+	g.set_color(g.get_point_count() - 1, Color(0.5, 0.05, 0.02, 0))
+	f.color_ramp = g
+	f.position = global_position + Vector2(facing * 85.0, -100.0)
+	f.z_index = 21
+	level.add_child(f)
+	get_tree().create_timer(0.8).timeout.connect(f.queue_free)
 
 # faíscas que voam na direção do golpe (além do clarão do acerto)
 func FX_dir_spark(at: Vector2, dmg: int) -> void:

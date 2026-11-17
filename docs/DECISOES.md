@@ -135,3 +135,10 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Shin-Oni aparece cedo (silhueta na abertura, sussurro após cada chefe) sem nome; reage ao pingente do Luke (gancho do final).
 - Imagens do Shin-Oni no jogo são recortes do pôster aprovado (AV-POSTER-002) até o dono mandar as artes dedicadas (lista enviada no chat).
 - Balanço inicial: carregado 2/4 de dano (+onda 2); postura máx. 140; aparo +34; dano na postura quebrada ×1,5 sem acumular com o cansaço.
+
+## DEC-027 — Chute, combos mistos, aldeões no estilo do Ren e barreiras do cenário (17/11/2026)
+- Pedido do dono: botão de chute com sequência de 3 e combinações espada/chute; coadjuvantes no mesmo estilo do Ren, com movimento; barreiras que pareçam parte do cenário; vilão só em vulto; transformação com cena de mal-estar e explicação coerente; fogo da Fúria sem mão em chamas.
+- Combos: SKS Lâmina Giratória, SSK Chute Ascendente, KKS Investida do Ferreiro, KSK Pisão do Trovão (3 entradas dentro da janela de combo).
+- Aldeões: recorte em pixel das fichas do dono → personagem v3 no PixelLab com referência (frente) + perfil importado → andar v3. Recortes em `assets/referencias-aprovadas/aldeoes/pixel/` (públicos, servem de link para o PixelLab).
+- Música que reage: só volume (o filtro silenciava a web).
+- Cutscenes em vídeo (Higgsfield): **pendente**, anotar para transformação e entrada/derrota de chefes (T-023).
