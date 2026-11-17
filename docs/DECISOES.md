@@ -98,5 +98,6 @@ Uma entrada por decisão relevante. Não apague: marque como substituída. Ideia
 - Legendas avançam só por toque. Esquiva = dois toques em DEFESA (rolamento). Poderes **não mudam a cor da roupa**: aura discreta + elemento (Fúria = mão em chamas; Jade = contas de jade orbitando).
 
 ## DEC-021 — Chefe final com novo visual (16/11/2026, direção do dono)
-- O demônio ruivo de chifres da ficha "BAKU — IRA (Wrathcleaver)" **não é o Baku**: passa a ser a base visual do **chefe final (Shin-Oni, Senhor dos Sete Pecados)**, acrescido de **máscara/capacete samurai** e aparência demoníaca. O Baku jogável continua o "General da Fúria" (samurai de máscara oni).
+- O demônio ruivo de chifres da ficha "BAKU — IRA (Wrathcleaver)" **não é o Baku**: passa a ser a base visual do **chefe final (Shin-Oni, Senhor dos Sete Pecados)**, (ver revisão abaixo: sem máscara). O Baku jogável continua o "General da Fúria" (samurai de máscara oni).
 - O pôster com todos os chefes deve ser editado: a figura da frente (parecida demais com o Baku) vira o novo chefe final. Arte final de personagem: precisa de aprovação do dono e do custo antes de gerar (T-019).
+- **Revisão (16/11, 22h22):** o dono reprovou a versão com máscara/capacete. O chefe final usa o demônio ruivo da ficha **como ele é, sem máscara e sem capacete** (rosto demoníaco à mostra, chifres, juba vermelha, machado).
