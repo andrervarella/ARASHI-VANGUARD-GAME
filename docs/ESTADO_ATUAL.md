@@ -5,10 +5,14 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.10 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.11 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.11 (17/11) — proporção real em todos os assets
+- Casas (~560 px), barracas e forja (~235–265), torii do Refúgio (~360, portas mais espaçadas), mesas do palácio na altura real; tabela na bíblia visual.
+- Imagem desproporcional e de baixa qualidade (Ren com Luke enorme) substituída: `humildes` (soldados levando o povo, na abertura) e `ren_luke_estrada` (Ren e Luke pequeno deixando a cidade, na história do meio).
 
 ## v0.10 (17/11) — abertura explicada, música épica, Luke ganindo, caixas quebráveis, cidade mais viva
 - Abertura: a seita dos mais ricos, a energia vital roubada (juventude, sorte, sucesso, poder) e o domínio sobre as mentes; 2 imagens novas (`riqueza`, `dominio`).

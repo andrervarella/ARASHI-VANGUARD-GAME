@@ -333,7 +333,7 @@ var _refugees: Array = []   # [x, textura, flip]
 func _spawn_refugees() -> void:
 	var R: Dictionary = load("res://src/levels.gd").RESGATE
 	var lst: Array = Game.data.get("resgatados", [])
-	var xs := [430.0, 560.0, 690.0, 1130.0, 1260.0, 1390.0, 3800.0, 3930.0, 4060.0]
+	var xs := [400.0, 530.0, 660.0, 1120.0, 1250.0, 1380.0, 4680.0, 4760.0, 280.0]
 	var i := 0
 	for key in lst:
 		if i >= xs.size():
@@ -687,10 +687,11 @@ func _draw_door(d: Array) -> void:
 	var tt := prop("torii")
 	if tt:
 		var mod := Color(1, 1, 1) if st == "aberto" else (Color(0.45, 0.42, 0.45) if st in ["breve", "selado"] else Color(0.85, 0.75, 0.55))
-		draw_texture_rect(tt, Rect2(x - 150, GY - 262, 300, 262), false, mod)
+		# torii em escala real: ~2,4× a altura do Ren
+		draw_texture_rect(tt, Rect2(x - 206, GY - 360, 412, 360), false, mod)
 		if st == "aberto":
 			var g2 := 0.18 + 0.12 * sin(Time.get_ticks_msec() * 0.004)
-			draw_rect(Rect2(x - 78, GY - 160, 156, 160), Color(0.9, 0.2, 0.25, g2))
+			draw_rect(Rect2(x - 106, GY - 220, 212, 220), Color(0.9, 0.2, 0.25, g2))
 		_door_label(d, x, h, st)
 		return
 	draw_rect(Rect2(x - 100, GY - h, 22, h), red)
@@ -709,11 +710,11 @@ func _draw_door(d: Array) -> void:
 func _door_label(d: Array, x: float, h: float, st: String) -> void:
 	var font := Game.FONT_SERIF
 	var col := Color(1, 0.9, 0.7) if st == "aberto" else Color(0.75, 0.72, 0.7)
-	draw_string_outline(font, Vector2(x - 160, GY - 330), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, 8, Color(0, 0, 0, 0.9))
-	draw_string(font, Vector2(x - 160, GY - 330), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, col)
+	draw_string_outline(font, Vector2(x - 160, GY - 196), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, 8, Color(0, 0, 0, 0.9))
+	draw_string(font, Vector2(x - 160, GY - 196), d[2], HORIZONTAL_ALIGNMENT_CENTER, 320, 26, col)
 	var sub: String = d[3] + ("  ✓" if st == "vencido" else ("  (em breve)" if st == "breve" else ("  (selado)" if st == "selado" else "")))
-	draw_string_outline(font, Vector2(x - 160, GY - 298), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, 6, Color(0, 0, 0, 0.9))
-	draw_string(font, Vector2(x - 160, GY - 298), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, col.darkened(0.1))
+	draw_string_outline(font, Vector2(x - 160, GY - 166), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, 6, Color(0, 0, 0, 0.9))
+	draw_string(font, Vector2(x - 160, GY - 166), sub, HORIZONTAL_ALIGNMENT_CENTER, 320, 20, col.darkened(0.1))
 
 # ---------------- ciclo ----------------
 func _process(dt: float) -> void:

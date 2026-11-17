@@ -22,7 +22,7 @@ const L := {
 		"plats": [[3240, 190, 300], [3560, 320, 240], [4900, 200, 260]],
 		"blocks": [[1560, 300, 360, 188, "viga"]],
 		# a cidade de Arashi: fachadas, barracas e lanternas atrás do caminho (só cenário)
-		"decor": [["casa", 760, 320], ["barris", 1240, 105], ["barraca", 2150, 170], ["cerca", 2900, 85], ["carroca", 3250, 115], ["casa", 3950, 320], ["forja", 4420, 210], ["barris", 4860, 105], ["barraca", 5120, 170], ["barraca", 5560, 170], ["cerca", 5800, 85]],
+		"decor": [["casa", 760, 560], ["barris", 1260, 150], ["barraca", 2200, 235], ["cerca", 2900, 100], ["carroca", 3260, 135], ["casa", 4000, 560], ["forja", 4560, 265], ["barris", 4950, 150], ["barraca", 5250, 235], ["barraca", 5620, 235], ["cerca", 5880, 100]],
 		"foes": [["oni", 3150], ["guarda", 3950], ["oni", 4980, 200], ["guarda", 4600]],
 		"prompts": [
 			[140, "Deslize o direcional  ◀ ▶  para andar"],
@@ -70,7 +70,8 @@ const L := {
 		"largura": 8200.0, "inicio": 200.0, "luke_inicio": true,
 		"ground": [[0, 2300], [2560, 4700], [4950, 8200]],
 		"plats": [[2330, 200, 200], [1500, 230, 280], [3300, 210, 240], [3700, 400, 240], [4720, 200, 200], [5600, 230, 300], [5920, 300, 380]],
-		"blocks": [[900, 120, 200, 120, "mesa"], [4200, 130, 220, 130, "mesa"], [6100, 120, 200, 120, "mesa"]],
+		# mesas de banquete na altura real (~0,85 m)
+		"blocks": [[900, 78, 220, 78, "mesa"], [4200, 78, 240, 78, "mesa"], [6100, 78, 220, 78, "mesa"]],
 		"foes": [["servo", 800], ["espirito", 1400, 360], ["servo", 1900], ["servo", 2900], ["espirito", 3500, 400], ["servo", 3900], ["espirito", 4500, 300], ["servo", 5300], ["servo", 5800], ["espirito", 6300, 320], ["servo", 6500]],
 		"prompts": [[150, "Fase 2 — Palácio de Xui"], [3950, "Uma parede rachada... só um golpe de fúria a derruba."]],
 		"events": [[40, "intro_palacio"]],
@@ -90,8 +91,8 @@ const L := {
 		"nome": "Refúgio de Arashi",
 		"bg": "refugio", "musica": "vila", "amb": "amb_rain", "particulas": "chuva",
 		"chao": Color(0.13, 0.11, 0.12), "borda": Color(0.40, 0.31, 0.25),
-		"largura": 4200.0, "inicio": 300.0, "luke_inicio": true, "hub": true,
-		"ground": [[0, 4200]],
+		"largura": 4800.0, "inicio": 300.0, "luke_inicio": true, "hub": true,
+		"ground": [[0, 4800]],
 		"plats": [],
 		"blocks": [],
 		"foes": [],
@@ -102,12 +103,12 @@ const L := {
 		"npcs": [["tetsu", 900]],
 		"portas": [
 			[1600, "torii", "Vale das Torii", "Baku — Ira"],
-			[2000, "palacio", "Palácio de Xui", "Xui — Gula"],
-			[2400, "", "Mosteiro de Wu", "Wu — Preguiça"],
-			[2800, "", "Porto de Qinglong", "Kairen — Avareza"],
-			[3200, "", "Cidade das Lâminas", "Mei Shian — Inveja"],
-			[3600, "", "Zafir, a cidade-miragem", "Shuyin — Luxúria"],
-			[4000, "", "Corte da Lua Roxa", "Seiran — Soberba"],
+			[2080, "palacio", "Palácio de Xui", "Xui — Gula"],
+			[2560, "", "Mosteiro de Wu", "Wu — Preguiça"],
+			[3040, "", "Porto de Qinglong", "Kairen — Avareza"],
+			[3520, "", "Cidade das Lâminas", "Mei Shian — Inveja"],
+			[4000, "", "Zafir, a cidade-miragem", "Shuyin — Luxúria"],
+			[4480, "", "Corte da Lua Roxa", "Seiran — Soberba"],
 		],
 	},
 }

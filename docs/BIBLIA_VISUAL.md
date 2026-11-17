@@ -15,6 +15,14 @@
 | Caixa empilhada | 110–140 px |
 | Lanterna de descanso | ~170 px |
 | Chefes | 1,3× a 2× o Ren |
+| Casa de dois andares | ~560 px (passa do topo da tela, como na vida real) |
+| Barraca de feira / forja de rua | ~235–265 px (mais alta que uma pessoa) |
+| Torii | ~360 px |
+| Barris empilhados / carroça / cerca | ~150 / ~135 / ~100 px |
+| Mesa de banquete | ~78 px (altura de mesa real) |
+| Portão da cidade | ~600 px |
+
+**Regra de ouro (dono, 17/11):** tudo na proporção da vida real em relação ao Ren (1,75 m ≈ 150 px). Imagem de história também: o Luke é um cachorro pequeno, na altura do joelho do Ren.
 Objetos nunca são esticados: a arte é recortada sem sobra transparente e desenhada mantendo a proporção.
 
 ## 3. Chão e fundo (o mesmo ambiente)

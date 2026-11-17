@@ -61,3 +61,4 @@ Quadros extraídos com `tools/montar_anim.py` (prévias do workbench do PixelLab
 | `story/riqueza.png`, `story/dominio.png` | PixelLab `create_image_pro` (estilo da imagem `ritual`) |
 | `props/casa.png`, `barraca.png`, `carroca.png`, `forja.png`, `barris.png`, `cerca.png` | PixelLab `create_image_pixen` |
 | Música "abertura" e efeitos "ganido"/"choro" | Biblioteca PixelLab do dono, baixados no build (não ficam no repositório) |
+| `story/humildes.png`, `story/ren_luke_estrada.png` | PixelLab `create_image_pro` (estilo da imagem `ritual`; referências: sprites do Ren e do Luke) |
