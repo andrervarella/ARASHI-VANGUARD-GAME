@@ -5,10 +5,16 @@
 - Atualizado em: 2026-11-16 (America/Sao_Paulo)
 - Fonte de verdade: https://github.com/andrervarella/ARASHI-VANGUARD-GAME
 - Branch canônica: `main` (só docs antigos até o dono aprovar o PR) · **Branch de trabalho: `dev`** (tem tudo)
-- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.14 · fases 1 e 2**, versão visível na tela-título e na pausa)
+- Link jogável de teste: https://arashi-vanguard-prototipo.vercel.app (**v0.15 · fases 1 e 2**, versão visível na tela-título e na pausa)
 - Método: Prompt Mestre Universal **V4.4** (`andrervarella/PROMPT-MESTRE-CRIACAO-DE-GAMES-GAMES`)
 - Estágio: **demo jogável das fases 1 e 2 (T-015)**, aguardando o dono jogar no celular
 - Quem está com a vez: dono (jogar e dar retorno)
+
+## v0.15 (17/11) — música por fase, chutes legíveis, curativo do Luke, menino em tamanho real
+- **Música própria por fase** (PixelLab, 1ª tomada de cada): Ferreiros (cidade em chamas), Vale das Torii (Ira), Palácio (Gula) e a Memória do portão. Links na variável secreta MUSIC_URLS_3; se faltar, cai na música geral de fase.
+- **Chutes:** o quadro do impacto fica mais tempo na tela (0,6–0,7 s por chute em vez de ~0,3 s) e um arco branco marca o pé no acerto. A rasteira com a perna (PixelLab) saiu deformada e não entrou.
+- **Luke:** o último chute do soldado abre um corte no pescoço (gotas discretas). Ren rasga um pedaço da faixa vermelha, ajoelha ao lado e amarra como curativo; é isso que vira o lenço dele. Falas reescritas.
+- **Aldeões em altura real:** menino ~1,38 m (118 px), adultos 136–144 px, idosa 130, carregador 150.
 
 ## v0.14 (17/11) — som de volta, chutes e combos, aldeões novos, transformação com explicação (DEC-027)
 - **Som:** a v0.13 ficou muda na web. Causa medida no Chrome (sinal zero na v0.13, sinal na v0.12): o filtro passa-baixa do barramento novo de música. Removido; a "música que reage" agora só muda o volume.

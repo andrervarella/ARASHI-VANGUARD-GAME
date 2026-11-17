@@ -578,6 +578,7 @@ func _draw() -> void:
 		_draw_fence()
 	_draw_ghosts()
 	_draw_amb_walls()
+	_draw_luke_ferido()
 
 # fachadas, barracas e lanternas: plano do meio, um pouco mais escuras para não confundir com o caminho
 func _draw_decor() -> void:
@@ -1041,6 +1042,9 @@ func _cao_scene() -> void:
 		var tw := create_tween()
 		tw.tween_property(luke, "position:x", luke.position.x - 40.0, 0.15)
 		luke.spr.modulate = Color(1, 0.5, 0.5)
+		# o último chute abre um corte no pescoço do cão (gotas no chão, discretas)
+		if k == 2:
+			_luke_ferido = true
 		await get_tree().create_timer(0.35).timeout
 		luke.spr.modulate = Color.WHITE
 	_cao_guard.spr.play_anim("walk")
@@ -1059,7 +1063,7 @@ func _amizade() -> void:
 	hud.release_all()
 	# Ren se aproxima do cão
 	player.pose("run")
-	var dx := luke.position.x - 110.0
+	var dx := luke.position.x - 62.0
 	player.spr.set_facing(1 if dx > player.position.x else -1)
 	var tw := create_tween()
 	tw.tween_property(player, "position:x", dx, absf(dx - player.position.x) / 380.0 + 0.05)
@@ -1072,13 +1076,23 @@ func _amizade() -> void:
 	await say("amizade_1")
 	frozen = true
 	player.locked = true
-	# Ren tira um pedaço da faixa e amarra no pescoço do cão
-	Game.sfx("pickup", -4.0)
-	load("res://src/fxsprite.gd").play(self, "aparo", luke.position + Vector2(0, -50), {"scale_px": 1.4, "tint": Color(1, 0.6, 0.6)})
-	await get_tree().create_timer(0.4).timeout
+	# o cão está ferido: Ren rasga um pedaço da própria faixa vermelha e faz um curativo no pescoço dele
+	player.pose("idle")
+	await get_tree().create_timer(0.25).timeout
+	Game.sfx("rasgo", 0.0)
+	_tira_de_pano(player.position + Vector2(10, -95), luke.position + Vector2(-6, -46))
+	await get_tree().create_timer(0.7).timeout
+	player.pose("crouch")
+	# amarra: duas voltas e um nó
+	for k in range(2):
+		Game.sfx("rasgo", -10.0)
+		load("res://src/fx.gd").spawn(self, "ring", luke.position + Vector2(0, -46), {"col": Color(0.9, 0.15, 0.2), "r": 26.0 + k * 8.0, "life": 0.3})
+		await get_tree().create_timer(0.35).timeout
 	luke.set_skin("luke")
 	luke.spr.set_facing(-1)
-	load("res://src/fx.gd").spawn(self, "ring", luke.position + Vector2(0, -40), {"col": Color(0.95, 0.2, 0.25), "r": 70.0, "life": 0.5})
+	_luke_ferido = false
+	Game.sfx_remote("ganido", -8.0, "bark")
+	await get_tree().create_timer(0.5).timeout
 	Game.mark("luke_salvo")
 	await say("amizade_2")
 	Game.music(D["musica"], -9.0)
@@ -1859,9 +1873,10 @@ func _villager(kind: String, pos: Vector2, facing_: int, anim := "idle", spd := 
 	a.setup("ald_" + kind)
 	a.set_facing(facing_)
 	a.play_anim(anim, true, spd)
-	var alvo := 100.0 if kind == "menino" else randf_range(132.0, 142.0)
-	var fig := 112.0 if kind == "menino" else 147.0
-	a.scale = Vector2.ONE * (alvo / fig) * (1.0 if kind != "menino" else 0.9)
+	# altura real (Ren 150 px = 1,75 m): adulto ~1,62 m, carregador alto, idosa curvada, menino de 10 anos ~1,38 m
+	var fig: float = {"menino": 112.0, "idosa": 132.0, "carregador": 150.0, "mendigo": 148.0}.get(kind, 146.0)
+	var alvo: float = {"menino": 118.0, "idosa": 130.0, "carregador": 150.0}.get(kind, randf_range(136.0, 144.0))
+	a.scale = Vector2.ONE * (alvo / fig)
 	a.position = pos
 	add_child(a)
 	return a
@@ -1876,3 +1891,29 @@ func _ald_tex(kind: String) -> Texture2D:
 	at.atlas = t
 	at.region = Rect2(t.get_image().get_used_rect())
 	return at
+
+
+# ---- curativo do Luke: faixa rasgada voando até o pescoço; gotas do ferimento ----
+var _luke_ferido := false
+func _tira_de_pano(a: Vector2, b: Vector2) -> void:
+	var tira := Line2D.new()
+	tira.width = 7.0
+	tira.default_color = Color(0.78, 0.08, 0.12)
+	tira.z_index = 15
+	tira.points = PackedVector2Array([Vector2(-16, 0), Vector2(-5, 3), Vector2(6, -2), Vector2(16, 1)])
+	tira.position = a
+	add_child(tira)
+	var tw := create_tween()
+	tw.tween_property(tira, "position", b, 0.5).set_trans(Tween.TRANS_SINE)
+	tw.parallel().tween_property(tira, "rotation", 0.6, 0.5)
+	tw.tween_property(tira, "scale", Vector2(0.4, 0.4), 0.3)
+	tw.tween_callback(tira.queue_free)
+
+func _draw_luke_ferido() -> void:
+	if not _luke_ferido or luke == null:
+		return
+	var p: Vector2 = luke.position
+	for i in range(5):
+		draw_circle(p + Vector2(-14 + i * 7, -2 + (i % 2) * 2), 2.5, Color(0.55, 0.02, 0.05, 0.9))
+	var drip := fmod(Time.get_ticks_msec() * 0.001, 1.2) / 1.2
+	draw_circle(p + Vector2(6, -44 + drip * 40.0), 2.0, Color(0.65, 0.03, 0.06, 1.0 - drip))

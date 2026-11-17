@@ -495,9 +495,9 @@ const MIXES := {"SKS": "giratoria", "SSK": "ascendente", "KKS": "investida", "KS
 const MIX_NOME := {"giratoria": "Lâmina Giratória!", "ascendente": "Chute Ascendente!", "investida": "Investida do Ferreiro!", "trovao": "Pisão do Trovão!"}
 # anim, velocidade, duração, acerto de, até, dano, alcance, avanço
 const KCHAIN := [
-	["kick_alto", 1.4, 0.28, 0.08, 0.17, 1, 135.0, 60.0],
-	["kick_giro", 1.3, 0.32, 0.10, 0.21, 1, 150.0, 90.0],
-	["kick_voo", 1.2, 0.42, 0.12, 0.30, 2, 175.0, 320.0],
+	["kick_alto", 1.0, 0.52, 0.14, 0.34, 1, 140.0, 70.0],
+	["kick_giro", 1.0, 0.58, 0.22, 0.44, 1, 155.0, 90.0],
+	["kick_voo", 1.0, 0.62, 0.2, 0.48, 2, 180.0, 330.0],
 ]
 
 func _press(k: String, on_floor: bool) -> void:
@@ -535,8 +535,20 @@ func _start_kick(on_floor: bool) -> void:
 	atk_to = c[4]
 	atk_reach = c[6]
 	atk_lunge = c[7] if on_floor and not crouching else 0.0
-	spr.play_anim("crouch" if crouching else c[0], true, c[1])
+	var an: String = c[0]
+	if crouching:
+		an = "kick_rasteira" if spr.has_anim("kick_rasteira") else "crouch"
+		atk_len = 0.5
+		atk_from = 0.14
+		atk_to = 0.32
+		atk_reach = 160.0
+	spr.play_anim(an, true, c[1])
 	Game.sfx("esquiva", -6.0)
+	# arco branco do pé no instante do impacto: o chute se lê na tela
+	var kh: float = -40.0 if crouching else (-150.0 if an == "kick_alto" else -110.0)
+	get_tree().create_timer(atk_from).timeout.connect(func():
+		if state == "attack" and atk_kind in ["kick", "kick_air", "low"]:
+			load("res://src/fx.gd").spawn(self, "slash", Vector2(facing * 70.0, kh), {"dir": facing, "col": Color(1, 0.97, 0.9), "r": 120.0, "life": 0.18}))
 	if kchain == 3:
 		Game.sfx("ren_effort", -8.0)
 	_furia_trail()
@@ -559,8 +571,8 @@ func _start_mix(kind: String) -> void:
 			FX.spawn(self, "slash", Vector2(facing * 60.0, -95.0), {"dir": facing, "col": col, "r": 170.0, "life": 0.3})
 			FX.spawn(self, "slash", Vector2(-facing * 60.0, -95.0), {"dir": -facing, "col": col, "r": 170.0, "life": 0.3})
 		"ascendente":
-			atk_dmg = 2 + dmg_bonus(); atk_len = 0.4; atk_from = 0.08; atk_to = 0.24; atk_reach = 160.0; atk_lunge = 60.0
-			spr.play_anim("kick_giro", true, 1.2)
+			atk_dmg = 2 + dmg_bonus(); atk_len = 0.55; atk_from = 0.2; atk_to = 0.42; atk_reach = 160.0; atk_lunge = 60.0
+			spr.play_anim("kick_giro", true, 1.0)
 			velocity.y = -420.0
 			Game.sfx("esquiva", 0.0)
 			FX.spawn(self, "rise", Vector2(facing * 50.0, -120.0), {"dir": facing, "col": col, "r": 150.0, "life": 0.25})
@@ -570,10 +582,10 @@ func _start_mix(kind: String) -> void:
 			Game.sfx("slash3", 0.0)
 			FX.spawn(self, "thrust", Vector2(facing * 40.0, -92.0), {"dir": facing, "col": col, "r": 260.0, "life": 0.3})
 		"trovao":
-			atk_dmg = 3 + dmg_bonus(); atk_len = 0.48; atk_from = 0.14; atk_to = 0.34; atk_reach = 180.0; atk_lunge = 380.0
-			spr.play_anim("kick_voo", true, 1.1)
+			atk_dmg = 3 + dmg_bonus(); atk_len = 0.62; atk_from = 0.2; atk_to = 0.46; atk_reach = 180.0; atk_lunge = 380.0
+			spr.play_anim("kick_voo", true, 1.0)
 			Game.sfx("esquiva", 0.0)
-			get_tree().create_timer(0.3).timeout.connect(func():
+			get_tree().create_timer(0.44).timeout.connect(func():
 				if level == null:
 					return
 				level.shake(10.0)

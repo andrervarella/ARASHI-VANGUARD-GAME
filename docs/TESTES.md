@@ -57,3 +57,8 @@ Não aplicado (Portão 2 ainda longe).
 - EXECUTADO (Chrome sem tela, versão web real): saída de áudio medida por analisador. v0.12 = sinal; v0.13 = zero; v0.14 = sinal. Músicas remotas não testadas localmente (vêm do deploy).
 - EXECUTADO (EMULADO): todas as fases sem erro de script; barricada da emboscada; Refúgio com aldeões novos; combos Investida e Ascendente disparando; transformação completa contra o Xui (meia vida).
 - NÃO TESTADO: toque real no botão de chute; sensação dos combos; desempenho com 22 aldeões animados na fuga.
+
+## 2026-11-17 — v0.15
+- EXECUTADO (EMULADO): curativo do Luke pelo atalho `--testcurativo` (gotas, Ren ajoelhado, lenço aparece depois do nó); todas as fases sem erro de script.
+- EXECUTADO (Chrome, versão web): áudio com sinal (ver resultado no commit).
+- NÃO TESTADO: as músicas novas tocando no site (baixadas só no build da Vercel); não ouvi as músicas (sem áudio aqui); sensação dos chutes no celular.

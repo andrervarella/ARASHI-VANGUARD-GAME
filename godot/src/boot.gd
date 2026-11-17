@@ -15,6 +15,8 @@ func _ready() -> void:
 		Game.goto.call_deferred(a[i + 1], a[i + 2])
 		if a.has("--testcarmesim"):
 			_test_carmesim()
+		if a.has("--testcurativo"):
+			_test_curativo()
 		if a.has("--halfboss"):
 			_half_boss_later()
 		if a.has("--killboss"):
@@ -40,3 +42,21 @@ func _test_carmesim() -> void:
 	await get_tree().create_timer(2.5).timeout
 	for p in get_tree().get_nodes_in_group("player"):
 		p.set_carmesim(true, 2.0)
+
+
+# teste: pula a luta com o soldado do cão e mostra o curativo do Luke
+func _test_curativo() -> void:
+	await get_tree().create_timer(1.0).timeout
+	var lv = null
+	for n in get_tree().root.find_children("*", "Node2D", true, false):
+		if n.has_method("_cao_scene"):
+			lv = n
+			break
+	if lv:
+		lv._fence_wall.queue_free() if lv._fence_wall else null
+		lv._fence_wall = null
+		lv.player.global_position.x = 2200.0
+		await lv._cao_scene()
+		await get_tree().create_timer(0.5).timeout
+		for f in get_tree().get_nodes_in_group("foes"):
+			f.take_hit(999, 1, "teste")
